@@ -25,8 +25,8 @@ const projects = [
     featured: true,
     category: "Machine Learning",
     tech: ["Python", "NumPy", "Matplotlib", "scikit-learn"],
-    github: "https://github.com",
-    demo: "https://demo.com"
+    github: "https://github.com/zidanmubarak/neural-network-scratch",
+    demo: "https://neural-network-demo.vercel.app"
   },
   {
     id: 2,
@@ -36,7 +36,7 @@ const projects = [
     featured: true,
     category: "Web Development",
     tech: ["Django", "TailwindCSS", "PostgreSQL", "Vercel"],
-    github: "https://github.com",
+    github: "https://github.com/zidanmubarak/portfolio",
     demo: "https://ridwanhalim.com"
   },
   {
@@ -47,7 +47,7 @@ const projects = [
     featured: true,
     category: "Web Development",
     tech: ["Django", "Bootstrap", "SQLite", "Vercel"],
-    github: "https://github.com",
+    github: "https://github.com/zidanmubarak/belimadu",
     demo: "https://belimadu.com"
   },
   {
@@ -58,7 +58,7 @@ const projects = [
     featured: true,
     category: "Data Science",
     tech: ["Python", "FastAPI", "BeautifulSoup", "pandas"],
-    github: "https://github.com",
+    github: "https://github.com/zidanmubarak/pddikti-api",
     demo: "https://pddikti-api.com"
   },
   {
@@ -69,7 +69,7 @@ const projects = [
     featured: true,
     category: "Web Development",
     tech: ["Node.js", "Express", "MongoDB", "React"],
-    github: "https://github.com",
+    github: "https://github.com/zidanmubarak/mlb-stats",
     demo: "https://mlb-stats.com"
   },
   {
@@ -80,8 +80,8 @@ const projects = [
     featured: true,
     category: "Data Science",
     tech: ["Python", "Streamlit", "Plotly", "pandas"],
-    github: "https://github.com",
-    demo: "https://bike-insights.com"
+    github: "https://github.com/zidanmubarak/bike-rental-insights",
+    demo: "https://bike-insights.streamlit.app"
   }
 ];
 
@@ -100,22 +100,25 @@ export function ProjectsSection() {
     : projects.filter(project => project.category === selectedCategory);
 
   return (
-    <div className="min-h-screen p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen py-16 sm:py-20 lg:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
         >
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-white mb-2">My <span className="text-blue-400">Projects</span></h1>
-            <p className="text-slate-400">
-              A bunch of projects I've built, from cool client apps to open-source stuff I'm super proud of.
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+              My <span className="gradient-text">Projects</span>
+            </h2>
+            <p className="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto">
+              A collection of projects I've built, from innovative AI solutions to full-stack applications that solve real-world problems.
             </p>
           </div>
 
           {/* Category Filter */}
-          <div className="flex flex-wrap gap-2 mb-8">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12">
             {categories.map((category) => {
               const Icon = category.icon;
               return (
@@ -123,53 +126,55 @@ export function ProjectsSection() {
                   key={category.id}
                   variant={selectedCategory === category.id ? "default" : "outline"}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`${
+                  className={`text-sm sm:text-base ${
                     selectedCategory === category.id
                       ? "bg-blue-600 hover:bg-blue-700"
                       : "border-slate-600 text-slate-300 hover:bg-slate-800"
                   }`}
                 >
                   <Icon className="mr-2 h-4 w-4" />
-                  {category.label}
+                  <span className="hidden sm:inline">{category.label}</span>
+                  <span className="sm:hidden">{category.label.split(' ')[0]}</span>
                 </Button>
               );
             })}
           </div>
 
           {/* Projects Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
             {filteredProjects.map((project, index) => (
               <motion.div
                 key={project.id}
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
+                viewport={{ once: true }}
                 className="group"
               >
-                <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm hover:bg-slate-800/50 transition-all duration-300 overflow-hidden">
+                <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm hover:bg-slate-800/50 transition-all duration-300 overflow-hidden h-full">
                   <div className="relative">
                     <img 
                       src={project.image} 
                       alt={project.title}
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-48 sm:h-56 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     {project.featured && (
-                      <Badge className="absolute top-4 right-4 bg-green-500 hover:bg-green-600">
+                      <Badge className="absolute top-3 right-3 bg-green-500 hover:bg-green-600 text-xs sm:text-sm">
                         ⭐ FEATURED
                       </Badge>
                     )}
                   </div>
                   
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                  <CardContent className="p-4 sm:p-6 flex flex-col h-full">
+                    <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
                       {project.title}
                     </h3>
-                    <p className="text-slate-400 mb-4 line-clamp-2">
+                    <p className="text-slate-400 mb-4 line-clamp-3 flex-grow text-sm sm:text-base">
                       {project.description}
                     </p>
                     
                     {/* Tech Stack */}
-                    <div className="flex flex-wrap gap-2 mb-4">
+                    <div className="flex flex-wrap gap-1 sm:gap-2 mb-4">
                       {project.tech.map((tech) => (
                         <Badge key={tech} variant="secondary" className="text-xs">
                           {tech}
@@ -178,14 +183,27 @@ export function ProjectsSection() {
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex gap-2">
-                      <Button size="sm" variant="outline" className="flex-1">
-                        <Github className="mr-2 h-3 w-3" />
-                        Code
+                    <div className="flex gap-2 mt-auto">
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        className="flex-1 text-xs sm:text-sm"
+                        asChild
+                      >
+                        <a href={project.github} target="_blank" rel="noopener noreferrer">
+                          <Github className="mr-1 sm:mr-2 h-3 w-3" />
+                          Code
+                        </a>
                       </Button>
-                      <Button size="sm" className="flex-1 bg-blue-600 hover:bg-blue-700">
-                        <ExternalLink className="mr-2 h-3 w-3" />
-                        Live Demo
+                      <Button 
+                        size="sm" 
+                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm"
+                        asChild
+                      >
+                        <a href={project.demo} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="mr-1 sm:mr-2 h-3 w-3" />
+                          Demo
+                        </a>
                       </Button>
                     </div>
                   </CardContent>
@@ -194,17 +212,29 @@ export function ProjectsSection() {
             ))}
           </div>
 
-          {/* Pagination */}
-          <div className="flex justify-center mt-12">
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" disabled>1</Button>
-              <Button variant="ghost" size="sm">2</Button>
-              <Button variant="ghost" size="sm">3</Button>
-              <span className="flex items-center px-2 text-slate-400">...</span>
-              <Button variant="ghost" size="sm">8</Button>
-              <Button variant="ghost" size="sm">›</Button>
-            </div>
-          </div>
+          {/* Call to Action */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="text-center mt-12 sm:mt-16"
+          >
+            <p className="text-slate-400 mb-6 text-sm sm:text-base">
+              Want to see more of my work?
+            </p>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="border-slate-600 text-slate-300 hover:bg-slate-800"
+              asChild
+            >
+              <a href="https://github.com/zidanmubarak" target="_blank" rel="noopener noreferrer">
+                <Github className="mr-2 h-4 w-4" />
+                View All on GitHub
+              </a>
+            </Button>
+          </motion.div>
         </motion.div>
       </div>
     </div>

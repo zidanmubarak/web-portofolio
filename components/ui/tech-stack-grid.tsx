@@ -83,8 +83,9 @@ export function TechStackGrid() {
     <motion.div
       variants={containerVariants}
       initial="hidden"
-      animate="visible"
-      className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4"
     >
       {techStack.map((tech, index) => {
         const Icon = tech.icon;
@@ -100,16 +101,16 @@ export function TechStackGrid() {
             whileTap={{ scale: 0.95 }}
             className={`
               tech-button
-              relative p-4 rounded-xl border backdrop-blur-sm
+              relative p-3 sm:p-4 rounded-xl border backdrop-blur-sm
               ${tech.bgColor}
               cursor-pointer group
               shadow-lg hover:shadow-xl
               transition-all duration-300
             `}
           >
-            <div className="flex flex-col items-center space-y-2">
-              <Icon className={`h-8 w-8 ${tech.color} group-hover:scale-110 transition-transform duration-200`} />
-              <span className="text-sm font-medium text-white group-hover:text-opacity-90">
+            <div className="flex flex-col items-center space-y-1 sm:space-y-2">
+              <Icon className={`h-6 w-6 sm:h-8 sm:w-8 ${tech.color} group-hover:scale-110 transition-transform duration-200`} />
+              <span className="text-xs sm:text-sm font-medium text-white group-hover:text-opacity-90 text-center">
                 {tech.name}
               </span>
             </div>

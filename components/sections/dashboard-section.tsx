@@ -80,51 +80,53 @@ export function DashboardSection() {
   };
 
   return (
-    <div className="min-h-screen p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen py-16 sm:py-20 lg:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
         >
-          <div className="mb-8">
-            <h1 className="text-5xl font-bold text-white mb-4">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
               Dashboard <span className="gradient-text">Overview</span>
-            </h1>
-            <p className="text-xl text-slate-400">
+            </h2>
+            <p className="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto mb-6">
               Real-time insights into my coding journey and development activities
             </p>
-            <div className="mt-4 p-4 bg-slate-900/50 rounded-lg border border-slate-700/50 backdrop-blur-sm">
-              <p className="text-blue-400 font-mono text-lg">
+            <div className="inline-block p-3 sm:p-4 bg-slate-900/50 rounded-lg border border-slate-700/50 backdrop-blur-sm">
+              <p className="text-blue-400 font-mono text-sm sm:text-lg">
                 🕒 {formatTime(currentTime)} (Jakarta Time)
               </p>
             </div>
           </div>
 
           {/* Wakatime Statistics */}
-          <div className="mb-12">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-bold text-white">
+          <div className="mb-12 sm:mb-16">
+            <div className="flex flex-col sm:flex-row items-center justify-between mb-8 sm:mb-12">
+              <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-0">
                 Wakatime <span className="gradient-text">Statistics</span>
-              </h2>
-              <Badge variant="secondary" className="bg-green-500/20 text-green-400 border-green-500/30 px-4 py-2">
+              </h3>
+              <Badge variant="secondary" className="bg-green-500/20 text-green-400 border-green-500/30 px-3 sm:px-4 py-2">
                 <Activity className="mr-2 h-4 w-4" />
                 Last update: 2 hours ago
               </Badge>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
               {stats.map((stat, index) => (
                 <motion.div
                   key={stat.title}
                   initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
+                  viewport={{ once: true }}
                 >
                   <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm card-hover shadow-lg">
-                    <CardContent className="p-6">
-                      <p className="text-slate-400 text-sm mb-2">{stat.title}</p>
-                      <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
+                    <CardContent className="p-4 sm:p-6">
+                      <p className="text-slate-400 text-xs sm:text-sm mb-2">{stat.title}</p>
+                      <p className={`text-lg sm:text-2xl font-bold ${stat.color}`}>{stat.value}</p>
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -132,38 +134,39 @@ export function DashboardSection() {
             </div>
 
             {/* Tech Stack Grid */}
-            <div className="mb-12">
-              <h3 className="text-2xl font-bold text-white mb-6">
+            <div className="mb-8 sm:mb-12">
+              <h4 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
                 Tech <span className="gradient-text">Stack</span>
-              </h3>
+              </h4>
               <TechStackGrid />
             </div>
           </div>
 
           {/* GitHub Statistics */}
-          <div className="mb-12">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-bold text-white">
+          <div className="mb-8 sm:mb-12">
+            <div className="flex flex-col sm:flex-row items-center justify-between mb-8 sm:mb-12">
+              <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-0">
                 GitHub <span className="text-green-400">Statistics</span>
-              </h2>
-              <Badge variant="secondary" className="bg-blue-500/20 text-blue-400 border-blue-500/30 px-4 py-2">
+              </h3>
+              <Badge variant="secondary" className="bg-blue-500/20 text-blue-400 border-blue-500/30 px-3 sm:px-4 py-2">
                 <Github className="mr-2 h-4 w-4" />
                 @zidanmubarak
               </Badge>
             </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
               {githubStats.map((stat, index) => (
                 <motion.div
                   key={stat.label}
                   initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ delay: index * 0.1 }}
+                  viewport={{ once: true }}
                 >
                   <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm card-hover shadow-lg">
-                    <CardContent className="p-6 text-center">
-                      <p className="text-slate-400 text-sm mb-2">{stat.label}</p>
-                      <p className={`text-3xl font-bold ${stat.color}`}>{stat.value}</p>
+                    <CardContent className="p-4 sm:p-6 text-center">
+                      <p className="text-slate-400 text-xs sm:text-sm mb-2">{stat.label}</p>
+                      <p className={`text-2xl sm:text-3xl font-bold ${stat.color}`}>{stat.value}</p>
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -173,11 +176,11 @@ export function DashboardSection() {
             {/* Activity Graph */}
             <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm shadow-xl">
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-white text-xl">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                  <CardTitle className="text-white text-lg sm:text-xl mb-4 sm:mb-0">
                     Activity <span className="text-green-400">Graph</span>
                   </CardTitle>
-                  <div className="flex items-center space-x-4 text-sm">
+                  <div className="flex items-center space-x-4 text-xs sm:text-sm">
                     <div className="flex items-center">
                       <div className="w-3 h-3 bg-slate-800 rounded-sm mr-2"></div>
                       <span className="text-slate-400">Less</span>
@@ -191,7 +194,7 @@ export function DashboardSection() {
               </CardHeader>
               <CardContent>
                 <ActivityGraph />
-                <p className="text-slate-400 text-sm mt-6">
+                <p className="text-slate-400 text-xs sm:text-sm mt-4 sm:mt-6">
                   📊 Contribution activity over the past year - showing consistent development work
                 </p>
               </CardContent>
