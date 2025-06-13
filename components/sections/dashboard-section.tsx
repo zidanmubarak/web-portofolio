@@ -13,8 +13,7 @@ import {
   Github
 } from 'lucide-react';
 import { TechStackMarquee } from '@/components/ui/tech-stack-marquee';
-import { GitHubContributionGraph } from '@/components/charts/github-contribution-graph';
-import { GitHubStats } from '@/components/charts/github-stats';
+import { ActivityGraph } from '@/components/charts/activity-graph';
 
 const stats = [
   {
@@ -47,6 +46,13 @@ const stats = [
     value: "1,847 hrs 22 mins",
     color: "text-cyan-400"
   }
+];
+
+const githubStats = [
+  { label: "Total", value: "5,247", color: "text-green-400" },
+  { label: "This Week", value: "156", color: "text-blue-400" },
+  { label: "Best Day", value: "289", color: "text-purple-400" },
+  { label: "Average", value: "14/day", color: "text-orange-400" }
 ];
 
 export function DashboardSection() {
@@ -199,18 +205,27 @@ export function DashboardSection() {
               </Badge>
             </div>
 
-            {/* GitHub Stats Component */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="mb-8"
+            <motion.div 
+              className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8"
+              variants={containerVariants}
             >
-              <GitHubStats />
+              {githubStats.map((stat, index) => (
+                <motion.div
+                  key={stat.label}
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                >
+                  <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm card-hover shadow-lg">
+                    <CardContent className="p-4 sm:p-6 text-center">
+                      <p className="text-slate-400 text-xs sm:text-sm mb-2">{stat.label}</p>
+                      <p className={`text-2xl sm:text-3xl font-bold ${stat.color}`}>{stat.value}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
             </motion.div>
 
-            {/* GitHub Contribution Graph */}
+            {/* Activity Graph */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -219,12 +234,27 @@ export function DashboardSection() {
             >
               <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm shadow-xl">
                 <CardHeader>
-                  <CardTitle className="text-white text-lg sm:text-xl">
-                    Contribution <span className="text-green-400">Activity</span>
-                  </CardTitle>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                    <CardTitle className="text-white text-lg sm:text-xl mb-4 sm:mb-0">
+                      Activity <span className="text-green-400">Graph</span>
+                    </CardTitle>
+                    <div className="flex items-center space-x-4 text-xs sm:text-sm">
+                      <div className="flex items-center">
+                        <div className="w-3 h-3 bg-slate-800 rounded-sm mr-2"></div>
+                        <span className="text-slate-400">Less</span>
+                      </div>
+                      <div className="flex items-center">
+                        <div className="w-3 h-3 bg-green-400 rounded-sm mr-2"></div>
+                        <span className="text-slate-400">More</span>
+                      </div>
+                    </div>
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <GitHubContributionGraph />
+                  <ActivityGraph />
+                  <p className="text-slate-400 text-xs sm:text-sm mt-4 sm:mt-6">
+                    📊 Contribution activity over the past year - showing consistent development work
+                  </p>
                 </CardContent>
               </Card>
             </motion.div>
