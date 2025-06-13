@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ProjectTechStack } from '@/components/ui/project-tech-stack';
 import { 
   ExternalLink, 
   Github, 
@@ -229,12 +228,17 @@ export function ProjectsSection() {
                       {project.description}
                     </p>
                     
-                    {/* Tech Stack with Icons */}
-                    <div className="mb-6">
-                      <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
-                        Tech Stack
-                      </h4>
-                      <ProjectTechStack technologies={project.tech} />
+                    {/* Tech Stack */}
+                    <div className="flex flex-wrap gap-1 sm:gap-2 mb-6">
+                      {project.tech.map((tech) => (
+                        <Badge 
+                          key={tech} 
+                          variant="secondary" 
+                          className="text-xs bg-slate-800/50 text-slate-300 hover:bg-slate-700/50 transition-colors"
+                        >
+                          {tech}
+                        </Badge>
+                      ))}
                     </div>
 
                     {/* Action Buttons */}
