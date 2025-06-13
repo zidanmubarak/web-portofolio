@@ -4,18 +4,22 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { 
   Activity,
   Code,
   Clock,
   Calendar,
   TrendingUp,
-  Github
+  Github,
+  ExternalLink,
+  RefreshCw
 } from 'lucide-react';
 import { TechStackMarquee } from '@/components/ui/tech-stack-marquee';
-import { ActivityGraph } from '@/components/charts/activity-graph';
+import { GitHubContributionGraph } from '@/components/charts/github-contribution-graph';
+import { GitHubStatsCards } from '@/components/charts/github-stats-cards';
 
-const stats = [
+const wakatimeStats = [
   {
     title: "Start Date",
     value: "December 01, 2024",
@@ -48,16 +52,10 @@ const stats = [
   }
 ];
 
-const githubStats = [
-  { label: "Total", value: "5,247", color: "text-green-400" },
-  { label: "This Week", value: "156", color: "text-blue-400" },
-  { label: "Best Day", value: "289", color: "text-purple-400" },
-  { label: "Average", value: "14/day", color: "text-orange-400" }
-];
-
 export function DashboardSection() {
   const [mounted, setMounted] = useState(false);
   const [currentTime, setCurrentTime] = useState<string>("");
+  const [lastUpdated, setLastUpdated] = useState<string>("");
 
   useEffect(() => {
     setMounted(true);
@@ -77,13 +75,26 @@ export function DashboardSection() {
       setCurrentTime(timeString);
     };
 
-    // Set initial time
-    updateTime();
-    
-    // Update every second
-    const timer = setInterval(updateTime, 1000);
+    const updateLastUpdated = () => {
+      const now = new Date();
+      const updatedString = now.toLocaleString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: 'Asia/Jakarta'
+      });
+      setLastUpdated(updatedString);
+    };
 
-    return () => clearInterval(timer);
+    updateTime();
+    updateLastUpdated();
+    
+    const timer = setInterval(updateTime, 1000);
+    const updateTimer = setInterval(updateLastUpdated, 60000); // Update every minute
+
+    return () => {
+      clearInterval(timer);
+      clearInterval(updateTimer);
+    };
   }, []);
 
   const containerVariants = {
@@ -107,6 +118,11 @@ export function DashboardSection() {
         ease: [0.4, 0, 0.2, 1]
       }
     }
+  };
+
+  const refreshData = () => {
+    // Trigger refresh of GitHub data
+    window.location.reload();
   };
 
   return (
@@ -148,7 +164,7 @@ export function DashboardSection() {
               </h3>
               <Badge variant="secondary" className="bg-green-500/20 text-green-400 border-green-500/30 px-3 sm:px-4 py-2">
                 <Activity className="mr-2 h-4 w-4" />
-                Last update: 2 hours ago
+                Last update: {lastUpdated || '2 hours ago'}
               </Badge>
             </div>
 
@@ -156,7 +172,7 @@ export function DashboardSection() {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12"
               variants={containerVariants}
             >
-              {stats.map((stat, index) => (
+              {wakatimeStats.map((stat, index) => (
                 <motion.div
                   key={stat.title}
                   variants={itemVariants}
@@ -199,33 +215,32 @@ export function DashboardSection() {
               <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-0">
                 GitHub <span className="text-green-400">Statistics</span>
               </h3>
-              <Badge variant="secondary" className="bg-blue-500/20 text-blue-400 border-blue-500/30 px-3 sm:px-4 py-2">
-                <Github className="mr-2 h-4 w-4" />
-                @zidanmubarak
-              </Badge>
+              <div className="flex items-center space-x-4">
+                <Badge variant="secondary" className="bg-blue-500/20 text-blue-400 border-blue-500/30 px-3 sm:px-4 py-2">
+                  <Github className="mr-2 h-4 w-4" />
+                  @zidanmubarak
+                </Badge>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={refreshData}
+                  className="border-slate-600 text-slate-300 hover:bg-slate-800"
+                >
+                  <RefreshCw className="mr-2 h-4 w-4" />
+                  Refresh
+                </Button>
+              </div>
             </div>
 
+            {/* GitHub Stats Cards */}
             <motion.div 
-              className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8"
-              variants={containerVariants}
+              className="mb-8 sm:mb-12"
+              variants={itemVariants}
             >
-              {githubStats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  variants={itemVariants}
-                  whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
-                >
-                  <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm card-hover shadow-lg">
-                    <CardContent className="p-4 sm:p-6 text-center">
-                      <p className="text-slate-400 text-xs sm:text-sm mb-2">{stat.label}</p>
-                      <p className={`text-2xl sm:text-3xl font-bold ${stat.color}`}>{stat.value}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
+              <GitHubStatsCards />
             </motion.div>
 
-            {/* Activity Graph */}
+            {/* GitHub Contribution Graph */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -236,25 +251,23 @@ export function DashboardSection() {
                 <CardHeader>
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                     <CardTitle className="text-white text-lg sm:text-xl mb-4 sm:mb-0">
-                      Activity <span className="text-green-400">Graph</span>
+                      Contribution <span className="text-green-400">Activity</span>
                     </CardTitle>
-                    <div className="flex items-center space-x-4 text-xs sm:text-sm">
-                      <div className="flex items-center">
-                        <div className="w-3 h-3 bg-slate-800 rounded-sm mr-2"></div>
-                        <span className="text-slate-400">Less</span>
-                      </div>
-                      <div className="flex items-center">
-                        <div className="w-3 h-3 bg-green-400 rounded-sm mr-2"></div>
-                        <span className="text-slate-400">More</span>
-                      </div>
-                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-green-500/50 text-green-400 hover:bg-green-500/10"
+                      asChild
+                    >
+                      <a href="https://github.com/zidanmubarak" target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="mr-2 h-4 w-4" />
+                        View on GitHub
+                      </a>
+                    </Button>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <ActivityGraph />
-                  <p className="text-slate-400 text-xs sm:text-sm mt-4 sm:mt-6">
-                    📊 Contribution activity over the past year - showing consistent development work
-                  </p>
+                  <GitHubContributionGraph />
                 </CardContent>
               </Card>
             </motion.div>
