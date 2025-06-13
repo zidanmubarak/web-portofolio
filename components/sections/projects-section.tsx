@@ -13,194 +13,81 @@ import {
   Code2,
   Brain,
   Database,
-  Globe,
-  Zap,
-  Server,
-  Cloud,
-  Layers
+  Globe
 } from 'lucide-react';
-
-// Tech stack icons mapping
-const techIcons: { [key: string]: { icon: React.ElementType; color: string; emoji: string } } = {
-  // Programming Languages
-  'Python': { icon: Code2, color: 'text-blue-400', emoji: '🐍' },
-  'JavaScript': { icon: Code2, color: 'text-yellow-400', emoji: '⚡' },
-  'TypeScript': { icon: Code2, color: 'text-blue-300', emoji: '📘' },
-  'Java': { icon: Code2, color: 'text-orange-400', emoji: '☕' },
-  
-  // Frontend
-  'React': { icon: Layers, color: 'text-cyan-400', emoji: '⚛️' },
-  'Next.js': { icon: Globe, color: 'text-white', emoji: '▲' },
-  'TailwindCSS': { icon: Layers, color: 'text-teal-400', emoji: '🎨' },
-  'Bootstrap': { icon: Layers, color: 'text-purple-400', emoji: '🅱️' },
-  'HTML': { icon: Code2, color: 'text-orange-500', emoji: '🌐' },
-  'CSS': { icon: Layers, color: 'text-blue-500', emoji: '🎨' },
-  'Streamlit': { icon: Globe, color: 'text-red-400', emoji: '📊' },
-  
-  // Backend
-  'Django': { icon: Server, color: 'text-green-400', emoji: '🎸' },
-  'FastAPI': { icon: Zap, color: 'text-teal-400', emoji: '🚀' },
-  'Node.js': { icon: Server, color: 'text-green-300', emoji: '🟢' },
-  'Express': { icon: Server, color: 'text-gray-300', emoji: '🚂' },
-  'Flask': { icon: Server, color: 'text-blue-300', emoji: '🌶️' },
-  
-  // Databases
-  'PostgreSQL': { icon: Database, color: 'text-blue-400', emoji: '🐘' },
-  'MongoDB': { icon: Database, color: 'text-green-400', emoji: '🍃' },
-  'SQLite': { icon: Database, color: 'text-gray-400', emoji: '💾' },
-  'Redis': { icon: Database, color: 'text-red-400', emoji: '🔴' },
-  'MySQL': { icon: Database, color: 'text-blue-300', emoji: '🐬' },
-  
-  // AI/ML
-  'TensorFlow': { icon: Brain, color: 'text-orange-300', emoji: '🧠' },
-  'PyTorch': { icon: Brain, color: 'text-red-400', emoji: '🔥' },
-  'scikit-learn': { icon: Brain, color: 'text-blue-300', emoji: '📊' },
-  'NumPy': { icon: Brain, color: 'text-blue-400', emoji: '🔢' },
-  'pandas': { icon: Database, color: 'text-purple-400', emoji: '🐼' },
-  'Matplotlib': { icon: Brain, color: 'text-green-400', emoji: '📈' },
-  'Plotly': { icon: Brain, color: 'text-blue-500', emoji: '📊' },
-  'Jupyter': { icon: Code2, color: 'text-orange-400', emoji: '📓' },
-  'OpenCV': { icon: Brain, color: 'text-green-500', emoji: '👁️' },
-  
-  // Cloud & DevOps
-  'Vercel': { icon: Cloud, color: 'text-white', emoji: '▲' },
-  'Netlify': { icon: Cloud, color: 'text-teal-400', emoji: '🌐' },
-  'AWS': { icon: Cloud, color: 'text-yellow-400', emoji: '☁️' },
-  'Docker': { icon: Cloud, color: 'text-blue-400', emoji: '🐳' },
-  'Heroku': { icon: Cloud, color: 'text-purple-500', emoji: '🟣' },
-  
-  // APIs & Tools
-  'Stripe API': { icon: Zap, color: 'text-purple-400', emoji: '💳' },
-  'BeautifulSoup': { icon: Code2, color: 'text-yellow-300', emoji: '🍲' },
-  'Chart.js': { icon: Brain, color: 'text-pink-400', emoji: '📊' },
-  'REST API': { icon: Zap, color: 'text-blue-400', emoji: '🔗' },
-  'GraphQL': { icon: Zap, color: 'text-pink-500', emoji: '📡' },
-  
-  // Default fallback
-  'default': { icon: Code2, color: 'text-gray-400', emoji: '⚙️' }
-};
 
 const projects = [
   {
     id: 1,
     title: "Neural Network from Scratch",
-    description: "A professional implementation of a neural network using only NumPy for MNIST digit classification with 95% accuracy and comprehensive visualization.",
+    description: "A professional implementation of a neural network using only NumPy for MNIST digit classification with 95% accuracy.",
     image: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Machine Learning",
-    tech: ["Python", "NumPy", "Matplotlib", "scikit-learn", "Jupyter", "OpenCV"],
+    tech: ["Python", "NumPy", "Matplotlib", "scikit-learn", "Jupyter"],
     github: "https://github.com/zidanmubarak/neural-network-scratch",
     demo: "https://neural-network-demo.vercel.app",
-    stars: 45,
-    techDetails: {
-      "Python": "Core programming language for ML implementation",
-      "NumPy": "Matrix operations and mathematical computations",
-      "Matplotlib": "Data visualization and training progress plots",
-      "scikit-learn": "Dataset loading and preprocessing utilities",
-      "Jupyter": "Interactive development and experimentation",
-      "OpenCV": "Image processing and computer vision tasks"
-    }
+    stars: 45
   },
   {
     id: 2,
     title: "ridwanhalim.com",
-    description: "My personal portfolio website built with Django and modern web technologies, featuring responsive design and optimized performance.",
+    description: "My personal portfolio site, powered by Django and TailwindCSS, running serverless on Vercel with modern design.",
     image: "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
-    tech: ["Django", "TailwindCSS", "PostgreSQL", "Vercel", "Python", "HTML", "CSS"],
+    tech: ["Django", "TailwindCSS", "PostgreSQL", "Vercel", "Python"],
     github: "https://github.com/zidanmubarak/portfolio",
     demo: "https://ridwanhalim.com",
-    stars: 23,
-    techDetails: {
-      "Django": "Backend framework for robust web application",
-      "TailwindCSS": "Utility-first CSS framework for styling",
-      "PostgreSQL": "Relational database for data storage",
-      "Vercel": "Serverless deployment platform",
-      "Python": "Server-side programming language",
-      "HTML": "Markup structure and semantic elements",
-      "CSS": "Custom styling and animations"
-    }
+    stars: 23
   },
   {
     id: 3,
     title: "BeliMadu.com",
-    description: "E-commerce platform for honey products with integrated payment system, inventory management, and responsive user interface.",
+    description: "E-commerce platform for honey products with payment integration, inventory management, and responsive design.",
     image: "https://images.pexels.com/photos/4474052/pexels-photo-4474052.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
-    tech: ["Django", "Bootstrap", "SQLite", "Stripe API", "JavaScript", "Python"],
+    tech: ["Django", "Bootstrap", "SQLite", "Stripe API", "JavaScript"],
     github: "https://github.com/zidanmubarak/belimadu",
     demo: "https://belimadu.com",
-    stars: 18,
-    techDetails: {
-      "Django": "Full-stack web framework for e-commerce logic",
-      "Bootstrap": "Responsive UI components and grid system",
-      "SQLite": "Lightweight database for product catalog",
-      "Stripe API": "Secure payment processing integration",
-      "JavaScript": "Interactive frontend functionality",
-      "Python": "Backend business logic and data processing"
-    }
+    stars: 18
   },
   {
     id: 4,
     title: "PDDikti Data Vault",
-    description: "REST API for accessing Indonesia's higher education data with advanced filtering, caching, and real-time updates.",
+    description: "REST API for accessing Indonesia's higher education data with advanced filtering and real-time updates.",
     image: "https://images.pexels.com/photos/8386434/pexels-photo-8386434.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Data Science",
-    tech: ["Python", "FastAPI", "BeautifulSoup", "pandas", "Redis", "PostgreSQL"],
+    tech: ["Python", "FastAPI", "BeautifulSoup", "pandas", "Redis"],
     github: "https://github.com/zidanmubarak/pddikti-api",
     demo: "https://pddikti-api.com",
-    stars: 67,
-    techDetails: {
-      "Python": "Core language for data processing and API development",
-      "FastAPI": "High-performance API framework with automatic docs",
-      "BeautifulSoup": "Web scraping and HTML parsing",
-      "pandas": "Data manipulation and analysis",
-      "Redis": "Caching layer for improved performance",
-      "PostgreSQL": "Robust data storage and querying"
-    }
+    stars: 67
   },
   {
     id: 5,
     title: "MLB API Stats Hub",
-    description: "Comprehensive REST API and dashboard for Mobile Legends game statistics with real-time data visualization and analytics.",
+    description: "Comprehensive REST API and dashboard for Mobile Legends game statistics with real-time data visualization.",
     image: "https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
-    tech: ["Node.js", "Express", "MongoDB", "React", "Chart.js", "JavaScript"],
+    tech: ["Node.js", "Express", "MongoDB", "React", "Chart.js"],
     github: "https://github.com/zidanmubarak/mlb-stats",
     demo: "https://mlb-stats.com",
-    stars: 34,
-    techDetails: {
-      "Node.js": "JavaScript runtime for server-side development",
-      "Express": "Web framework for API endpoints",
-      "MongoDB": "NoSQL database for flexible data storage",
-      "React": "Frontend library for interactive UI",
-      "Chart.js": "Data visualization and statistics charts",
-      "JavaScript": "Full-stack development language"
-    }
+    stars: 34
   },
   {
     id: 6,
     title: "Bike Rental Insights Dashboard",
-    description: "Interactive analytics dashboard correlating weather patterns with bike rental trends using machine learning algorithms.",
+    description: "Interactive analytics dashboard correlating weather patterns with bike rental trends using machine learning.",
     image: "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Data Science",
-    tech: ["Python", "Streamlit", "Plotly", "pandas", "scikit-learn", "NumPy"],
+    tech: ["Python", "Streamlit", "Plotly", "pandas", "scikit-learn"],
     github: "https://github.com/zidanmubarak/bike-rental-insights",
     demo: "https://bike-insights.streamlit.app",
-    stars: 29,
-    techDetails: {
-      "Python": "Data science and machine learning implementation",
-      "Streamlit": "Interactive web app framework for data science",
-      "Plotly": "Advanced interactive data visualizations",
-      "pandas": "Data cleaning and statistical analysis",
-      "scikit-learn": "Machine learning models and predictions",
-      "NumPy": "Numerical computing and array operations"
-    }
+    stars: 29
   }
 ];
 
@@ -213,19 +100,10 @@ const categories = [
 
 export function ProjectsSection() {
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [expandedProject, setExpandedProject] = useState<number | null>(null);
 
   const filteredProjects = selectedCategory === "all" 
     ? projects 
     : projects.filter(project => project.category === selectedCategory);
-
-  const toggleTechDetails = (projectId: number) => {
-    setExpandedProject(expandedProject === projectId ? null : projectId);
-  };
-
-  const getTechIcon = (techName: string) => {
-    return techIcons[techName] || techIcons['default'];
-  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -350,68 +228,17 @@ export function ProjectsSection() {
                       {project.description}
                     </p>
                     
-                    {/* Tech Stack Preview */}
-                    <div className="mb-4">
-                      <div className="flex flex-wrap gap-2 mb-3">
-                        {project.tech.slice(0, 4).map((tech) => {
-                          const techInfo = getTechIcon(tech);
-                          return (
-                            <div
-                              key={tech}
-                              className="flex items-center space-x-1 px-2 py-1 rounded-md bg-slate-800/50 border border-slate-700/50 hover:bg-slate-700/50 transition-colors"
-                            >
-                              <span className="text-xs">{techInfo.emoji}</span>
-                              <span className={`text-xs font-medium ${techInfo.color}`}>
-                                {tech}
-                              </span>
-                            </div>
-                          );
-                        })}
-                        {project.tech.length > 4 && (
-                          <Badge variant="outline" className="text-xs bg-slate-800/50 text-slate-400 border-slate-600">
-                            +{project.tech.length - 4} more
-                          </Badge>
-                        )}
-                      </div>
-
-                      {/* Tech Details Toggle */}
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => toggleTechDetails(project.id)}
-                        className="text-blue-400 hover:text-blue-300 p-0 h-auto text-xs"
-                      >
-                        {expandedProject === project.id ? 'Hide Tech Details' : 'Show Tech Details'}
-                      </Button>
-
-                      {/* Expanded Tech Details */}
-                      {expandedProject === project.id && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="mt-3 space-y-2 border-t border-slate-700/50 pt-3"
+                    {/* Tech Stack */}
+                    <div className="flex flex-wrap gap-1 sm:gap-2 mb-6">
+                      {project.tech.map((tech) => (
+                        <Badge 
+                          key={tech} 
+                          variant="secondary" 
+                          className="text-xs bg-slate-800/50 text-slate-300 hover:bg-slate-700/50 transition-colors"
                         >
-                          {project.tech.map((tech) => {
-                            const techInfo = getTechIcon(tech);
-                            const description = project.techDetails[tech];
-                            return (
-                              <div key={tech} className="flex items-start space-x-3 p-2 rounded-lg bg-slate-800/30">
-                                <div className="flex items-center space-x-2 min-w-0 flex-shrink-0">
-                                  <span className="text-sm">{techInfo.emoji}</span>
-                                  <span className={`text-sm font-medium ${techInfo.color}`}>
-                                    {tech}
-                                  </span>
-                                </div>
-                                <p className="text-xs text-slate-400 leading-relaxed">
-                                  {description}
-                                </p>
-                              </div>
-                            );
-                          })}
-                        </motion.div>
-                      )}
+                          {tech}
+                        </Badge>
+                      ))}
                     </div>
 
                     {/* Action Buttons */}
