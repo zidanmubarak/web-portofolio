@@ -56,27 +56,57 @@ const githubStats = [
 ];
 
 export function DashboardSection() {
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [mounted, setMounted] = useState(false);
+  const [currentTime, setCurrentTime] = useState<string>("");
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
+    setMounted(true);
+    
+    const updateTime = () => {
+      const now = new Date();
+      const timeString = now.toLocaleString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZone: 'Asia/Jakarta'
+      });
+      setCurrentTime(timeString);
+    };
+
+    // Set initial time
+    updateTime();
+    
+    // Update every second
+    const timer = setInterval(updateTime, 1000);
 
     return () => clearInterval(timer);
   }, []);
 
-  const formatTime = (date: Date) => {
-    return date.toLocaleString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZone: 'Asia/Jakarta'
-    });
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.4, 0, 0.2, 1]
+      }
+    }
   };
 
   return (
@@ -95,15 +125,23 @@ export function DashboardSection() {
             <p className="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto mb-6">
               Real-time insights into my coding journey and development activities
             </p>
-            <div className="inline-block p-3 sm:p-4 bg-slate-900/50 rounded-lg border border-slate-700/50 backdrop-blur-sm">
-              <p className="text-blue-400 font-mono text-sm sm:text-lg">
-                🕒 {formatTime(currentTime)} (Jakarta Time)
-              </p>
-            </div>
+            {mounted && (
+              <div className="inline-block p-3 sm:p-4 bg-slate-900/50 rounded-lg border border-slate-700/50 backdrop-blur-sm">
+                <p className="text-blue-400 font-mono text-sm sm:text-lg">
+                  🕒 {currentTime} (Jakarta Time)
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Wakatime Statistics */}
-          <div className="mb-12 sm:mb-16">
+          <motion.div 
+            className="mb-12 sm:mb-16"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
             <div className="flex flex-col sm:flex-row items-center justify-between mb-8 sm:mb-12">
               <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-0">
                 Wakatime <span className="gradient-text">Statistics</span>
@@ -114,14 +152,15 @@ export function DashboardSection() {
               </Badge>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
+            <motion.div 
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12"
+              variants={containerVariants}
+            >
               {stats.map((stat, index) => (
                 <motion.div
                   key={stat.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  viewport={{ once: true }}
+                  variants={itemVariants}
+                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 >
                   <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm card-hover shadow-lg">
                     <CardContent className="p-4 sm:p-6">
@@ -131,19 +170,31 @@ export function DashboardSection() {
                   </Card>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
 
             {/* Tech Stack Grid */}
-            <div className="mb-8 sm:mb-12">
+            <motion.div 
+              className="mb-8 sm:mb-12"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
               <h4 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
                 Tech <span className="gradient-text">Stack</span>
               </h4>
               <TechStackGrid />
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* GitHub Statistics */}
-          <div className="mb-8 sm:mb-12">
+          <motion.div 
+            className="mb-8 sm:mb-12"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
             <div className="flex flex-col sm:flex-row items-center justify-between mb-8 sm:mb-12">
               <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-0">
                 GitHub <span className="text-green-400">Statistics</span>
@@ -154,14 +205,15 @@ export function DashboardSection() {
               </Badge>
             </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+            <motion.div 
+              className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8"
+              variants={containerVariants}
+            >
               {githubStats.map((stat, index) => (
                 <motion.div
                   key={stat.label}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.1 }}
-                  viewport={{ once: true }}
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
                 >
                   <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm card-hover shadow-lg">
                     <CardContent className="p-4 sm:p-6 text-center">
@@ -171,35 +223,42 @@ export function DashboardSection() {
                   </Card>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
 
             {/* Activity Graph */}
-            <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm shadow-xl">
-              <CardHeader>
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                  <CardTitle className="text-white text-lg sm:text-xl mb-4 sm:mb-0">
-                    Activity <span className="text-green-400">Graph</span>
-                  </CardTitle>
-                  <div className="flex items-center space-x-4 text-xs sm:text-sm">
-                    <div className="flex items-center">
-                      <div className="w-3 h-3 bg-slate-800 rounded-sm mr-2"></div>
-                      <span className="text-slate-400">Less</span>
-                    </div>
-                    <div className="flex items-center">
-                      <div className="w-3 h-3 bg-green-400 rounded-sm mr-2"></div>
-                      <span className="text-slate-400">More</span>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm shadow-xl">
+                <CardHeader>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                    <CardTitle className="text-white text-lg sm:text-xl mb-4 sm:mb-0">
+                      Activity <span className="text-green-400">Graph</span>
+                    </CardTitle>
+                    <div className="flex items-center space-x-4 text-xs sm:text-sm">
+                      <div className="flex items-center">
+                        <div className="w-3 h-3 bg-slate-800 rounded-sm mr-2"></div>
+                        <span className="text-slate-400">Less</span>
+                      </div>
+                      <div className="flex items-center">
+                        <div className="w-3 h-3 bg-green-400 rounded-sm mr-2"></div>
+                        <span className="text-slate-400">More</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <ActivityGraph />
-                <p className="text-slate-400 text-xs sm:text-sm mt-4 sm:mt-6">
-                  📊 Contribution activity over the past year - showing consistent development work
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+                </CardHeader>
+                <CardContent>
+                  <ActivityGraph />
+                  <p className="text-slate-400 text-xs sm:text-sm mt-4 sm:mt-6">
+                    📊 Contribution activity over the past year - showing consistent development work
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
         </motion.div>
       </div>
     </div>
