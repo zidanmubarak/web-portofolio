@@ -12,7 +12,7 @@ import {
   TrendingUp,
   Github
 } from 'lucide-react';
-import { TechStackGrid } from '@/components/ui/tech-stack-grid';
+import { TechStackMarquee } from '@/components/ui/tech-stack-marquee';
 import { ActivityGraph } from '@/components/charts/activity-graph';
 
 const stats = [
@@ -172,7 +172,7 @@ export function DashboardSection() {
               ))}
             </motion.div>
 
-            {/* Tech Stack Grid */}
+            {/* Tech Stack Marquee */}
             <motion.div 
               className="mb-8 sm:mb-12"
               initial={{ opacity: 0, y: 30 }}
@@ -180,10 +180,10 @@ export function DashboardSection() {
               transition={{ duration: 0.6, delay: 0.3 }}
               viewport={{ once: true }}
             >
-              <h4 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
+              <h4 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6 text-center">
                 Tech <span className="gradient-text">Stack</span>
               </h4>
-              <TechStackGrid />
+              <TechStackMarquee />
             </motion.div>
           </motion.div>
 
