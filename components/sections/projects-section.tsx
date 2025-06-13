@@ -24,12 +24,7 @@ const projects = [
     image: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Machine Learning",
-    tech: [
-      { name: "Python", icon: "🐍", color: "bg-blue-500/20 text-blue-400 border-blue-500/30" },
-      { name: "NumPy", icon: "🔢", color: "bg-blue-400/20 text-blue-300 border-blue-400/30" },
-      { name: "Matplotlib", icon: "📊", color: "bg-green-500/20 text-green-400 border-green-500/30" },
-      { name: "Jupyter", icon: "📓", color: "bg-orange-500/20 text-orange-400 border-orange-500/30" }
-    ],
+    tech: ["Python", "NumPy", "Matplotlib", "scikit-learn", "Jupyter"],
     github: "https://github.com/zidanmubarak/neural-network-scratch",
     demo: "https://neural-network-demo.vercel.app",
     stars: 45
@@ -41,12 +36,7 @@ const projects = [
     image: "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
-    tech: [
-      { name: "Django", icon: "🎸", color: "bg-green-500/20 text-green-400 border-green-500/30" },
-      { name: "TailwindCSS", icon: "🎨", color: "bg-teal-500/20 text-teal-400 border-teal-500/30" },
-      { name: "PostgreSQL", icon: "🐘", color: "bg-blue-600/20 text-blue-400 border-blue-600/30" },
-      { name: "Vercel", icon: "▲", color: "bg-gray-500/20 text-white border-gray-500/30" }
-    ],
+    tech: ["Django", "TailwindCSS", "PostgreSQL", "Vercel", "Python"],
     github: "https://github.com/zidanmubarak/portfolio",
     demo: "https://ridwanhalim.com",
     stars: 23
@@ -58,12 +48,7 @@ const projects = [
     image: "https://images.pexels.com/photos/4474052/pexels-photo-4474052.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
-    tech: [
-      { name: "Django", icon: "🎸", color: "bg-green-500/20 text-green-400 border-green-500/30" },
-      { name: "Bootstrap", icon: "🅱️", color: "bg-purple-500/20 text-purple-400 border-purple-500/30" },
-      { name: "SQLite", icon: "💾", color: "bg-gray-500/20 text-gray-400 border-gray-500/30" },
-      { name: "JavaScript", icon: "⚡", color: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30" }
-    ],
+    tech: ["Django", "Bootstrap", "SQLite", "Stripe API", "JavaScript"],
     github: "https://github.com/zidanmubarak/belimadu",
     demo: "https://belimadu.com",
     stars: 18
@@ -75,12 +60,7 @@ const projects = [
     image: "https://images.pexels.com/photos/8386434/pexels-photo-8386434.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Data Science",
-    tech: [
-      { name: "Python", icon: "🐍", color: "bg-blue-500/20 text-blue-400 border-blue-500/30" },
-      { name: "FastAPI", icon: "🚀", color: "bg-teal-500/20 text-teal-400 border-teal-500/30" },
-      { name: "BeautifulSoup", icon: "🍲", color: "bg-orange-500/20 text-orange-400 border-orange-500/30" },
-      { name: "pandas", icon: "🐼", color: "bg-purple-500/20 text-purple-400 border-purple-500/30" }
-    ],
+    tech: ["Python", "FastAPI", "BeautifulSoup", "pandas", "Redis"],
     github: "https://github.com/zidanmubarak/pddikti-api",
     demo: "https://pddikti-api.com",
     stars: 67
@@ -92,12 +72,7 @@ const projects = [
     image: "https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
-    tech: [
-      { name: "Node.js", icon: "🟢", color: "bg-green-400/20 text-green-300 border-green-400/30" },
-      { name: "Express", icon: "🚂", color: "bg-gray-400/20 text-gray-300 border-gray-400/30" },
-      { name: "MongoDB", icon: "🍃", color: "bg-green-600/20 text-green-400 border-green-600/30" },
-      { name: "React", icon: "⚛️", color: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30" }
-    ],
+    tech: ["Node.js", "Express", "MongoDB", "React", "Chart.js"],
     github: "https://github.com/zidanmubarak/mlb-stats",
     demo: "https://mlb-stats.com",
     stars: 34
@@ -109,12 +84,7 @@ const projects = [
     image: "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Data Science",
-    tech: [
-      { name: "Python", icon: "🐍", color: "bg-blue-500/20 text-blue-400 border-blue-500/30" },
-      { name: "Streamlit", icon: "🌊", color: "bg-red-500/20 text-red-400 border-red-500/30" },
-      { name: "Plotly", icon: "📈", color: "bg-blue-400/20 text-blue-300 border-blue-400/30" },
-      { name: "scikit-learn", icon: "📊", color: "bg-orange-500/20 text-orange-400 border-orange-500/30" }
-    ],
+    tech: ["Python", "Streamlit", "Plotly", "pandas", "scikit-learn"],
     github: "https://github.com/zidanmubarak/bike-rental-insights",
     demo: "https://bike-insights.streamlit.app",
     stars: 29
@@ -258,20 +228,16 @@ export function ProjectsSection() {
                       {project.description}
                     </p>
                     
-                    {/* Tech Stack with Icons */}
-                    <div className="flex flex-wrap gap-2 mb-6">
+                    {/* Tech Stack */}
+                    <div className="flex flex-wrap gap-1 sm:gap-2 mb-6">
                       {project.tech.map((tech) => (
-                        <div
-                          key={tech.name}
-                          className={`
-                            flex items-center space-x-1 px-2 py-1 rounded-full text-xs
-                            ${tech.color} border backdrop-blur-sm
-                            hover:scale-105 transition-transform duration-200
-                          `}
+                        <Badge 
+                          key={tech} 
+                          variant="secondary" 
+                          className="text-xs bg-slate-800/50 text-slate-300 hover:bg-slate-700/50 transition-colors"
                         >
-                          <span className="text-sm">{tech.icon}</span>
-                          <span className="font-medium">{tech.name}</span>
-                        </div>
+                          {tech}
+                        </Badge>
                       ))}
                     </div>
 
