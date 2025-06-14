@@ -8,22 +8,17 @@ import { Badge } from '@/components/ui/badge';
 import { 
   Menu, 
   X, 
-  Home, 
-  User, 
-  FolderOpen, 
-  BarChart3, 
-  Mail,
   Github,
   Linkedin,
   Coffee
 } from 'lucide-react';
 
 const navigationItems = [
-  { id: 'home', label: 'Home', icon: Home },
-  { id: 'about', label: 'About', icon: User },
-  { id: 'projects', label: 'Projects', icon: FolderOpen },
-  { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
-  { id: 'contact', label: 'Contact', icon: Mail },
+  { id: 'home', label: 'Home' },
+  { id: 'about', label: 'About' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'dashboard', label: 'Dashboard' },
+  { id: 'contact', label: 'Contact' },
 ];
 
 export function Header() {
@@ -94,7 +89,6 @@ export function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-1">
             {navigationItems.map((item, index) => {
-              const Icon = item.icon;
               const isActive = activeSection === item.id;
               
               return (
@@ -113,7 +107,6 @@ export function Header() {
                     }`}
                     onClick={() => scrollToSection(item.id)}
                   >
-                    <Icon className="mr-2 h-4 w-4" />
                     {item.label}
                   </Button>
                 </motion.div>
@@ -165,7 +158,6 @@ export function Header() {
           >
             <nav className="flex flex-col space-y-2">
               {navigationItems.map((item) => {
-                const Icon = item.icon;
                 const isActive = activeSection === item.id;
                 
                 return (
@@ -179,7 +171,6 @@ export function Header() {
                     }`}
                     onClick={() => scrollToSection(item.id)}
                   >
-                    <Icon className="mr-3 h-4 w-4" />
                     {item.label}
                   </Button>
                 );
