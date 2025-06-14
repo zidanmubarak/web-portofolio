@@ -70,54 +70,27 @@ const availability = [
 ];
 
 export function ContactSection() {
-  const [mounted, setMounted] = useState(false);
-  const [currentTime, setCurrentTime] = useState<string>("");
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
-    setMounted(true);
-    
-    const updateTime = () => {
-      const now = new Date();
-      const timeString = now.toLocaleString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        timeZone: 'Asia/Jakarta'
-      });
-      setCurrentTime(timeString);
-    };
-
-    updateTime();
-    const timer = setInterval(updateTime, 1000);
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
 
     return () => clearInterval(timer);
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.4, 0, 0.2, 1]
-      }
-    }
+  const formatTime = (date: Date) => {
+    return date.toLocaleString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: 'Asia/Jakarta'
+    });
   };
 
   return (
@@ -139,24 +112,18 @@ export function ContactSection() {
           </div>
 
           {/* Connect With Me Section */}
-          <motion.div 
-            className="mb-12 sm:mb-16"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
+          <div className="mb-12 sm:mb-16">
             <h3 className="text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-8 text-center">Connect With Me</h3>
-            <motion.div 
-              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6"
-              variants={containerVariants}
-            >
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
               {socialLinks.map((social, index) => {
                 const Icon = social.icon;
                 return (
                   <motion.div
                     key={social.name}
-                    variants={itemVariants}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: index * 0.1 }}
+                    viewport={{ once: true }}
                     whileHover={{ scale: 1.05, y: -4 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -172,128 +139,110 @@ export function ContactSection() {
                   </motion.div>
                 );
               })}
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
-          <motion.div 
-            className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             {/* Availability Section */}
-            <motion.div variants={itemVariants}>
-              <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm shadow-xl">
-                <CardHeader>
-                  <CardTitle className="flex items-center text-white text-lg sm:text-xl">
-                    <Clock className="mr-3 h-5 sm:h-6 w-5 sm:w-6 text-blue-400" />
-                    Availability
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4 sm:space-y-6">
-                  {availability.map((schedule, index) => (
-                    <motion.div 
-                      key={schedule.day} 
-                      className="flex items-center justify-between p-3 sm:p-4 rounded-xl bg-slate-800/30 border border-slate-700/30"
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      viewport={{ once: true }}
-                    >
-                      <span className="text-slate-300 font-medium text-sm sm:text-lg">{schedule.day}</span>
-                      <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
-                        <span className="text-slate-400 text-xs sm:text-base">{schedule.time}</span>
-                        <Badge 
-                          variant="secondary"
-                          className={`text-xs sm:text-sm ${
-                            schedule.status === 'available' 
-                              ? 'bg-green-500/20 text-green-400 border-green-500/30'
-                              : schedule.status === 'limited'
-                              ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' 
-                              : 'bg-red-500/20 text-red-400 border-red-500/30'
-                          }`}
-                        >
-                          {schedule.status === 'available' ? '✓ Open' : 
-                           schedule.status === 'limited' ? '⏰ Limited' : '✕ Closed'}
-                        </Badge>
-                      </div>
-                    </motion.div>
-                  ))}
-                  
-                  <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-blue-500/10 border border-blue-500/30 rounded-xl">
-                    <div className="flex items-start space-x-4">
-                      <MessageCircle className="h-5 sm:h-6 w-5 sm:w-6 text-blue-400 mt-1 flex-shrink-0" />
-                      <div>
-                        <p className="text-blue-400 font-medium text-base sm:text-lg">Response Time</p>
-                        <p className="text-slate-300 text-sm sm:text-lg">I typically respond within 12-24 hours.</p>
-                      </div>
+            <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm shadow-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center text-white text-lg sm:text-xl">
+                  <Clock className="mr-3 h-5 sm:h-6 w-5 sm:w-6 text-blue-400" />
+                  Availability
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 sm:space-y-6">
+                {availability.map((schedule, index) => (
+                  <motion.div 
+                    key={schedule.day} 
+                    className="flex items-center justify-between p-3 sm:p-4 rounded-xl bg-slate-800/30 border border-slate-700/30"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                  >
+                    <span className="text-slate-300 font-medium text-sm sm:text-lg">{schedule.day}</span>
+                    <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
+                      <span className="text-slate-400 text-xs sm:text-base">{schedule.time}</span>
+                      <Badge 
+                        variant="secondary"
+                        className={`text-xs sm:text-sm ${
+                          schedule.status === 'available' 
+                            ? 'bg-green-500/20 text-green-400 border-green-500/30'
+                            : schedule.status === 'limited'
+                            ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' 
+                            : 'bg-red-500/20 text-red-400 border-red-500/30'
+                        }`}
+                      >
+                        {schedule.status === 'available' ? '✓ Open' : 
+                         schedule.status === 'limited' ? '⏰ Limited' : '✕ Closed'}
+                      </Badge>
+                    </div>
+                  </motion.div>
+                ))}
+                
+                <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-blue-500/10 border border-blue-500/30 rounded-xl">
+                  <div className="flex items-start space-x-4">
+                    <MessageCircle className="h-5 sm:h-6 w-5 sm:w-6 text-blue-400 mt-1 flex-shrink-0" />
+                    <div>
+                      <p className="text-blue-400 font-medium text-base sm:text-lg">Response Time</p>
+                      <p className="text-slate-300 text-sm sm:text-lg">I typically respond within 12-24 hours.</p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </motion.div>
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Location Section */}
-            <motion.div variants={itemVariants}>
-              <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm shadow-xl">
-                <CardHeader>
-                  <CardTitle className="flex items-center text-white text-lg sm:text-xl">
-                    <MapPin className="mr-3 h-5 sm:h-6 w-5 sm:w-6 text-green-400" />
-                    Find Me
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6 sm:space-y-8">
-                    <div className="flex items-start space-x-4 sm:space-x-6">
-                      <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
-                        <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
-                      </div>
-                      <div>
-                        <h4 className="text-white font-semibold mb-2 text-base sm:text-lg">Location</h4>
-                        <p className="text-slate-400 text-sm sm:text-lg">Indonesia</p>
-                      </div>
+            <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm shadow-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center text-white text-lg sm:text-xl">
+                  <MapPin className="mr-3 h-5 sm:h-6 w-5 sm:w-6 text-green-400" />
+                  Find Me
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6 sm:space-y-8">
+                  <div className="flex items-start space-x-4 sm:space-x-6">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
+                      <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                     </div>
-
-                    <div className="flex items-start space-x-4 sm:space-x-6">
-                      <div className="w-12 h-12 sm:w-16 sm:h-16 bg-green-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
-                        <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
-                      </div>
-                      <div>
-                        <h4 className="text-white font-semibold mb-2 text-base sm:text-lg">Current Time</h4>
-                        <p className="text-slate-400 text-sm sm:text-base">Jakarta Time (WIB)</p>
-                        {mounted && (
-                          <p className="text-green-400 font-mono text-base sm:text-xl mt-1">{currentTime}</p>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="flex items-start space-x-4 sm:space-x-6">
-                      <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
-                        <Globe className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
-                      </div>
-                      <div>
-                        <h4 className="text-white font-semibold mb-2 text-base sm:text-lg">Remote Work</h4>
-                        <p className="text-slate-400 text-sm sm:text-lg">Available for remote collaboration worldwide</p>
-                        <Badge className="mt-3 bg-green-500/20 text-green-400 border-green-500/30 px-3 sm:px-4 py-1 sm:py-2 text-xs sm:text-sm">
-                          🌍 Open to opportunities
-                        </Badge>
-                      </div>
+                    <div>
+                      <h4 className="text-white font-semibold mb-2 text-base sm:text-lg">Location</h4>
+                      <p className="text-slate-400 text-sm sm:text-lg">Indonesia</p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </motion.div>
+
+                  <div className="flex items-start space-x-4 sm:space-x-6">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-green-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
+                      <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="text-white font-semibold mb-2 text-base sm:text-lg">Current Time</h4>
+                      <p className="text-slate-400 text-sm sm:text-base">Jakarta Time (WIB)</p>
+                      <p className="text-green-400 font-mono text-base sm:text-xl mt-1">{formatTime(currentTime)}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-4 sm:space-x-6">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
+                      <Globe className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="text-white font-semibold mb-2 text-base sm:text-lg">Remote Work</h4>
+                      <p className="text-slate-400 text-sm sm:text-lg">Available for remote collaboration worldwide</p>
+                      <Badge className="mt-3 bg-green-500/20 text-green-400 border-green-500/30 px-3 sm:px-4 py-1 sm:py-2 text-xs sm:text-sm">
+                        🌍 Open to opportunities
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
 
           {/* Quick Actions */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            viewport={{ once: true }}
-            className="mt-12 sm:mt-16 text-center"
-          >
+          <div className="mt-12 sm:mt-16 text-center">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto">
               <Button 
                 size="lg" 
@@ -324,7 +273,7 @@ export function ContactSection() {
                 </a>
               </Button>
             </div>
-          </motion.div>
+          </div>
         </motion.div>
       </div>
     </div>

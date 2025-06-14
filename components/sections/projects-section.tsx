@@ -20,74 +20,68 @@ const projects = [
   {
     id: 1,
     title: "Neural Network from Scratch",
-    description: "A professional implementation of a neural network using only NumPy for MNIST digit classification with 95% accuracy.",
+    description: "A professional implementation of a neural network using only NumPy for MNIST digit classification.",
     image: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Machine Learning",
-    tech: ["Python", "NumPy", "Matplotlib", "scikit-learn", "Jupyter"],
+    tech: ["Python", "NumPy", "Matplotlib", "scikit-learn"],
     github: "https://github.com/zidanmubarak/neural-network-scratch",
-    demo: "https://neural-network-demo.vercel.app",
-    stars: 45
+    demo: "https://neural-network-demo.vercel.app"
   },
   {
     id: 2,
     title: "ridwanhalim.com",
-    description: "My personal portfolio site, powered by Django and TailwindCSS, running serverless on Vercel with modern design.",
+    description: "My personal portfolio site, powered by Django and TailwindCSS, running on serverless on Vercel.",
     image: "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
-    tech: ["Django", "TailwindCSS", "PostgreSQL", "Vercel", "Python"],
+    tech: ["Django", "TailwindCSS", "PostgreSQL", "Vercel"],
     github: "https://github.com/zidanmubarak/portfolio",
-    demo: "https://ridwanhalim.com",
-    stars: 23
+    demo: "https://ridwanhalim.com"
   },
   {
     id: 3,
     title: "BeliMadu.com",
-    description: "E-commerce platform for honey products with payment integration, inventory management, and responsive design.",
+    description: "E-commerce hotspot for honey treats, built with Django and Bootstrap, hosted on Vercel.",
     image: "https://images.pexels.com/photos/4474052/pexels-photo-4474052.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
-    tech: ["Django", "Bootstrap", "SQLite", "Stripe API", "JavaScript"],
+    tech: ["Django", "Bootstrap", "SQLite", "Vercel"],
     github: "https://github.com/zidanmubarak/belimadu",
-    demo: "https://belimadu.com",
-    stars: 18
+    demo: "https://belimadu.com"
   },
   {
     id: 4,
     title: "PDDikti Data Vault",
-    description: "REST API for accessing Indonesia's higher education data with advanced filtering and real-time updates.",
+    description: "API unlocking Indonesia's higher education data from PDDikti.",
     image: "https://images.pexels.com/photos/8386434/pexels-photo-8386434.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Data Science",
-    tech: ["Python", "FastAPI", "BeautifulSoup", "pandas", "Redis"],
+    tech: ["Python", "FastAPI", "BeautifulSoup", "pandas"],
     github: "https://github.com/zidanmubarak/pddikti-api",
-    demo: "https://pddikti-api.com",
-    stars: 67
+    demo: "https://pddikti-api.com"
   },
   {
     id: 5,
     title: "MLB API Stats Hub",
-    description: "Comprehensive REST API and dashboard for Mobile Legends game statistics with real-time data visualization.",
+    description: "REST API and website loaded with Mobile Legends game stats.",
     image: "https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
-    tech: ["Node.js", "Express", "MongoDB", "React", "Chart.js"],
+    tech: ["Node.js", "Express", "MongoDB", "React"],
     github: "https://github.com/zidanmubarak/mlb-stats",
-    demo: "https://mlb-stats.com",
-    stars: 34
+    demo: "https://mlb-stats.com"
   },
   {
     id: 6,
     title: "Bike Rental Insights Dashboard",
-    description: "Interactive analytics dashboard correlating weather patterns with bike rental trends using machine learning.",
+    description: "Interactive dashboard tying weather to bike rental trends.",
     image: "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Data Science",
-    tech: ["Python", "Streamlit", "Plotly", "pandas", "scikit-learn"],
+    tech: ["Python", "Streamlit", "Plotly", "pandas"],
     github: "https://github.com/zidanmubarak/bike-rental-insights",
-    demo: "https://bike-insights.streamlit.app",
-    stars: 29
+    demo: "https://bike-insights.streamlit.app"
   }
 ];
 
@@ -104,29 +98,6 @@ export function ProjectsSection() {
   const filteredProjects = selectedCategory === "all" 
     ? projects 
     : projects.filter(project => project.category === selectedCategory);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.4, 0, 0.2, 1]
-      }
-    }
-  };
 
   return (
     <div className="min-h-screen py-16 sm:py-20 lg:py-24">
@@ -147,13 +118,7 @@ export function ProjectsSection() {
           </div>
 
           {/* Category Filter */}
-          <motion.div 
-            className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            viewport={{ once: true }}
-          >
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12">
             {categories.map((category) => {
               const Icon = category.icon;
               return (
@@ -161,9 +126,9 @@ export function ProjectsSection() {
                   key={category.id}
                   variant={selectedCategory === category.id ? "default" : "outline"}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`text-sm sm:text-base transition-all duration-300 ${
+                  className={`text-sm sm:text-base ${
                     selectedCategory === category.id
-                      ? "bg-blue-600 hover:bg-blue-700 shadow-lg"
+                      ? "bg-blue-600 hover:bg-blue-700"
                       : "border-slate-600 text-slate-300 hover:bg-slate-800"
                   }`}
                 >
@@ -173,80 +138,56 @@ export function ProjectsSection() {
                 </Button>
               );
             })}
-          </motion.div>
+          </div>
 
           {/* Projects Grid */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8"
-          >
-            {filteredProjects.map((project) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+            {filteredProjects.map((project, index) => (
               <motion.div
                 key={project.id}
-                variants={itemVariants}
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true }}
                 className="group"
               >
-                <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm hover:bg-slate-800/50 transition-all duration-300 overflow-hidden h-full shadow-xl hover:shadow-2xl">
-                  <div className="relative overflow-hidden">
+                <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm hover:bg-slate-800/50 transition-all duration-300 overflow-hidden h-full">
+                  <div className="relative">
                     <img 
                       src={project.image} 
                       alt={project.title}
-                      className="w-full h-48 sm:h-56 object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-48 sm:h-56 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
-                    
-                    {/* Badges */}
-                    <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
-                      {project.featured && (
-                        <Badge className="bg-green-500 hover:bg-green-600 text-white text-xs sm:text-sm shadow-lg">
-                          ⭐ FEATURED
-                        </Badge>
-                      )}
-                      <Badge variant="secondary" className="bg-slate-800/80 text-slate-200 text-xs backdrop-blur-sm">
-                        <Star className="mr-1 h-3 w-3 fill-yellow-400 text-yellow-400" />
-                        {project.stars}
+                    {project.featured && (
+                      <Badge className="absolute top-3 right-3 bg-green-500 hover:bg-green-600 text-xs sm:text-sm">
+                        ⭐ FEATURED
                       </Badge>
-                    </div>
-
-                    {/* Category Badge */}
-                    <div className="absolute bottom-3 left-3">
-                      <Badge variant="outline" className="bg-blue-500/20 border-blue-500/50 text-blue-300 text-xs">
-                        {project.category}
-                      </Badge>
-                    </div>
+                    )}
                   </div>
                   
                   <CardContent className="p-4 sm:p-6 flex flex-col h-full">
-                    <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors line-clamp-2">
+                    <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
                       {project.title}
                     </h3>
-                    <p className="text-slate-400 mb-4 line-clamp-3 flex-grow text-sm sm:text-base leading-relaxed">
+                    <p className="text-slate-400 mb-4 line-clamp-3 flex-grow text-sm sm:text-base">
                       {project.description}
                     </p>
                     
                     {/* Tech Stack */}
-                    <div className="flex flex-wrap gap-1 sm:gap-2 mb-6">
+                    <div className="flex flex-wrap gap-1 sm:gap-2 mb-4">
                       {project.tech.map((tech) => (
-                        <Badge 
-                          key={tech} 
-                          variant="secondary" 
-                          className="text-xs bg-slate-800/50 text-slate-300 hover:bg-slate-700/50 transition-colors"
-                        >
+                        <Badge key={tech} variant="secondary" className="text-xs">
                           {tech}
                         </Badge>
                       ))}
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex gap-3 mt-auto">
+                    <div className="flex gap-2 mt-auto">
                       <Button 
                         size="sm" 
                         variant="outline" 
-                        className="flex-1 text-xs sm:text-sm border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white transition-all duration-300"
+                        className="flex-1 text-xs sm:text-sm"
                         asChild
                       >
                         <a href={project.github} target="_blank" rel="noopener noreferrer">
@@ -256,7 +197,7 @@ export function ProjectsSection() {
                       </Button>
                       <Button 
                         size="sm" 
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all duration-300"
+                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm"
                         asChild
                       >
                         <a href={project.demo} target="_blank" rel="noopener noreferrer">
@@ -269,7 +210,7 @@ export function ProjectsSection() {
                 </Card>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
 
           {/* Call to Action */}
           <motion.div
@@ -285,7 +226,7 @@ export function ProjectsSection() {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-slate-600 text-slate-300 hover:bg-slate-800 shadow-lg hover:shadow-xl transition-all duration-300"
+              className="border-slate-600 text-slate-300 hover:bg-slate-800"
               asChild
             >
               <a href="https://github.com/zidanmubarak" target="_blank" rel="noopener noreferrer">
