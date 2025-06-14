@@ -126,7 +126,7 @@ export function DashboardSection() {
               Real-time insights into my coding journey and development activities
             </p>
             <div className="inline-block p-3 sm:p-4 bg-slate-900/50 rounded-lg border border-slate-700/50 backdrop-blur-sm">
-              <p className="text-blue-400 font-mono text-sm sm:text-lg">
+              <p className="text-blue-400 font-mono text-sm sm:text-lg" suppressHydrationWarning>
                 🕒 {currentTime} (Jakarta Time)
               </p>
             </div>

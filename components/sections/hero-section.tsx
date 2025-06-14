@@ -84,7 +84,7 @@ export function HeroSection() {
             className="text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-bold mb-6 sm:mb-8"
             variants={itemVariants}
           >
-            <span className="gradient-text">
+            <span className="gradient-text" suppressHydrationWarning>
               {displayText}
               <span className="animate-pulse text-blue-400">|</span>
             </span>
