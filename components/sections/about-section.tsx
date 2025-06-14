@@ -21,7 +21,8 @@ import {
   ChevronUp,
   ExternalLink,
   Building,
-  School
+  School,
+  Clock
 } from 'lucide-react';
 
 const experienceItems = [
