@@ -160,9 +160,13 @@ export function ProjectsSection() {
                     />
                     {project.featured && (
                       <Badge className="absolute top-3 right-3 bg-green-500 hover:bg-green-600 text-xs sm:text-sm">
-                        ⭐ FEATURED
+                        <Star className="mr-1 h-3 w-3" />
+                        FEATURED
                       </Badge>
                     )}
+                    <Badge className="absolute top-3 left-3 bg-blue-500/20 text-blue-400 border-blue-500/30 text-xs">
+                      {project.category}
+                    </Badge>
                   </div>
                   
                   <CardContent className="p-4 sm:p-6 flex flex-col h-full">
@@ -176,7 +180,7 @@ export function ProjectsSection() {
                     {/* Tech Stack */}
                     <div className="flex flex-wrap gap-1 sm:gap-2 mb-4">
                       {project.tech.map((tech) => (
-                        <Badge key={tech} variant="secondary" className="text-xs">
+                        <Badge key={tech} variant="secondary" className="text-xs bg-slate-800 text-slate-300 border-slate-600">
                           {tech}
                         </Badge>
                       ))}
@@ -187,7 +191,7 @@ export function ProjectsSection() {
                       <Button 
                         size="sm" 
                         variant="outline" 
-                        className="flex-1 text-xs sm:text-sm"
+                        className="flex-1 text-xs sm:text-sm border-slate-600 text-slate-300 hover:bg-slate-800"
                         asChild
                       >
                         <a href={project.github} target="_blank" rel="noopener noreferrer">

@@ -56,28 +56,58 @@ const githubStats = [
 ];
 
 export function DashboardSection() {
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentTime, setCurrentTime] = useState<string>('');
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
+    setMounted(true);
+    
+    const updateTime = () => {
+      const now = new Date();
+      const timeString = now.toLocaleString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZone: 'Asia/Jakarta'
+      });
+      setCurrentTime(timeString);
+    };
+
+    // Set initial time
+    updateTime();
+    
+    // Update every second
+    const timer = setInterval(updateTime, 1000);
 
     return () => clearInterval(timer);
   }, []);
 
-  const formatTime = (date: Date) => {
-    return date.toLocaleString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZone: 'Asia/Jakarta'
-    });
-  };
+  // Don't render time until mounted to prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <div className="min-h-screen py-16 sm:py-20 lg:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+              Dashboard <span className="gradient-text">Overview</span>
+            </h2>
+            <p className="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto mb-6">
+              Real-time insights into my coding journey and development activities
+            </p>
+            <div className="inline-block p-3 sm:p-4 bg-slate-900/50 rounded-lg border border-slate-700/50 backdrop-blur-sm">
+              <p className="text-blue-400 font-mono text-sm sm:text-lg">
+                🕒 Loading... (Jakarta Time)
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen py-16 sm:py-20 lg:py-24">
@@ -97,7 +127,7 @@ export function DashboardSection() {
             </p>
             <div className="inline-block p-3 sm:p-4 bg-slate-900/50 rounded-lg border border-slate-700/50 backdrop-blur-sm">
               <p className="text-blue-400 font-mono text-sm sm:text-lg">
-                🕒 {formatTime(currentTime)} (Jakarta Time)
+                🕒 {currentTime} (Jakarta Time)
               </p>
             </div>
           </div>
@@ -135,7 +165,7 @@ export function DashboardSection() {
 
             {/* Tech Stack Grid */}
             <div className="mb-8 sm:mb-12">
-              <h4 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
+              <h4 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6 text-center">
                 Tech <span className="gradient-text">Stack</span>
               </h4>
               <TechStackGrid />
