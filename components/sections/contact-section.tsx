@@ -70,9 +70,12 @@ const availability = [
 ];
 
 export function ContactSection() {
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentTime, setCurrentTime] = useState<Date | null>(null);
 
   useEffect(() => {
+    // Set initial time only on client side
+    setCurrentTime(new Date());
+    
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
@@ -220,7 +223,9 @@ export function ContactSection() {
                     <div>
                       <h4 className="text-white font-semibold mb-2 text-base sm:text-lg">Current Time</h4>
                       <p className="text-slate-400 text-sm sm:text-base">Jakarta Time (WIB)</p>
-                      <p className="text-green-400 font-mono text-base sm:text-xl mt-1">{formatTime(currentTime)}</p>
+                      <p className="text-green-400 font-mono text-base sm:text-xl mt-1">
+                        {currentTime ? formatTime(currentTime) : 'Loading time...'}
+                      </p>
                     </div>
                   </div>
 
