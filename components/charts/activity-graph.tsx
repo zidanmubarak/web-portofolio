@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 interface ContributionDay {
   date: string;
@@ -15,57 +16,42 @@ export function ActivityGraph() {
   const [totalContributions, setTotalContributions] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  // Generate realistic contribution data for a full year
+  // Generate mock data that looks realistic (since GitHub API requires authentication)
   const generateRealisticData = () => {
     const data: ContributionDay[] = [];
     const today = new Date();
-    
-    // Start from exactly 365 days ago
-    const startDate = new Date(today);
-    startDate.setDate(today.getDate() - 364); // 365 days total including today
+    const startDate = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
     
     let total = 0;
     
-    // Generate exactly 365 days of data
     for (let i = 0; i < 365; i++) {
-      const currentDate = new Date(startDate);
-      currentDate.setDate(startDate.getDate() + i);
+      const date = new Date(startDate);
+      date.setDate(startDate.getDate() + i);
       
       // Create more realistic patterns
-      const dayOfWeek = currentDate.getDay();
+      const dayOfWeek = date.getDay();
       const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-      const month = currentDate.getMonth();
-      
-      // Seasonal variations (more activity in certain months)
-      const seasonalMultiplier = [0.8, 0.9, 1.0, 1.1, 1.2, 1.0, 0.8, 0.9, 1.1, 1.2, 1.0, 0.7][month];
+      const isHoliday = Math.random() < 0.1; // 10% chance of being a "holiday"
       
       let baseActivity = 0;
       
-      // Weekend vs weekday patterns
-      if (isWeekend) {
-        baseActivity = Math.random() < 0.4 ? Math.floor(Math.random() * 4) : 0;
-      } else {
-        // Weekdays have higher activity
-        baseActivity = Math.random() < 0.8 ? Math.floor(Math.random() * 8) + 1 : 0;
+      if (!isHoliday) {
+        if (isWeekend) {
+          baseActivity = Math.random() < 0.3 ? Math.floor(Math.random() * 3) : 0;
+        } else {
+          // Weekdays have higher activity
+          baseActivity = Math.random() < 0.7 ? Math.floor(Math.random() * 8) + 1 : 0;
+        }
       }
-      
-      // Apply seasonal multiplier
-      baseActivity = Math.floor(baseActivity * seasonalMultiplier);
       
       // Add some random bursts of high activity
-      if (Math.random() < 0.08) { // 8% chance of high activity day
-        baseActivity = Math.floor(Math.random() * 12) + 8;
+      if (Math.random() < 0.05) { // 5% chance of high activity day
+        baseActivity = Math.floor(Math.random() * 15) + 10;
       }
       
-      // Ensure some days have zero activity for realism
-      if (Math.random() < 0.15) { // 15% chance of no activity
-        baseActivity = 0;
-      }
-      
-      const count = Math.max(0, baseActivity);
+      const count = baseActivity;
       total += count;
       
-      // Determine level based on count
       let level = 0;
       if (count === 0) level = 0;
       else if (count <= 2) level = 1;
@@ -74,7 +60,7 @@ export function ActivityGraph() {
       else level = 4;
       
       data.push({
-        date: currentDate.toISOString().split('T')[0],
+        date: date.toISOString().split('T')[0],
         count,
         level
       });
@@ -89,19 +75,19 @@ export function ActivityGraph() {
     // Simulate loading time
     const timer = setTimeout(() => {
       generateRealisticData();
-    }, 800);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
 
   const getActivityColor = (level: number) => {
     switch (level) {
-      case 0: return 'bg-slate-800/50 border-slate-700/30';
-      case 1: return 'bg-green-900/80 border-green-800/50';
-      case 2: return 'bg-green-700/90 border-green-600/60';
-      case 3: return 'bg-green-500 border-green-400/70';
-      case 4: return 'bg-green-400 border-green-300/80';
-      default: return 'bg-slate-800/50 border-slate-700/30';
+      case 0: return 'bg-slate-800 border-slate-700';
+      case 1: return 'bg-green-900 border-green-800';
+      case 2: return 'bg-green-700 border-green-600';
+      case 3: return 'bg-green-500 border-green-400';
+      case 4: return 'bg-green-400 border-green-300';
+      default: return 'bg-slate-800 border-slate-700';
     }
   };
 
@@ -123,62 +109,43 @@ export function ActivityGraph() {
     }
   };
 
-  // Organize data into weeks (7 days each)
-  const organizeIntoWeeks = () => {
-    if (contributionData.length === 0) return [];
-    
-    const weeks: ContributionDay[][] = [];
+  // Group data by weeks
+  const weeks: ContributionDay[][] = [];
+  if (contributionData.length > 0) {
+    // Find the first Sunday to start the grid properly
     const firstDate = new Date(contributionData[0].date);
-    const firstDayOfWeek = firstDate.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    const firstSunday = new Date(firstDate);
+    firstSunday.setDate(firstDate.getDate() - firstDate.getDay());
     
-    // Add empty cells for the beginning of the first week if needed
-    const firstWeek: ContributionDay[] = [];
-    for (let i = 0; i < firstDayOfWeek; i++) {
-      firstWeek.push({ date: '', count: 0, level: 0 });
-    }
-    
-    // Add the actual data
-    let currentWeek = [...firstWeek];
-    
-    contributionData.forEach((day) => {
-      currentWeek.push(day);
-      
-      if (currentWeek.length === 7) {
-        weeks.push(currentWeek);
-        currentWeek = [];
+    // Create weeks array
+    for (let i = 0; i < contributionData.length; i += 7) {
+      const week = contributionData.slice(i, i + 7);
+      // Pad the first week if it doesn't start on Sunday
+      if (i === 0 && week.length < 7) {
+        const padding = 7 - week.length;
+        for (let j = 0; j < padding; j++) {
+          week.unshift({ date: '', count: 0, level: 0 });
+        }
       }
-    });
-    
-    // Add the last partial week if it exists
-    if (currentWeek.length > 0) {
-      // Fill the rest of the week with empty cells
-      while (currentWeek.length < 7) {
-        currentWeek.push({ date: '', count: 0, level: 0 });
-      }
-      weeks.push(currentWeek);
+      weeks.push(week);
     }
-    
-    return weeks;
-  };
-
-  const weeks = organizeIntoWeeks();
+  }
 
   if (loading) {
     return (
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <div className="h-6 bg-slate-700 rounded animate-pulse w-64"></div>
+          <div className="h-6 bg-slate-700 rounded animate-pulse w-48"></div>
           <div className="h-6 bg-slate-700 rounded animate-pulse w-32"></div>
         </div>
         <div className="h-32 bg-slate-800 rounded animate-pulse"></div>
-        <div className="h-4 bg-slate-700 rounded animate-pulse w-48"></div>
       </div>
     );
   }
 
   return (
     <div className="space-y-4">
-      {/* Header */}
+      {/* Header with contribution count */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h4 className="text-lg font-semibold text-white mb-1">
@@ -190,7 +157,7 @@ export function ActivityGraph() {
               href="https://github.com/zidanmubarak" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-blue-400 hover:text-blue-300 transition-colors underline"
+              className="text-blue-400 hover:text-blue-300 transition-colors"
             >
               github.com/zidanmubarak
             </a>
@@ -201,30 +168,34 @@ export function ActivityGraph() {
         <div className="flex items-center space-x-2 text-xs text-slate-400">
           <span>Less</span>
           <div className="flex space-x-1">
-            <div className="w-3 h-3 rounded-sm bg-slate-800/50 border border-slate-700/30"></div>
-            <div className="w-3 h-3 rounded-sm bg-green-900/80 border border-green-800/50"></div>
-            <div className="w-3 h-3 rounded-sm bg-green-700/90 border border-green-600/60"></div>
-            <div className="w-3 h-3 rounded-sm bg-green-500 border border-green-400/70"></div>
-            <div className="w-3 h-3 rounded-sm bg-green-400 border border-green-300/80"></div>
+            <div className="w-3 h-3 rounded-sm bg-slate-800 border border-slate-700"></div>
+            <div className="w-3 h-3 rounded-sm bg-green-900 border border-green-800"></div>
+            <div className="w-3 h-3 rounded-sm bg-green-700 border border-green-600"></div>
+            <div className="w-3 h-3 rounded-sm bg-green-500 border border-green-400"></div>
+            <div className="w-3 h-3 rounded-sm bg-green-400 border border-green-300"></div>
           </div>
           <span>More</span>
         </div>
       </div>
 
       {/* Month labels */}
-      <div className="flex justify-between text-xs text-slate-400 px-4 mb-2">
+      <div className="flex justify-between text-xs text-slate-400 px-4">
         {months.map((month) => (
-          <span key={month} className="flex-1 text-center">{month}</span>
+          <span key={month}>{month}</span>
         ))}
       </div>
       
       {/* Activity grid */}
       <div className="relative">
         {/* Day labels */}
-        <div className="absolute left-0 top-0 flex flex-col justify-between text-xs text-slate-400 pr-3 h-full">
+        <div className="absolute left-0 top-0 flex flex-col space-y-1 text-xs text-slate-400 pr-2">
+          <div className="h-3"></div> {/* Spacer for Mon */}
           <div className="h-3 flex items-center">Mon</div>
+          <div className="h-3"></div> {/* Spacer for Tue */}
           <div className="h-3 flex items-center">Wed</div>
+          <div className="h-3"></div> {/* Spacer for Thu */}
           <div className="h-3 flex items-center">Fri</div>
+          <div className="h-3"></div> {/* Spacer for Sat */}
         </div>
         
         {/* Contribution grid */}
@@ -244,10 +215,18 @@ export function ActivityGraph() {
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="text-xs text-slate-500 pt-2 border-t border-slate-800/50">
-        <p className="flex items-center justify-center sm:justify-start gap-2">
-          <span>📊 Contribution activity over the past year - showing consistent development work</span>
+      {/* Footer note */}
+      <div className="text-xs text-slate-500 mt-4">
+        <p>
+          📊 Learn how we count contributions •{' '}
+          <a 
+            href="https://github.com/zidanmubarak" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-blue-400 hover:text-blue-300 transition-colors"
+          >
+            View profile on GitHub
+          </a>
         </p>
       </div>
     </div>
