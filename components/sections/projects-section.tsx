@@ -25,7 +25,7 @@ const projects = [
     image: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Machine Learning",
-    tech: ["Python", "NumPy", "Matplotlib", "scikit-learn"],
+    tech: ["Python", "NumPy", "Matplotlib", "Scikit-learn", "Jupyter", "Pandas"],
     github: "https://github.com/zidanmubarak/neural-network-scratch",
     demo: "https://neural-network-demo.vercel.app"
   },
@@ -36,7 +36,7 @@ const projects = [
     image: "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
-    tech: ["Django", "TailwindCSS", "PostgreSQL", "Vercel"],
+    tech: ["Django", "Python", "TailwindCSS", "PostgreSQL", "Vercel", "HTML5"],
     github: "https://github.com/zidanmubarak/portfolio",
     demo: "https://ridwanhalim.com"
   },
@@ -47,7 +47,7 @@ const projects = [
     image: "https://images.pexels.com/photos/4474052/pexels-photo-4474052.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
-    tech: ["Django", "Bootstrap", "SQLite", "Vercel"],
+    tech: ["Django", "Python", "Bootstrap", "SQLite", "JavaScript", "CSS3"],
     github: "https://github.com/zidanmubarak/belimadu",
     demo: "https://belimadu.com"
   },
@@ -58,7 +58,7 @@ const projects = [
     image: "https://images.pexels.com/photos/8386434/pexels-photo-8386434.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Data Science",
-    tech: ["Python", "FastAPI", "BeautifulSoup", "pandas"],
+    tech: ["Python", "FastAPI", "BeautifulSoup", "Pandas", "Requests", "JSON"],
     github: "https://github.com/zidanmubarak/pddikti-api",
     demo: "https://pddikti-api.com"
   },
@@ -69,7 +69,7 @@ const projects = [
     image: "https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
-    tech: ["Node.js", "Express", "MongoDB", "React"],
+    tech: ["Node.js", "Express.js", "MongoDB", "React", "Chart.js", "Axios"],
     github: "https://github.com/zidanmubarak/mlb-stats",
     demo: "https://mlb-stats.com"
   },
@@ -80,7 +80,7 @@ const projects = [
     image: "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Data Science",
-    tech: ["Python", "Streamlit", "Plotly", "pandas"],
+    tech: ["Python", "Streamlit", "Plotly", "Pandas", "Scikit-learn", "Seaborn"],
     github: "https://github.com/zidanmubarak/bike-rental-insights",
     demo: "https://bike-insights.streamlit.app"
   }
@@ -214,7 +214,7 @@ export function ProjectsSection() {
                     {/* Tech Stack */}
                     <div className="flex flex-wrap gap-1 sm:gap-2 mb-4">
                       {project.tech.map((tech) => (
-                        <Badge key={tech} variant="secondary" className="text-xs bg-slate-800 text-slate-300 border-slate-600">
+                        <Badge key={tech} variant="secondary" className="text-xs bg-slate-800 text-slate-300 border-slate-600 hover:bg-slate-700 transition-colors">
                           {tech}
                         </Badge>
                       ))}
