@@ -203,20 +203,23 @@ export function ProjectsSection() {
                     </div>
                   </div>
                   
-                  <CardContent className="p-4 sm:p-6 flex flex-col h-full">
+                  <CardContent className="p-4 sm:p-6 flex flex-col">
                     <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
                       {project.title}
                     </h3>
-                    <p className="text-slate-400 mb-4 line-clamp-3 flex-grow text-sm sm:text-base leading-relaxed">
+                    <p className="text-slate-400 mb-4 text-sm sm:text-base leading-relaxed flex-grow">
                       {project.description}
                     </p>
                     
-                    {/* Tech Stack */}
-                    <div className="flex flex-wrap gap-1 sm:gap-2 mb-4">
-                      {project.tech.map((tech) => (
-                        <Badge key={tech} variant="secondary" className="text-xs bg-slate-800 text-slate-300 border-slate-600 hover:bg-slate-700 transition-colors">
+                    {/* Tech Stack - Fixed styling */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {project.tech.map((tech, techIndex) => (
+                        <span 
+                          key={`${project.id}-${techIndex}`}
+                          className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-slate-700/50 text-slate-300 border border-slate-600/50 hover:bg-slate-600/50 transition-colors"
+                        >
                           {tech}
-                        </Badge>
+                        </span>
                       ))}
                     </div>
 
