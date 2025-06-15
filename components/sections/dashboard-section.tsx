@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { 
   Activity,
   Code,
@@ -17,7 +18,16 @@ import {
   Flame,
   Star,
   GitFork,
-  Users
+  Users,
+  BarChart3,
+  Sparkles,
+  ArrowUpRight,
+  Eye,
+  Coffee,
+  Brain,
+  Database,
+  Server,
+  Globe
 } from 'lucide-react';
 import { TechStackGrid } from '@/components/ui/tech-stack-grid';
 
@@ -46,7 +56,8 @@ const wakatimeStats = [
     color: "from-blue-400 to-cyan-400",
     icon: Calendar,
     bgGradient: "from-blue-500/20 to-cyan-500/20",
-    borderColor: "border-blue-500/30"
+    borderColor: "border-blue-500/30",
+    change: "+12%"
   },
   {
     title: "End Date", 
@@ -54,23 +65,26 @@ const wakatimeStats = [
     color: "from-green-400 to-emerald-400",
     icon: Target,
     bgGradient: "from-green-500/20 to-emerald-500/20",
-    borderColor: "border-green-500/30"
+    borderColor: "border-green-500/30",
+    change: "+8%"
   },
   {
-    title: "Coding Average",
+    title: "Daily Average",
     value: "8 hrs 45 mins",
     color: "from-purple-400 to-violet-400",
     icon: TrendingUp,
     bgGradient: "from-purple-500/20 to-violet-500/20",
-    borderColor: "border-purple-500/30"
+    borderColor: "border-purple-500/30",
+    change: "+15%"
   },
   {
-    title: "Coding Time",
+    title: "Total Time",
     value: "61 hrs 15 mins", 
     color: "from-orange-400 to-red-400",
     icon: Clock,
     bgGradient: "from-orange-500/20 to-red-500/20",
-    borderColor: "border-orange-500/30"
+    borderColor: "border-orange-500/30",
+    change: "+23%"
   },
   {
     title: "Best Day",
@@ -79,7 +93,8 @@ const wakatimeStats = [
     color: "from-pink-400 to-rose-400",
     icon: Award,
     bgGradient: "from-pink-500/20 to-rose-500/20",
-    borderColor: "border-pink-500/30"
+    borderColor: "border-pink-500/30",
+    change: "+45%"
   },
   {
     title: "All Time",
@@ -87,8 +102,19 @@ const wakatimeStats = [
     color: "from-cyan-400 to-blue-400",
     icon: Flame,
     bgGradient: "from-cyan-500/20 to-blue-500/20",
-    borderColor: "border-cyan-500/30"
+    borderColor: "border-cyan-500/30",
+    change: "+156%"
   }
+];
+
+const activityData = [
+  { day: "Mon", hours: 8.5, commits: 12 },
+  { day: "Tue", hours: 7.2, commits: 8 },
+  { day: "Wed", hours: 9.1, commits: 15 },
+  { day: "Thu", hours: 6.8, commits: 6 },
+  { day: "Fri", hours: 8.9, commits: 11 },
+  { day: "Sat", hours: 5.4, commits: 4 },
+  { day: "Sun", hours: 3.2, commits: 2 }
 ];
 
 // GitHub API functions
@@ -122,6 +148,7 @@ export function DashboardSection() {
   const [githubUser, setGithubUser] = useState<GitHubUser | null>(null);
   const [githubRepos, setGithubRepos] = useState<GitHubRepo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('overview');
 
   const username = 'zidanmubarak';
 
@@ -178,7 +205,8 @@ export function DashboardSection() {
       color: "from-blue-400 to-cyan-400",
       bgGradient: "from-blue-500/20 to-cyan-500/20",
       borderColor: "border-blue-500/30",
-      icon: Code
+      icon: Code,
+      change: "+3"
     },
     { 
       label: "Total Stars", 
@@ -186,7 +214,8 @@ export function DashboardSection() {
       color: "from-yellow-400 to-orange-400",
       bgGradient: "from-yellow-500/20 to-orange-500/20",
       borderColor: "border-yellow-500/30",
-      icon: Star
+      icon: Star,
+      change: "+12"
     },
     { 
       label: "Total Forks", 
@@ -194,7 +223,8 @@ export function DashboardSection() {
       color: "from-green-400 to-emerald-400",
       bgGradient: "from-green-500/20 to-emerald-500/20",
       borderColor: "border-green-500/30",
-      icon: GitFork
+      icon: GitFork,
+      change: "+8"
     },
     { 
       label: "Followers", 
@@ -202,25 +232,26 @@ export function DashboardSection() {
       color: "from-purple-400 to-violet-400",
       bgGradient: "from-purple-500/20 to-violet-500/20",
       borderColor: "border-purple-500/30",
-      icon: Users
+      icon: Users,
+      change: "+5"
     }
+  ];
+
+  const tabs = [
+    { id: 'overview', label: 'Overview', icon: BarChart3 },
+    { id: 'activity', label: 'Activity', icon: Activity },
+    { id: 'github', label: 'GitHub', icon: Github },
+    { id: 'tech', label: 'Tech Stack', icon: Code }
   ];
 
   if (!mounted) {
     return (
-      <div className="min-h-screen py-16 sm:py-20 lg:py-24">
+      <div className="min-h-screen py-20 lg:py-32 bg-slate-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-              Dashboard <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">Overview</span>
-            </h2>
-            <p className="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto mb-6">
-              Real-time insights into my coding journey and development activities
-            </p>
-            <div className="inline-block p-4 bg-gradient-to-r from-slate-900/80 to-slate-800/80 rounded-2xl border border-slate-700/50 backdrop-blur-lg shadow-2xl">
-              <p className="text-blue-400 font-mono text-lg">
-                🕒 Loading... (Jakarta Time)
-              </p>
+          <div className="text-center">
+            <div className="animate-pulse">
+              <div className="h-12 bg-slate-800 rounded-lg w-64 mx-auto mb-4"></div>
+              <div className="h-6 bg-slate-800 rounded-lg w-96 mx-auto"></div>
             </div>
           </div>
         </div>
@@ -229,7 +260,7 @@ export function DashboardSection() {
   }
 
   return (
-    <div className="min-h-screen py-16 sm:py-20 lg:py-24 relative overflow-hidden">
+    <div className="min-h-screen py-20 lg:py-32 relative overflow-hidden bg-slate-950">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl animate-pulse" />
@@ -245,17 +276,29 @@ export function DashboardSection() {
           viewport={{ once: true }}
         >
           {/* Header Section */}
-          <div className="text-center mb-16 sm:mb-20">
+          <div className="text-center mb-20">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 backdrop-blur-lg border border-blue-500/20 rounded-full px-6 py-3 mb-8"
+            >
+              <BarChart3 className="h-5 w-5 text-blue-400 animate-pulse" />
+              <span className="text-blue-400 font-medium">Analytics Dashboard</span>
+              <Sparkles className="h-5 w-5 text-purple-400 animate-pulse" />
+            </motion.div>
+
             <motion.h2 
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6"
+              className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              Dashboard{" "}
+              Development{" "}
               <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-pulse">
-                Overview
+                Insights
               </span>
             </motion.h2>
             
@@ -266,159 +309,310 @@ export function DashboardSection() {
               transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              Real-time insights into my coding journey and development activities
+              Real-time insights into my coding journey, development activities, and technical growth
             </motion.p>
             
+            {/* Live Clock */}
             <motion.div 
               className="inline-block p-6 bg-gradient-to-r from-slate-900/80 via-slate-800/80 to-slate-900/80 rounded-3xl border border-slate-600/50 backdrop-blur-lg shadow-2xl"
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               viewport={{ once: true }}
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.02 }}
             >
-              <p className="text-transparent bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text font-mono text-xl font-bold" suppressHydrationWarning>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
+                <span className="text-green-400 font-medium text-sm">LIVE</span>
+              </div>
+              <p className="text-transparent bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text font-mono text-lg font-bold" suppressHydrationWarning>
                 🕒 {currentTime} (Jakarta Time)
               </p>
             </motion.div>
           </div>
 
-          {/* Wakatime Statistics */}
-          <div className="mb-20">
-            <motion.div 
-              className="flex flex-col sm:flex-row items-center justify-between mb-12"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-3xl sm:text-4xl font-bold text-white mb-6 sm:mb-0">
-                Wakatime{" "}
-                <span className="bg-gradient-to-r from-orange-400 to-pink-500 bg-clip-text text-transparent">
-                  Statistics
-                </span>
-              </h3>
-              <Badge className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-400 border-green-500/30 px-6 py-3 text-base rounded-full backdrop-blur-sm shadow-lg">
-                <Activity className="mr-2 h-5 w-5 animate-pulse" />
-                Live • Updated 2 hours ago
-              </Badge>
-            </motion.div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-              {wakatimeStats.map((stat, index) => {
-                const IconComponent = stat.icon;
+          {/* Modern Tab Navigation */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            viewport={{ once: true }}
+            className="flex justify-center mb-12"
+          >
+            <div className="flex bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-2">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeTab === tab.id;
+                
                 return (
-                  <motion.div
-                    key={stat.title}
-                    initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ delay: index * 0.1, duration: 0.6 }}
-                    viewport={{ once: true }}
-                    whileHover={{ y: -10, scale: 1.02 }}
-                    className="group"
+                  <motion.button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`
+                      relative px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center gap-2
+                      ${isActive 
+                        ? 'text-white bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30' 
+                        : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                      }
+                    `}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
-                    <Card className={`bg-gradient-to-br ${stat.bgGradient} border ${stat.borderColor} backdrop-blur-lg shadow-2xl rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-3xl`}>
-                      <CardContent className="p-8 relative">
-                        <div className="absolute top-4 right-4 p-3 rounded-2xl bg-white/10 backdrop-blur-sm">
-                          <IconComponent className={`h-6 w-6 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`} />
-                        </div>
-                        <div className="space-y-3">
-                          <p className="text-slate-400 text-sm font-medium uppercase tracking-wider">{stat.title}</p>
-                          <p className={`text-2xl sm:text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent leading-tight`}>
-                            {stat.value}
-                          </p>
-                          {stat.subtitle && (
-                            <p className="text-slate-400 text-lg font-medium">
-                              {stat.subtitle}
+                    <Icon className={`h-4 w-4 ${isActive ? 'text-blue-400' : ''}`} />
+                    <span className="hidden sm:inline">{tab.label}</span>
+                    
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeTab"
+                        className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl border border-blue-500/20"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
+                  </motion.button>
+                );
+              })}
+            </div>
+          </motion.div>
+
+          {/* Tab Content */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+            >
+              {activeTab === 'overview' && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+                  {wakatimeStats.map((stat, index) => {
+                    const IconComponent = stat.icon;
+                    return (
+                      <motion.div
+                        key={stat.title}
+                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ delay: index * 0.1, duration: 0.6 }}
+                        whileHover={{ y: -10, scale: 1.02 }}
+                        className="group"
+                      >
+                        <Card className={`bg-gradient-to-br ${stat.bgGradient} border ${stat.borderColor} backdrop-blur-lg shadow-2xl rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-3xl`}>
+                          <CardContent className="p-8 relative">
+                            <div className="flex justify-between items-start mb-4">
+                              <div className="p-3 rounded-2xl bg-white/10 backdrop-blur-sm">
+                                <IconComponent className={`h-6 w-6 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`} />
+                              </div>
+                              {stat.change && (
+                                <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                                  {stat.change}
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="space-y-2">
+                              <p className="text-slate-400 text-sm font-medium uppercase tracking-wider">{stat.title}</p>
+                              <p className={`text-2xl sm:text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent leading-tight`}>
+                                {stat.value}
+                              </p>
+                              {stat.subtitle && (
+                                <p className="text-slate-400 text-base font-medium">
+                                  {stat.subtitle}
+                                </p>
+                              )}
+                            </div>
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {activeTab === 'activity' && (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+                  {/* Weekly Activity Chart */}
+                  <Card className="bg-gradient-to-br from-slate-900/80 via-slate-800/80 to-slate-900/80 border border-slate-700/50 backdrop-blur-xl shadow-2xl rounded-3xl">
+                    <CardHeader>
+                      <CardTitle className="text-white flex items-center gap-3">
+                        <Activity className="h-6 w-6 text-blue-400" />
+                        Weekly Activity
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {activityData.map((day, index) => (
+                          <motion.div
+                            key={day.day}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: index * 0.1 }}
+                            className="flex items-center justify-between p-4 bg-slate-800/30 rounded-xl border border-slate-700/30"
+                          >
+                            <div className="flex items-center gap-4">
+                              <span className="text-white font-medium w-8">{day.day}</span>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <Clock className="h-4 w-4 text-blue-400" />
+                                  <span className="text-slate-300">{day.hours}h</span>
+                                </div>
+                                <div className="w-full bg-slate-700 rounded-full h-2">
+                                  <motion.div
+                                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full"
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${(day.hours / 12) * 100}%` }}
+                                    transition={{ delay: index * 0.1 + 0.5, duration: 0.8 }}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                              {day.commits} commits
+                            </Badge>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Recent Activity */}
+                  <Card className="bg-gradient-to-br from-slate-900/80 via-slate-800/80 to-slate-900/80 border border-slate-700/50 backdrop-blur-xl shadow-2xl rounded-3xl">
+                    <CardHeader>
+                      <CardTitle className="text-white flex items-center gap-3">
+                        <Zap className="h-6 w-6 text-yellow-400" />
+                        Recent Activity
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {[
+                          { action: "Pushed to main", repo: "neural-network-scratch", time: "2 hours ago", icon: Code },
+                          { action: "Created new branch", repo: "portfolio-v2", time: "4 hours ago", icon: GitFork },
+                          { action: "Opened issue", repo: "bike-rental-insights", time: "6 hours ago", icon: Eye },
+                          { action: "Merged PR", repo: "belimadu", time: "1 day ago", icon: Star }
+                        ].map((activity, index) => {
+                          const Icon = activity.icon;
+                          return (
+                            <motion.div
+                              key={index}
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: index * 0.1 }}
+                              className="flex items-center gap-4 p-4 bg-slate-800/30 rounded-xl border border-slate-700/30 hover:bg-slate-700/30 transition-colors"
+                            >
+                              <div className="p-2 bg-blue-500/20 rounded-lg">
+                                <Icon className="h-4 w-4 text-blue-400" />
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-white font-medium">{activity.action}</p>
+                                <p className="text-slate-400 text-sm">{activity.repo}</p>
+                              </div>
+                              <span className="text-slate-500 text-sm">{activity.time}</span>
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
+              {activeTab === 'github' && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                  {githubStats.map((stat, index) => {
+                    const IconComponent = stat.icon;
+                    return (
+                      <motion.div
+                        key={stat.label}
+                        initial={{ opacity: 0, scale: 0.8, rotateY: 90 }}
+                        animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                        transition={{ delay: index * 0.15, duration: 0.7 }}
+                        whileHover={{ scale: 1.05, rotateY: 5 }}
+                        className="group perspective-1000"
+                      >
+                        <Card className={`bg-gradient-to-br ${stat.bgGradient} border ${stat.borderColor} backdrop-blur-lg shadow-2xl rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-3xl`}>
+                          <CardContent className="p-8 text-center relative">
+                            <div className="flex justify-between items-start mb-4">
+                              <div className="p-3 rounded-2xl bg-white/10 backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                                <IconComponent className={`h-6 w-6 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`} />
+                              </div>
+                              {stat.change && (
+                                <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                                  {stat.change}
+                                </Badge>
+                              )}
+                            </div>
+                            <p className="text-slate-400 text-sm font-medium uppercase tracking-wider mb-3">{stat.label}</p>
+                            <p className={`text-3xl sm:text-4xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
+                              {loading ? '...' : stat.value}
                             </p>
-                          )}
-                        </div>
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                );
-              })}
-            </div>
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              )}
 
-            {/* Tech Stack Section */}
-            <motion.div 
-              className="mb-16"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <h4 className="text-2xl sm:text-3xl font-bold text-center mb-8">
-                <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-                  Tech Stack Arsenal
-                </span>
-              </h4>
-              <div className="bg-gradient-to-r from-slate-900/50 via-slate-800/50 to-slate-900/50 rounded-3xl p-8 border border-slate-700/50 backdrop-blur-lg shadow-2xl">
-                <TechStackGrid />
-              </div>
+              {activeTab === 'tech' && (
+                <motion.div 
+                  className="mb-16"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <div className="bg-gradient-to-r from-slate-900/50 via-slate-800/50 to-slate-900/50 rounded-3xl p-8 border border-slate-700/50 backdrop-blur-lg shadow-2xl">
+                    <TechStackGrid />
+                  </div>
+                </motion.div>
+              )}
             </motion.div>
-          </div>
+          </AnimatePresence>
 
-          {/* GitHub Statistics */}
-          <div className="mb-16">
-            <motion.div 
-              className="flex flex-col sm:flex-row items-center justify-between mb-12"
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-3xl sm:text-4xl font-bold text-white mb-6 sm:mb-0">
-                GitHub{" "}
-                <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
-                  Analytics
-                </span>
+          {/* Call to Action */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <div className="bg-gradient-to-r from-slate-900/50 via-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-12 shadow-2xl">
+              <h3 className="text-3xl font-bold text-white mb-4">
+                Want to collaborate on something amazing?
               </h3>
-              <div className="flex items-center gap-4">
-                <Badge className="bg-gradient-to-r from-gray-800/80 to-black/80 text-white border-gray-600/50 px-6 py-3 text-base rounded-full backdrop-blur-sm shadow-lg">
-                  <Github className="mr-2 h-5 w-5" />
-                  @{username}
-                </Badge>
-                {loading && (
-                  <Badge className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-400 border-blue-500/30 px-4 py-2 text-sm rounded-full">
-                    <Activity className="mr-2 h-4 w-4 animate-spin" />
-                    Fetching...
-                  </Badge>
-                )}
+              <p className="text-slate-400 mb-8 text-lg max-w-2xl mx-auto">
+                Let's build the next big thing together. I'm always excited to work on innovative projects that push the boundaries of technology.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button 
+                  size="lg" 
+                  className="bg-gradient-to-r from-blue-500 via-purple-600 to-pink-500 hover:from-blue-600 hover:via-purple-700 hover:to-pink-600 text-white px-8 py-4 text-lg rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105"
+                  onClick={() => {
+                    const element = document.getElementById('contact');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  <Coffee className="mr-3 h-6 w-6" />
+                  Let's Connect
+                  <ArrowUpRight className="ml-2 h-5 w-5" />
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  className="border-slate-600/50 text-slate-300 hover:bg-slate-800/50 hover:text-white hover:border-blue-500/30 px-8 py-4 text-lg rounded-2xl transition-all duration-300 hover:scale-105"
+                  asChild
+                >
+                  <a href="https://github.com/zidanmubarak" target="_blank" rel="noopener noreferrer">
+                    <Github className="mr-3 h-6 w-6" />
+                    View GitHub
+                  </a>
+                </Button>
               </div>
-            </motion.div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {githubStats.map((stat, index) => {
-                const IconComponent = stat.icon;
-                return (
-                  <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, scale: 0.8, rotateY: 90 }}
-                    whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
-                    transition={{ delay: index * 0.15, duration: 0.7 }}
-                    viewport={{ once: true }}
-                    whileHover={{ scale: 1.05, rotateY: 5 }}
-                    className="group perspective-1000"
-                  >
-                    <Card className={`bg-gradient-to-br ${stat.bgGradient} border ${stat.borderColor} backdrop-blur-lg shadow-2xl rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-3xl`}>
-                      <CardContent className="p-8 text-center relative">
-                        <div className="mb-4 p-3 rounded-2xl bg-white/10 backdrop-blur-sm inline-block group-hover:scale-110 transition-transform duration-300">
-                          <IconComponent className={`h-6 w-6 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`} />
-                        </div>
-                        <p className="text-slate-400 text-sm font-medium uppercase tracking-wider mb-3">{stat.label}</p>
-                        <p className={`text-3xl sm:text-4xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
-                          {loading ? '...' : stat.value}
-                        </p>
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                );
-              })}
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </div>
