@@ -3,14 +3,15 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { 
   Menu, 
   X, 
   Github,
   Linkedin,
-  Coffee
+  Coffee,
+  Code,
+  Sparkles
 } from 'lucide-react';
 
 const navigationItems = [
@@ -24,11 +25,15 @@ const navigationItems = [
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const sections = navigationItems.map(item => item.id);
       const scrollPosition = window.scrollY + 100;
+      
+      // Update scrolled state for header background
+      setScrolled(window.scrollY > 50);
 
       for (const sectionId of sections) {
         const element = document.getElementById(sectionId);
@@ -61,145 +66,220 @@ export function Header() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/50 shadow-2xl"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled 
+          ? 'bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/50 shadow-2xl' 
+          : 'bg-transparent'
+      }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo/Brand */}
           <motion.div 
-            className="flex items-center space-x-3"
+            className="flex items-center space-x-4"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <Avatar className="w-10 h-10 border-2 border-blue-500/50 shadow-lg">
-              <AvatarImage src="https://images.pexels.com/photos/2381069/pexels-photo-2381069.jpeg?auto=compress&cs=tinysrgb&w=400" />
-              <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white font-bold">
-                ZM
-              </AvatarFallback>
-            </Avatar>
+            {/* Modern Logo */}
+            <div className="relative group">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                <Code className="h-6 w-6 text-white" />
+                {/* Animated border */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300" />
+              </div>
+            </div>
+            
+            {/* Brand Name */}
             <div className="hidden sm:block">
-              <h1 className="text-lg font-bold text-white">Zidan Mubarak</h1>
-              <Badge variant="secondary" className="text-xs bg-green-500/20 text-green-400 border-green-500/30">
-                Available
-              </Badge>
+              <motion.h1 
+                className="text-2xl font-bold bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+              >
+                Zidan Mubarak
+              </motion.h1>
+              <div className="flex items-center gap-2 mt-1">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                <span className="text-xs text-slate-400 font-medium">AI/ML Engineer</span>
+              </div>
             </div>
           </motion.div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1">
-            {navigationItems.map((item, index) => {
-              const isActive = activeSection === item.id;
-              
-              return (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 + index * 0.1 }}
-                >
-                  <Button
-                    variant={isActive ? "secondary" : "ghost"}
-                    className={`transition-all duration-300 ${
-                      isActive 
-                        ? 'bg-blue-500/20 text-blue-400 border-l-2 border-blue-500' 
-                        : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
-                    }`}
-                    onClick={() => scrollToSection(item.id)}
+          <nav className="hidden md:flex items-center">
+            <div className="flex items-center space-x-1 bg-slate-900/50 backdrop-blur-lg rounded-2xl p-2 border border-slate-700/50">
+              {navigationItems.map((item, index) => {
+                const isActive = activeSection === item.id;
+                
+                return (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 + index * 0.1 }}
                   >
-                    {item.label}
-                  </Button>
-                </motion.div>
-              );
-            })}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className={`relative px-4 py-2 text-sm font-medium rounded-xl transition-all duration-300 ${
+                        isActive 
+                          ? 'text-white bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30' 
+                          : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                      }`}
+                      onClick={() => scrollToSection(item.id)}
+                    >
+                      {item.label}
+                      {isActive && (
+                        <motion.div
+                          layoutId="activeNavItem"
+                          className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl border border-blue-500/20"
+                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                        />
+                      )}
+                    </Button>
+                  </motion.div>
+                );
+              })}
+            </div>
           </nav>
 
-          {/* Social Links & Mobile Menu */}
-          <div className="flex items-center space-x-2">
+          {/* Social Links & Actions */}
+          <div className="flex items-center space-x-3">
             {/* Social Links - Hidden on mobile */}
             <div className="hidden lg:flex items-center space-x-2">
-              <Button size="sm" variant="ghost" className="p-2 hover:bg-slate-800 hover:text-blue-400" asChild>
-                <a href="https://github.com/zidanmubarak" target="_blank" rel="noopener noreferrer">
-                  <Github className="h-4 w-4" />
-                </a>
-              </Button>
-              <Button size="sm" variant="ghost" className="p-2 hover:bg-slate-800 hover:text-blue-400" asChild>
-                <a href="https://linkedin.com/in/zidanmubarak" target="_blank" rel="noopener noreferrer">
-                  <Linkedin className="h-4 w-4" />
-                </a>
-              </Button>
-              <Button size="sm" className="bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600" asChild>
-                <a href="https://github.com/sponsors/zidanmubarak" target="_blank" rel="noopener noreferrer">
-                  <Coffee className="mr-1 h-3 w-3" />
-                  Sponsor
-                </a>
-              </Button>
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button 
+                  size="sm" 
+                  variant="ghost" 
+                  className="p-2.5 hover:bg-slate-800/50 hover:text-blue-400 rounded-xl transition-all duration-300 group" 
+                  asChild
+                >
+                  <a href="https://github.com/zidanmubarak" target="_blank" rel="noopener noreferrer">
+                    <Github className="h-4 w-4 group-hover:scale-110 transition-transform" />
+                  </a>
+                </Button>
+              </motion.div>
+              
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button 
+                  size="sm" 
+                  variant="ghost" 
+                  className="p-2.5 hover:bg-slate-800/50 hover:text-blue-400 rounded-xl transition-all duration-300 group" 
+                  asChild
+                >
+                  <a href="https://linkedin.com/in/zidanmubarak" target="_blank" rel="noopener noreferrer">
+                    <Linkedin className="h-4 w-4 group-hover:scale-110 transition-transform" />
+                  </a>
+                </Button>
+              </motion.div>
+              
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button 
+                  size="sm" 
+                  className="bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white px-4 py-2 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group" 
+                  asChild
+                >
+                  <a href="https://github.com/sponsors/zidanmubarak" target="_blank" rel="noopener noreferrer">
+                    <Coffee className="mr-2 h-3 w-3 group-hover:scale-110 transition-transform" />
+                    <span className="text-sm font-medium">Sponsor</span>
+                    <Sparkles className="ml-1 h-3 w-3 group-hover:scale-110 transition-transform" />
+                  </a>
+                </Button>
+              </motion.div>
             </div>
 
             {/* Mobile Menu Button */}
             <Button
               variant="ghost"
               size="sm"
-              className="md:hidden p-2"
+              className="md:hidden p-2.5 hover:bg-slate-800/50 rounded-xl transition-all duration-300"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              <motion.div
+                animate={{ rotate: isMenuOpen ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </motion.div>
             </Button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-slate-800/50 py-4"
-          >
-            <nav className="flex flex-col space-y-2">
-              {navigationItems.map((item) => {
+        <motion.div
+          initial={false}
+          animate={{ 
+            height: isMenuOpen ? 'auto' : 0,
+            opacity: isMenuOpen ? 1 : 0
+          }}
+          transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+          className="md:hidden overflow-hidden"
+        >
+          <div className="py-6 border-t border-slate-800/50">
+            <nav className="flex flex-col space-y-3">
+              {navigationItems.map((item, index) => {
                 const isActive = activeSection === item.id;
                 
                 return (
-                  <Button
+                  <motion.div
                     key={item.id}
-                    variant={isActive ? "secondary" : "ghost"}
-                    className={`justify-start transition-all duration-300 ${
-                      isActive 
-                        ? 'bg-blue-500/20 text-blue-400' 
-                        : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
-                    }`}
-                    onClick={() => scrollToSection(item.id)}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
                   >
-                    {item.label}
-                  </Button>
+                    <Button
+                      variant="ghost"
+                      className={`w-full justify-start text-left px-4 py-3 rounded-xl transition-all duration-300 ${
+                        isActive 
+                          ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white border border-blue-500/30' 
+                          : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                      }`}
+                      onClick={() => scrollToSection(item.id)}
+                    >
+                      {item.label}
+                    </Button>
+                  </motion.div>
                 );
               })}
               
               {/* Mobile Social Links */}
-              <div className="pt-4 border-t border-slate-800/50">
-                <div className="flex justify-center space-x-3">
-                  <Button size="sm" variant="ghost" className="p-2" asChild>
+              <div className="pt-6 border-t border-slate-800/50">
+                <div className="flex justify-center space-x-4">
+                  <Button size="sm" variant="ghost" className="p-3 hover:bg-slate-800/50 rounded-xl" asChild>
                     <a href="https://github.com/zidanmubarak" target="_blank" rel="noopener noreferrer">
-                      <Github className="h-4 w-4" />
+                      <Github className="h-5 w-5" />
                     </a>
                   </Button>
-                  <Button size="sm" variant="ghost" className="p-2" asChild>
+                  <Button size="sm" variant="ghost" className="p-3 hover:bg-slate-800/50 rounded-xl" asChild>
                     <a href="https://linkedin.com/in/zidanmubarak" target="_blank" rel="noopener noreferrer">
-                      <Linkedin className="h-4 w-4" />
+                      <Linkedin className="h-5 w-5" />
                     </a>
                   </Button>
-                  <Button size="sm" className="bg-gradient-to-r from-pink-500 to-violet-500" asChild>
+                  <Button 
+                    size="sm" 
+                    className="bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 px-4 py-2 rounded-xl" 
+                    asChild
+                  >
                     <a href="https://github.com/sponsors/zidanmubarak" target="_blank" rel="noopener noreferrer">
-                      <Coffee className="mr-1 h-3 w-3" />
+                      <Coffee className="mr-2 h-4 w-4" />
                       Sponsor
                     </a>
                   </Button>
                 </div>
               </div>
             </nav>
-          </motion.div>
-        )}
+          </div>
+        </motion.div>
       </div>
     </motion.header>
   );
