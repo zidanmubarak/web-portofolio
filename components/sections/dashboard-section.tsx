@@ -122,15 +122,33 @@ const fetchGitHubRepos = async (username: string): Promise<GitHubRepo[]> => {
   return [];
 };
 
-// Generate contribution data (since GitHub's contribution API requires authentication)
+// Generate more realistic contribution data
 const generateContributionData = (): ContributionDay[] => {
   const contributions: ContributionDay[] = [];
   const today = new Date();
   const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
   
   for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
-    const count = Math.floor(Math.random() * 10); // Random contributions for demo
-    const level = count === 0 ? 0 : count < 2 ? 1 : count < 4 ? 2 : count < 6 ? 3 : 4;
+    const dayOfWeek = d.getDay();
+    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+    
+    // More realistic distribution - less on weekends, some gaps
+    let count = 0;
+    const random = Math.random();
+    
+    if (isWeekend) {
+      // Lower chance of commits on weekends
+      if (random < 0.3) count = Math.floor(Math.random() * 3);
+    } else {
+      // Higher chance on weekdays
+      if (random < 0.7) {
+        count = Math.floor(Math.random() * 5) + 1;
+      } else if (random < 0.9) {
+        count = Math.floor(Math.random() * 3);
+      }
+    }
+    
+    const level = count === 0 ? 0 : count < 2 ? 1 : count < 4 ? 2 : count < 8 ? 3 : 4;
     
     contributions.push({
       date: new Date(d).toISOString().split('T')[0],
@@ -166,24 +184,86 @@ const ContributionHeatmap = ({ data }: { data: ContributionDay[] }) => {
   });
   
   if (currentWeek.length > 0) {
+    // Fill remaining days of the last week
+    while (currentWeek.length < 7) {
+      currentWeek.push({ date: '', count: 0, level: 0 });
+    }
     weeks.push(currentWeek);
   }
 
   const getLevelColor = (level: number) => {
     switch (level) {
-      case 0: return 'bg-slate-800';
-      case 1: return 'bg-green-900';
-      case 2: return 'bg-green-700';
+      case 0: return 'bg-slate-800/60';
+      case 1: return 'bg-green-900/80';
+      case 2: return 'bg-green-700/90';
       case 3: return 'bg-green-500';
       case 4: return 'bg-green-400';
-      default: return 'bg-slate-800';
+      default: return 'bg-slate-800/60';
     }
   };
 
+  // Get month labels
+  const getMonthLabels = () => {
+    const labels: { month: string; position: number }[] = [];
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    let currentMonth = -1;
+    
+    weeks.forEach((week, weekIndex) => {
+      if (week[0] && week[0].date) {
+        const date = new Date(week[0].date);
+        const month = date.getMonth();
+        if (month !== currentMonth && weekIndex > 0) {
+          currentMonth = month;
+          labels.push({
+            month: monthNames[month],
+            position: weekIndex
+          });
+        }
+      }
+    });
+    
+    return labels;
+  };
+
+  const monthLabels = getMonthLabels();
+  const dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
   return (
     <div className="overflow-x-auto">
-      <div className="inline-flex flex-col gap-1 min-w-fit">
-        <div className="flex gap-1">
+      <div className="inline-flex flex-col gap-2 min-w-fit">
+        {/* Month labels */}
+        <div className="flex gap-1 ml-8">
+          {monthLabels.map((label, index) => (
+            <div
+              key={index}
+              className="text-xs text-slate-400 font-medium"
+              style={{ 
+                marginLeft: `${label.position * 16}px`,
+                position: 'absolute',
+                transform: `translateX(${label.position * 16}px)`
+              }}
+            >
+              {label.month}
+            </div>
+          ))}
+        </div>
+        
+        <div className="flex gap-1 mt-4">
+          {/* Day labels */}
+          <div className="flex flex-col gap-1 mr-2">
+            {dayLabels.map((day, index) => (
+              <div
+                key={day}
+                className={`w-6 h-3 text-xs text-slate-400 flex items-center justify-end pr-1 ${
+                  index % 2 === 0 ? 'opacity-100' : 'opacity-0'
+                }`}
+              >
+                {index % 2 === 0 ? day : ''}
+              </div>
+            ))}
+          </div>
+          
+          {/* Contribution grid */}
           {weeks.map((week, weekIndex) => (
             <div key={weekIndex} className="flex flex-col gap-1">
               {week.map((day, dayIndex) => (
@@ -191,8 +271,13 @@ const ContributionHeatmap = ({ data }: { data: ContributionDay[] }) => {
                   key={`${weekIndex}-${dayIndex}`}
                   className={`w-3 h-3 rounded-sm ${
                     day.date ? getLevelColor(day.level) : 'bg-transparent'
-                  } hover:ring-2 hover:ring-white/50 transition-all duration-200 cursor-pointer`}
-                  title={day.date ? `${day.count} contributions on ${day.date}` : ''}
+                  } hover:ring-1 hover:ring-white/40 transition-all duration-200 cursor-pointer border border-slate-700/30`}
+                  title={day.date ? `${day.count} contributions on ${new Date(day.date).toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })}` : ''}
                 />
               ))}
             </div>
