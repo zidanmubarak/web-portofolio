@@ -222,31 +222,6 @@ export function ProjectsSection() {
                         </span>
                       ))}
                     </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex gap-2 mt-auto">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        className="flex-1 text-xs sm:text-sm border-slate-600 text-slate-300 hover:bg-slate-800"
-                        asChild
-                      >
-                        <a href={project.github} target="_blank" rel="noopener noreferrer">
-                          <Github className="mr-1 sm:mr-2 h-3 w-3" />
-                          View Code
-                        </a>
-                      </Button>
-                      <Button 
-                        size="sm" 
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm"
-                        asChild
-                      >
-                        <a href={project.demo} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="mr-1 sm:mr-2 h-3 w-3" />
-                          Live Demo
-                        </a>
-                      </Button>
-                    </div>
                   </CardContent>
                 </Card>
               </motion.div>
