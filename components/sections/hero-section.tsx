@@ -107,7 +107,7 @@ export function HeroSection() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 lg:pt-32">
       {/* Animated Background Grid */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0" style={{
@@ -175,13 +175,16 @@ export function HeroSection() {
             animate="visible"
             className="text-center lg:text-left"
           >
-            {/* Status Badge */}
+            {/* Status Badge - Removed for cleaner look */}
+            {/* You can uncomment this if you want to keep it with proper spacing */}
+            {/*
             <motion.div variants={itemVariants}>
-              <Badge className="mb-6 sm:mb-8 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-400 border-green-500/30 backdrop-blur-sm shadow-lg text-sm sm:text-base rounded-full">
+              <Badge className="mb-8 sm:mb-10 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-400 border-green-500/30 backdrop-blur-sm shadow-lg text-sm sm:text-base rounded-full">
                 <div className="w-2 h-2 bg-green-400 rounded-full mr-3 animate-pulse"></div>
                 Available for Projects • Indonesia 🇮🇩
               </Badge>
             </motion.div>
+            */}
             
             {/* Main Heading */}
             <motion.div variants={itemVariants} className="mb-6">
@@ -453,7 +456,7 @@ export function HeroSection() {
           </motion.div>
         </div>
 
-        {/* Bottom Info */}
+        {/* Bottom Info - Moved the badge info here for better placement */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
