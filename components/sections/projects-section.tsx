@@ -30,7 +30,7 @@ const projects = [
     image: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Machine Learning",
-    tech: ["Python", "NumPy", "Matplotlib", "Scikit-learn", "Jupyter", "Pandas"],
+    tech: ["Python", "NumPy", "Matplotlib", "Scikit-learn", "Jupyter", "Pandas", "TensorFlow"],
     github: "https://github.com/zidanmubarak/neural-network-scratch",
     demo: "https://neural-network-demo.vercel.app",
     stats: { stars: 124, views: "2.1k", likes: 89 }
@@ -42,7 +42,7 @@ const projects = [
     image: "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
-    tech: ["Django", "Python", "TailwindCSS", "PostgreSQL", "Vercel", "HTML5"],
+    tech: ["Django", "Python", "TailwindCSS", "PostgreSQL", "Vercel", "HTML5", "JavaScript"],
     github: "https://github.com/zidanmubarak/portfolio",
     demo: "https://ridwanhalim.com",
     stats: { stars: 87, views: "1.8k", likes: 65 }
@@ -54,7 +54,7 @@ const projects = [
     image: "https://images.pexels.com/photos/4474052/pexels-photo-4474052.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
-    tech: ["Django", "Python", "Bootstrap", "SQLite", "JavaScript", "CSS3"],
+    tech: ["Django", "Python", "Bootstrap", "SQLite", "JavaScript", "CSS3", "PayPal API"],
     github: "https://github.com/zidanmubarak/belimadu",
     demo: "https://belimadu.com",
     stats: { stars: 156, views: "3.2k", likes: 112 }
@@ -66,7 +66,7 @@ const projects = [
     image: "https://images.pexels.com/photos/8386434/pexels-photo-8386434.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Data Science",
-    tech: ["Python", "FastAPI", "BeautifulSoup", "Pandas", "Requests", "JSON"],
+    tech: ["Python", "FastAPI", "BeautifulSoup", "Pandas", "Requests", "JSON", "SQLAlchemy"],
     github: "https://github.com/zidanmubarak/pddikti-api",
     demo: "https://pddikti-api.com",
     stats: { stars: 203, views: "4.5k", likes: 178 }
@@ -78,7 +78,7 @@ const projects = [
     image: "https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
-    tech: ["Node.js", "Express.js", "MongoDB", "React", "Chart.js", "Axios"],
+    tech: ["Node.js", "Express.js", "MongoDB", "React", "Chart.js", "Axios", "JWT"],
     github: "https://github.com/zidanmubarak/mlb-stats",
     demo: "https://mlb-stats.com",
     stats: { stars: 98, views: "2.7k", likes: 73 }
@@ -90,7 +90,7 @@ const projects = [
     image: "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Data Science",
-    tech: ["Python", "Streamlit", "Plotly", "Pandas", "Scikit-learn", "Seaborn"],
+    tech: ["Python", "Streamlit", "Plotly", "Pandas", "Scikit-learn", "Seaborn", "NumPy"],
     github: "https://github.com/zidanmubarak/bike-rental-insights",
     demo: "https://bike-insights.streamlit.app",
     stats: { stars: 145, views: "3.8k", likes: 134 }
@@ -106,7 +106,7 @@ const categories = [
 
 export function ProjectsSection() {
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  const [hoveredProject, setHoveredProject] = useState(null);
 
   const filteredProjects = selectedCategory === "all" 
     ? projects 
@@ -137,7 +137,7 @@ export function ProjectsSection() {
   };
 
   return (
-    <div className="min-h-screen py-20 lg:py-32 relative overflow-hidden">
+    <div className="min-h-screen py-20 lg:py-32 relative overflow-hidden bg-slate-950">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl animate-pulse" />
@@ -339,7 +339,7 @@ export function ProjectsSection() {
                       </motion.div>
                     </div>
                     
-                    <CardContent className="p-8 flex flex-col h-full">
+                    <CardContent className="p-8 flex flex-col">
                       {/* Project Title */}
                       <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors duration-300">
                         {project.title}
@@ -350,21 +350,31 @@ export function ProjectsSection() {
                         {project.description}
                       </p>
                       
-                      {/* Tech Stack */}
-                      <div className="flex flex-wrap gap-2 mb-6">
-                        {project.tech.map((tech, techIndex) => (
-                          <motion.span 
-                            key={`${project.id}-${techIndex}`}
-                            className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-slate-700/50 to-slate-600/50 text-slate-300 border border-slate-600/30 hover:border-blue-500/30 hover:text-blue-400 transition-all duration-200"
-                            whileHover={{ scale: 1.05 }}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: techIndex * 0.05 }}
-                          >
-                            <Zap className="h-3 w-3 mr-1 opacity-60" />
-                            {tech}
-                          </motion.span>
-                        ))}
+                      {/* Tech Stack - PERBAIKAN DISINI */}
+                      <div className="mb-6">
+                        <h4 className="text-sm font-semibold text-slate-300 mb-3 flex items-center">
+                          <Zap className="h-4 w-4 mr-2 text-blue-400" />
+                          Tech Stack
+                        </h4>
+                        <div className="flex flex-wrap gap-2">
+                          {project.tech && project.tech.length > 0 ? (
+                            project.tech.map((tech, techIndex) => (
+                              <motion.span 
+                                key={`${project.id}-tech-${techIndex}`}
+                                className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-gradient-to-r from-slate-700/60 to-slate-600/60 text-slate-200 border border-slate-600/40 hover:border-blue-500/40 hover:text-blue-300 hover:bg-gradient-to-r hover:from-blue-500/10 hover:to-purple-500/10 transition-all duration-300 cursor-default"
+                                whileHover={{ scale: 1.05 }}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: techIndex * 0.05 }}
+                              >
+                                <div className="w-2 h-2 rounded-full bg-blue-400 mr-2 animate-pulse" />
+                                {tech}
+                              </motion.span>
+                            ))
+                          ) : (
+                            <span className="text-slate-500 text-sm italic">No tech stack specified</span>
+                          )}
+                        </div>
                       </div>
 
                       {/* Action Buttons */}
