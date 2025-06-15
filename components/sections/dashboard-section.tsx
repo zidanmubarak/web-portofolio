@@ -39,12 +39,6 @@ interface GitHubRepo {
   updated_at: string;
 }
 
-interface ContributionDay {
-  date: string;
-  count: number;
-  level: number;
-}
-
 const wakatimeStats = [
   {
     title: "Start Date",
@@ -122,178 +116,11 @@ const fetchGitHubRepos = async (username: string): Promise<GitHubRepo[]> => {
   return [];
 };
 
-// Generate more realistic contribution data
-const generateContributionData = (): ContributionDay[] => {
-  const contributions: ContributionDay[] = [];
-  const today = new Date();
-  const oneYearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
-  
-  for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
-    const dayOfWeek = d.getDay();
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-    
-    // More realistic distribution - less on weekends, some gaps
-    let count = 0;
-    const random = Math.random();
-    
-    if (isWeekend) {
-      // Lower chance of commits on weekends
-      if (random < 0.3) count = Math.floor(Math.random() * 3);
-    } else {
-      // Higher chance on weekdays
-      if (random < 0.7) {
-        count = Math.floor(Math.random() * 5) + 1;
-      } else if (random < 0.9) {
-        count = Math.floor(Math.random() * 3);
-      }
-    }
-    
-    const level = count === 0 ? 0 : count < 2 ? 1 : count < 4 ? 2 : count < 8 ? 3 : 4;
-    
-    contributions.push({
-      date: new Date(d).toISOString().split('T')[0],
-      count,
-      level
-    });
-  }
-  
-  return contributions;
-};
-
-// Contribution Heatmap Component
-const ContributionHeatmap = ({ data }: { data: ContributionDay[] }) => {
-  const weeks: ContributionDay[][] = [];
-  let currentWeek: ContributionDay[] = [];
-  
-  data.forEach((day, index) => {
-    const dayOfWeek = new Date(day.date).getDay();
-    
-    if (index === 0) {
-      // Fill empty days at the beginning of first week
-      for (let i = 0; i < dayOfWeek; i++) {
-        currentWeek.push({ date: '', count: 0, level: 0 });
-      }
-    }
-    
-    currentWeek.push(day);
-    
-    if (currentWeek.length === 7) {
-      weeks.push(currentWeek);
-      currentWeek = [];
-    }
-  });
-  
-  if (currentWeek.length > 0) {
-    // Fill remaining days of the last week
-    while (currentWeek.length < 7) {
-      currentWeek.push({ date: '', count: 0, level: 0 });
-    }
-    weeks.push(currentWeek);
-  }
-
-  const getLevelColor = (level: number) => {
-    switch (level) {
-      case 0: return 'bg-slate-800/60';
-      case 1: return 'bg-green-900/80';
-      case 2: return 'bg-green-700/90';
-      case 3: return 'bg-green-500';
-      case 4: return 'bg-green-400';
-      default: return 'bg-slate-800/60';
-    }
-  };
-
-  // Get month labels
-  const getMonthLabels = () => {
-    const labels: { month: string; position: number }[] = [];
-    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    let currentMonth = -1;
-    
-    weeks.forEach((week, weekIndex) => {
-      if (week[0] && week[0].date) {
-        const date = new Date(week[0].date);
-        const month = date.getMonth();
-        if (month !== currentMonth && weekIndex > 0) {
-          currentMonth = month;
-          labels.push({
-            month: monthNames[month],
-            position: weekIndex
-          });
-        }
-      }
-    });
-    
-    return labels;
-  };
-
-  const monthLabels = getMonthLabels();
-  const dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-  return (
-    <div className="overflow-x-auto">
-      <div className="inline-flex flex-col gap-2 min-w-fit">
-        {/* Month labels */}
-        <div className="flex gap-1 ml-8">
-          {monthLabels.map((label, index) => (
-            <div
-              key={index}
-              className="text-xs text-slate-400 font-medium"
-              style={{ 
-                marginLeft: `${label.position * 16}px`,
-                position: 'absolute',
-                transform: `translateX(${label.position * 16}px)`
-              }}
-            >
-              {label.month}
-            </div>
-          ))}
-        </div>
-        
-        <div className="flex gap-1 mt-4">
-          {/* Day labels */}
-          <div className="flex flex-col gap-1 mr-2">
-            {dayLabels.map((day, index) => (
-              <div
-                key={day}
-                className={`w-6 h-3 text-xs text-slate-400 flex items-center justify-end pr-1 ${
-                  index % 2 === 0 ? 'opacity-100' : 'opacity-0'
-                }`}
-              >
-                {index % 2 === 0 ? day : ''}
-              </div>
-            ))}
-          </div>
-          
-          {/* Contribution grid */}
-          {weeks.map((week, weekIndex) => (
-            <div key={weekIndex} className="flex flex-col gap-1">
-              {week.map((day, dayIndex) => (
-                <div
-                  key={`${weekIndex}-${dayIndex}`}
-                  className={`w-3 h-3 rounded-sm ${
-                    day.date ? getLevelColor(day.level) : 'bg-transparent'
-                  } hover:ring-1 hover:ring-white/40 transition-all duration-200 cursor-pointer border border-slate-700/30`}
-                  title={day.date ? `${day.count} contributions on ${new Date(day.date).toLocaleDateString('en-US', { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                  })}` : ''}
-                />
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
 export function DashboardSection() {
   const [currentTime, setCurrentTime] = useState<string>('');
   const [mounted, setMounted] = useState(false);
   const [githubUser, setGithubUser] = useState<GitHubUser | null>(null);
   const [githubRepos, setGithubRepos] = useState<GitHubRepo[]>([]);
-  const [contributionData, setContributionData] = useState<ContributionDay[]>([]);
   const [loading, setLoading] = useState(true);
 
   const username = 'zidanmubarak';
@@ -332,7 +159,6 @@ export function DashboardSection() {
       
       setGithubUser(user);
       setGithubRepos(repos);
-      setContributionData(generateContributionData());
       setLoading(false);
     };
 
@@ -344,8 +170,6 @@ export function DashboardSection() {
   // Calculate GitHub stats
   const totalStars = githubRepos.reduce((sum, repo) => sum + repo.stargazers_count, 0);
   const totalForks = githubRepos.reduce((sum, repo) => sum + repo.forks_count, 0);
-  const totalContributions = contributionData.reduce((sum, day) => sum + day.count, 0);
-  const thisWeekContributions = contributionData.slice(-7).reduce((sum, day) => sum + day.count, 0);
 
   const githubStats = [
     { 
@@ -565,7 +389,7 @@ export function DashboardSection() {
               </div>
             </motion.div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {githubStats.map((stat, index) => {
                 const IconComponent = stat.icon;
                 return (
@@ -594,58 +418,6 @@ export function DashboardSection() {
                 );
               })}
             </div>
-
-            {/* Contribution Heatmap */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <Card className="bg-gradient-to-br from-slate-900/80 via-slate-800/80 to-slate-900/80 border border-slate-600/50 backdrop-blur-lg shadow-2xl rounded-3xl overflow-hidden">
-                <CardHeader className="pb-8">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                    <CardTitle className="text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-0">
-                      Contribution{" "}
-                      <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
-                        Activity
-                      </span>
-                    </CardTitle>
-                    <div className="flex items-center space-x-6 text-sm">
-                      <div className="flex items-center">
-                        <div className="w-3 h-3 bg-slate-800 rounded-sm mr-3"></div>
-                        <span className="text-slate-400 font-medium">Less</span>
-                      </div>
-                      <div className="flex items-center">
-                        <div className="w-3 h-3 bg-green-400 rounded-sm mr-3"></div>
-                        <span className="text-slate-400 font-medium">More</span>
-                      </div>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="pb-8">
-                  <div className="bg-slate-800/50 rounded-2xl p-6 backdrop-blur-sm">
-                    {loading ? (
-                      <div className="flex items-center justify-center h-32">
-                        <Activity className="h-8 w-8 animate-spin text-green-400" />
-                        <span className="ml-3 text-slate-400">Loading contribution data...</span>
-                      </div>
-                    ) : (
-                      <ContributionHeatmap data={contributionData} />
-                    )}
-                  </div>
-                  <div className="mt-6 flex items-center justify-between text-sm text-slate-400">
-                    <p className="flex items-center">
-                      <span className="text-xl mr-2">📊</span>
-                      {totalContributions} contributions in the last year
-                    </p>
-                    <p className="text-green-400 font-medium">
-                      {thisWeekContributions} contributions this week
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
           </div>
         </motion.div>
       </div>
