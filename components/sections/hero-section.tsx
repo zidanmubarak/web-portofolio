@@ -24,6 +24,7 @@ import {
 export function HeroSection() {
   const [displayText, setDisplayText] = useState('');
   const [currentRole, setCurrentRole] = useState(0);
+  const [particleTargetPositions, setParticleTargetPositions] = useState<Array<{x: number, y: number}>>([]);
   const fullName = "Zidan Mubarak";
   
   const roles = [
@@ -62,6 +63,17 @@ export function HeroSection() {
     }, 3000);
     
     return () => clearInterval(roleTimer);
+  }, []);
+
+  // Initialize particle positions after component mounts
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const positions = codeSnippets.map(() => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight
+      }));
+      setParticleTargetPositions(positions);
+    }
   }, []);
 
   const scrollToSection = (sectionId: string) => {
@@ -114,13 +126,13 @@ export function HeroSection() {
             key={index}
             className="absolute text-blue-400/30 font-mono text-sm"
             initial={{ 
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
+              x: 0,
+              y: 0,
               opacity: 0 
             }}
             animate={{ 
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
+              x: particleTargetPositions[index]?.x || 0,
+              y: particleTargetPositions[index]?.y || 0,
               opacity: [0, 0.7, 0]
             }}
             transition={{
@@ -354,7 +366,7 @@ export function HeroSection() {
                   <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80">
                     <div className="p-6 h-full flex flex-col justify-between">
                       <div>
-                        <h3 className="text-white font-bold text-xl mb-2 font-mono">&lt;coder&gt;</h3>
+                        <h3 className="text-white font-bold text-xl mb-2 font-mono"><coder></h3>
                         <p className="text-slate-300 text-sm leading-relaxed">
                           AI/ML Engineer who focuses on writing clean, elegant and efficient code.
                         </p>
@@ -368,7 +380,7 @@ export function HeroSection() {
                           animate={{ opacity: 1 }}
                           transition={{ delay: 2.5 }}
                         >
-                          &lt;html&gt;
+                          <html>
                         </motion.div>
                         <motion.div 
                           className="text-green-400 ml-2"
@@ -376,7 +388,7 @@ export function HeroSection() {
                           animate={{ opacity: 1 }}
                           transition={{ delay: 3 }}
                         >
-                          &lt;head&gt;
+                          <head>
                         </motion.div>
                         <motion.div 
                           className="text-purple-400 ml-4"
