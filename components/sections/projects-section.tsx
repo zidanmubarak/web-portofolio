@@ -351,26 +351,20 @@ export function ProjectsSection() {
                       </p>
                       
                       {/* Tech Stack */}
-                      <div className="mb-6">
-                        <h4 className="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
-                          <Code2 className="h-4 w-4 text-blue-400" />
-                          Tech Stack
-                        </h4>
-                        <div className="flex flex-wrap gap-2">
-                          {project.tech.map((tech, techIndex) => (
-                            <motion.span 
-                              key={`${project.id}-tech-${techIndex}`}
-                              className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-gradient-to-r from-blue-500/10 to-purple-500/10 text-blue-300 border border-blue-500/20 hover:border-blue-400/40 hover:bg-blue-500/20 transition-all duration-200 cursor-default"
-                              initial={{ opacity: 0, scale: 0.8 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ delay: techIndex * 0.05 }}
-                              whileHover={{ scale: 1.05 }}
-                            >
-                              <Zap className="h-3 w-3 mr-1 text-blue-400" />
-                              {tech}
-                            </motion.span>
-                          ))}
-                        </div>
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {project.tech.map((tech, techIndex) => (
+                          <motion.span 
+                            key={`${project.id}-${techIndex}`}
+                            className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-slate-700/50 to-slate-600/50 text-slate-300 border border-slate-600/30 hover:border-blue-500/30 hover:text-blue-400 transition-all duration-200"
+                            whileHover={{ scale: 1.05 }}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: techIndex * 0.05 }}
+                          >
+                            <Zap className="h-3 w-3 mr-1 opacity-60" />
+                            {tech}
+                          </motion.span>
+                        ))}
                       </div>
 
                       {/* Action Buttons */}
