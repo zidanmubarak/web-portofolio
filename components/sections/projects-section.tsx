@@ -13,14 +13,15 @@ import {
   Code2,
   Brain,
   Database,
-  Globe
+  Globe,
+  Play
 } from 'lucide-react';
 
 const projects = [
   {
     id: 1,
     title: "Neural Network from Scratch",
-    description: "A professional implementation of a neural network using only NumPy for MNIST digit classification.",
+    description: "A professional implementation of a neural network using only NumPy for MNIST digit classification with detailed explanations and visualizations.",
     image: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Machine Learning",
@@ -31,7 +32,7 @@ const projects = [
   {
     id: 2,
     title: "ridwanhalim.com",
-    description: "My personal portfolio site, powered by Django and TailwindCSS, running on serverless on Vercel.",
+    description: "My personal portfolio site, powered by Django and TailwindCSS, running on serverless architecture with modern design principles.",
     image: "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
@@ -42,7 +43,7 @@ const projects = [
   {
     id: 3,
     title: "BeliMadu.com",
-    description: "E-commerce hotspot for honey treats, built with Django and Bootstrap, hosted on Vercel.",
+    description: "E-commerce hotspot for honey treats, built with Django and Bootstrap, featuring secure payment integration and inventory management.",
     image: "https://images.pexels.com/photos/4474052/pexels-photo-4474052.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
@@ -53,7 +54,7 @@ const projects = [
   {
     id: 4,
     title: "PDDikti Data Vault",
-    description: "API unlocking Indonesia's higher education data from PDDikti.",
+    description: "API unlocking Indonesia's higher education data from PDDikti with comprehensive data processing and analytics capabilities.",
     image: "https://images.pexels.com/photos/8386434/pexels-photo-8386434.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Data Science",
@@ -64,7 +65,7 @@ const projects = [
   {
     id: 5,
     title: "MLB API Stats Hub",
-    description: "REST API and website loaded with Mobile Legends game stats.",
+    description: "REST API and website loaded with Mobile Legends game stats, providing real-time data and comprehensive analytics dashboard.",
     image: "https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
@@ -75,7 +76,7 @@ const projects = [
   {
     id: 6,
     title: "Bike Rental Insights Dashboard",
-    description: "Interactive dashboard tying weather to bike rental trends.",
+    description: "Interactive dashboard tying weather to bike rental trends with predictive analytics and beautiful data visualizations.",
     image: "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Data Science",
@@ -110,7 +111,7 @@ export function ProjectsSection() {
         >
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-              My <span className="gradient-text">Projects</span>
+              Featured <span className="gradient-text">Projects</span>
             </h2>
             <p className="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto">
               A collection of projects I've built, from innovative AI solutions to full-stack applications that solve real-world problems.
@@ -151,29 +152,62 @@ export function ProjectsSection() {
                 viewport={{ once: true }}
                 className="group"
               >
-                <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm hover:bg-slate-800/50 transition-all duration-300 overflow-hidden h-full">
-                  <div className="relative">
+                <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm overflow-hidden h-full transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
+                  {/* Project Image */}
+                  <div className="relative overflow-hidden h-48 sm:h-56">
                     <img 
                       src={project.image} 
                       alt={project.title}
-                      className="w-full h-48 sm:h-56 object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
+                    
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    
+                    {/* Featured Badge */}
                     {project.featured && (
                       <Badge className="absolute top-3 right-3 bg-green-500 hover:bg-green-600 text-xs sm:text-sm">
                         <Star className="mr-1 h-3 w-3" />
                         FEATURED
                       </Badge>
                     )}
+                    
+                    {/* Category Badge */}
                     <Badge className="absolute top-3 left-3 bg-blue-500/20 text-blue-400 border-blue-500/30 text-xs">
                       {project.category}
                     </Badge>
+
+                    {/* Hover Actions */}
+                    <div className="absolute inset-0 flex items-center justify-center space-x-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        className="bg-background/90 hover:bg-background"
+                        asChild
+                      >
+                        <a href={project.github} target="_blank" rel="noopener noreferrer">
+                          <Github className="h-4 w-4 mr-2" />
+                          Code
+                        </a>
+                      </Button>
+                      <Button
+                        size="sm"
+                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                        asChild
+                      >
+                        <a href={project.demo} target="_blank" rel="noopener noreferrer">
+                          <Play className="h-4 w-4 mr-2" />
+                          Demo
+                        </a>
+                      </Button>
+                    </div>
                   </div>
                   
                   <CardContent className="p-4 sm:p-6 flex flex-col h-full">
                     <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
                       {project.title}
                     </h3>
-                    <p className="text-slate-400 mb-4 line-clamp-3 flex-grow text-sm sm:text-base">
+                    <p className="text-slate-400 mb-4 line-clamp-3 flex-grow text-sm sm:text-base leading-relaxed">
                       {project.description}
                     </p>
                     
@@ -189,14 +223,14 @@ export function ProjectsSection() {
                     {/* Action Buttons */}
                     <div className="flex gap-2 mt-auto">
                       <Button 
-                        size="sm" 
                         variant="outline" 
+                        size="sm"
                         className="flex-1 text-xs sm:text-sm border-slate-600 text-slate-300 hover:bg-slate-800"
                         asChild
                       >
                         <a href={project.github} target="_blank" rel="noopener noreferrer">
                           <Github className="mr-1 sm:mr-2 h-3 w-3" />
-                          Code
+                          View Code
                         </a>
                       </Button>
                       <Button 
@@ -206,7 +240,7 @@ export function ProjectsSection() {
                       >
                         <a href={project.demo} target="_blank" rel="noopener noreferrer">
                           <ExternalLink className="mr-1 sm:mr-2 h-3 w-3" />
-                          Demo
+                          Live Demo
                         </a>
                       </Button>
                     </div>
@@ -230,12 +264,12 @@ export function ProjectsSection() {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-slate-600 text-slate-300 hover:bg-slate-800"
+              className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-semibold px-8 py-3 rounded-full transition-all duration-300"
               asChild
             >
               <a href="https://github.com/zidanmubarak" target="_blank" rel="noopener noreferrer">
-                <Github className="mr-2 h-4 w-4" />
-                View All on GitHub
+                <Github className="mr-2 h-5 w-5" />
+                View More on GitHub
               </a>
             </Button>
           </motion.div>
