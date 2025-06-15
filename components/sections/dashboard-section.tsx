@@ -10,7 +10,11 @@ import {
   Clock,
   Calendar,
   TrendingUp,
-  Github
+  Github,
+  Zap,
+  Target,
+  Award,
+  Flame
 } from 'lucide-react';
 import { TechStackGrid } from '@/components/ui/tech-stack-grid';
 import { ActivityGraph } from '@/components/charts/activity-graph';
@@ -19,40 +23,87 @@ const stats = [
   {
     title: "Start Date",
     value: "December 01, 2024",
-    color: "text-blue-400"
+    color: "from-blue-400 to-cyan-400",
+    icon: Calendar,
+    bgGradient: "from-blue-500/20 to-cyan-500/20",
+    borderColor: "border-blue-500/30"
   },
   {
     title: "End Date", 
     value: "December 07, 2024",
-    color: "text-green-400"
+    color: "from-green-400 to-emerald-400",
+    icon: Target,
+    bgGradient: "from-green-500/20 to-emerald-500/20",
+    borderColor: "border-green-500/30"
   },
   {
     title: "Coding Average",
     value: "8 hrs 45 mins",
-    color: "text-purple-400"
+    color: "from-purple-400 to-violet-400",
+    icon: TrendingUp,
+    bgGradient: "from-purple-500/20 to-violet-500/20",
+    borderColor: "border-purple-500/30"
   },
   {
     title: "Coding Time",
     value: "61 hrs 15 mins", 
-    color: "text-orange-400"
+    color: "from-orange-400 to-red-400",
+    icon: Clock,
+    bgGradient: "from-orange-500/20 to-red-500/20",
+    borderColor: "border-orange-500/30"
   },
   {
     title: "Best Day",
-    value: "December 05, 2024 (12 hrs 30 mins)",
-    color: "text-pink-400"
+    value: "December 05, 2024",
+    subtitle: "12 hrs 30 mins",
+    color: "from-pink-400 to-rose-400",
+    icon: Award,
+    bgGradient: "from-pink-500/20 to-rose-500/20",
+    borderColor: "border-pink-500/30"
   },
   {
     title: "All Time",
     value: "1,847 hrs 22 mins",
-    color: "text-cyan-400"
+    color: "from-cyan-400 to-blue-400",
+    icon: Flame,
+    bgGradient: "from-cyan-500/20 to-blue-500/20",
+    borderColor: "border-cyan-500/30"
   }
 ];
 
 const githubStats = [
-  { label: "Total", value: "5,247", color: "text-green-400" },
-  { label: "This Week", value: "156", color: "text-blue-400" },
-  { label: "Best Day", value: "289", color: "text-purple-400" },
-  { label: "Average", value: "14/day", color: "text-orange-400" }
+  { 
+    label: "Total Contributions", 
+    value: "5,247", 
+    color: "from-green-400 to-emerald-400",
+    bgGradient: "from-green-500/20 to-emerald-500/20",
+    borderColor: "border-green-500/30",
+    icon: "📈"
+  },
+  { 
+    label: "This Week", 
+    value: "156", 
+    color: "from-blue-400 to-cyan-400",
+    bgGradient: "from-blue-500/20 to-cyan-500/20",
+    borderColor: "border-blue-500/30",
+    icon: "⚡"
+  },
+  { 
+    label: "Best Day", 
+    value: "289", 
+    color: "from-purple-400 to-violet-400",
+    bgGradient: "from-purple-500/20 to-violet-500/20",
+    borderColor: "border-purple-500/30",
+    icon: "🏆"
+  },
+  { 
+    label: "Daily Average", 
+    value: "14/day", 
+    color: "from-orange-400 to-amber-400",
+    bgGradient: "from-orange-500/20 to-amber-500/20",
+    borderColor: "border-orange-500/30",
+    icon: "🎯"
+  }
 ];
 
 export function DashboardSection() {
@@ -77,29 +128,24 @@ export function DashboardSection() {
       setCurrentTime(timeString);
     };
 
-    // Set initial time
     updateTime();
-    
-    // Update every second
     const timer = setInterval(updateTime, 1000);
-
     return () => clearInterval(timer);
   }, []);
 
-  // Don't render time until mounted to prevent hydration mismatch
   if (!mounted) {
     return (
       <div className="min-h-screen py-16 sm:py-20 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-              Dashboard <span className="gradient-text">Overview</span>
+              Dashboard <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">Overview</span>
             </h2>
             <p className="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto mb-6">
               Real-time insights into my coding journey and development activities
             </p>
-            <div className="inline-block p-3 sm:p-4 bg-slate-900/50 rounded-lg border border-slate-700/50 backdrop-blur-sm">
-              <p className="text-blue-400 font-mono text-sm sm:text-lg">
+            <div className="inline-block p-4 bg-gradient-to-r from-slate-900/80 to-slate-800/80 rounded-2xl border border-slate-700/50 backdrop-blur-lg shadow-2xl">
+              <p className="text-blue-400 font-mono text-lg">
                 🕒 Loading... (Jakarta Time)
               </p>
             </div>
@@ -110,93 +156,179 @@ export function DashboardSection() {
   }
 
   return (
-    <div className="min-h-screen py-16 sm:py-20 lg:py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-16 sm:py-20 lg:py-24 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pink-500/5 rounded-full blur-3xl animate-pulse delay-2000" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-              Dashboard <span className="gradient-text">Overview</span>
-            </h2>
-            <p className="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto mb-6">
+          {/* Header Section */}
+          <div className="text-center mb-16 sm:mb-20">
+            <motion.h2 
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              Dashboard{" "}
+              <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-pulse">
+                Overview
+              </span>
+            </motion.h2>
+            
+            <motion.p 
+              className="text-xl sm:text-2xl text-slate-300 max-w-4xl mx-auto mb-8 font-light"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
               Real-time insights into my coding journey and development activities
-            </p>
-            <div className="inline-block p-3 sm:p-4 bg-slate-900/50 rounded-lg border border-slate-700/50 backdrop-blur-sm">
-              <p className="text-blue-400 font-mono text-sm sm:text-lg" suppressHydrationWarning>
+            </motion.p>
+            
+            <motion.div 
+              className="inline-block p-6 bg-gradient-to-r from-slate-900/80 via-slate-800/80 to-slate-900/80 rounded-3xl border border-slate-600/50 backdrop-blur-lg shadow-2xl"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.05 }}
+            >
+              <p className="text-transparent bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text font-mono text-xl font-bold" suppressHydrationWarning>
                 🕒 {currentTime} (Jakarta Time)
               </p>
-            </div>
+            </motion.div>
           </div>
 
           {/* Wakatime Statistics */}
-          <div className="mb-12 sm:mb-16">
-            <div className="flex flex-col sm:flex-row items-center justify-between mb-8 sm:mb-12">
-              <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-0">
-                Wakatime <span className="gradient-text">Statistics</span>
+          <div className="mb-20">
+            <motion.div 
+              className="flex flex-col sm:flex-row items-center justify-between mb-12"
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h3 className="text-3xl sm:text-4xl font-bold text-white mb-6 sm:mb-0">
+                Wakatime{" "}
+                <span className="bg-gradient-to-r from-orange-400 to-pink-500 bg-clip-text text-transparent">
+                  Statistics
+                </span>
               </h3>
-              <Badge variant="secondary" className="bg-green-500/20 text-green-400 border-green-500/30 px-3 sm:px-4 py-2">
-                <Activity className="mr-2 h-4 w-4" />
-                Last update: 2 hours ago
+              <Badge className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-400 border-green-500/30 px-6 py-3 text-base rounded-full backdrop-blur-sm shadow-lg">
+                <Activity className="mr-2 h-5 w-5 animate-pulse" />
+                Live • Updated 2 hours ago
               </Badge>
+            </motion.div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+              {stats.map((stat, index) => {
+                const IconComponent = stat.icon;
+                return (
+                  <motion.div
+                    key={stat.title}
+                    initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ delay: index * 0.1, duration: 0.6 }}
+                    viewport={{ once: true }}
+                    whileHover={{ y: -10, scale: 1.02 }}
+                    className="group"
+                  >
+                    <Card className={`bg-gradient-to-br ${stat.bgGradient} border ${stat.borderColor} backdrop-blur-lg shadow-2xl rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-3xl`}>
+                      <CardContent className="p-8 relative">
+                        <div className="absolute top-4 right-4 p-3 rounded-2xl bg-white/10 backdrop-blur-sm">
+                          <IconComponent className={`h-6 w-6 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`} />
+                        </div>
+                        <div className="space-y-3">
+                          <p className="text-slate-400 text-sm font-medium uppercase tracking-wider">{stat.title}</p>
+                          <p className={`text-2xl sm:text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent leading-tight`}>
+                            {stat.value}
+                          </p>
+                          {stat.subtitle && (
+                            <p className="text-slate-400 text-lg font-medium">
+                              {stat.subtitle}
+                            </p>
+                          )}
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                );
+              })}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm card-hover shadow-lg">
-                    <CardContent className="p-4 sm:p-6">
-                      <p className="text-slate-400 text-xs sm:text-sm mb-2">{stat.title}</p>
-                      <p className={`text-lg sm:text-2xl font-bold ${stat.color}`}>{stat.value}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Tech Stack Grid */}
-            <div className="mb-8 sm:mb-12">
-              <h4 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6 text-center">
-                Tech <span className="gradient-text">Stack</span>
+            {/* Tech Stack Section */}
+            <motion.div 
+              className="mb-16"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h4 className="text-2xl sm:text-3xl font-bold text-center mb-8">
+                <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+                  Tech Stack Arsenal
+                </span>
               </h4>
-              <TechStackGrid />
-            </div>
+              <div className="bg-gradient-to-r from-slate-900/50 via-slate-800/50 to-slate-900/50 rounded-3xl p-8 border border-slate-700/50 backdrop-blur-lg shadow-2xl">
+                <TechStackGrid />
+              </div>
+            </motion.div>
           </div>
 
           {/* GitHub Statistics */}
-          <div className="mb-8 sm:mb-12">
-            <div className="flex flex-col sm:flex-row items-center justify-between mb-8 sm:mb-12">
-              <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-0">
-                GitHub <span className="text-green-400">Statistics</span>
+          <div className="mb-16">
+            <motion.div 
+              className="flex flex-col sm:flex-row items-center justify-between mb-12"
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h3 className="text-3xl sm:text-4xl font-bold text-white mb-6 sm:mb-0">
+                GitHub{" "}
+                <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
+                  Analytics
+                </span>
               </h3>
-              <Badge variant="secondary" className="bg-blue-500/20 text-blue-400 border-blue-500/30 px-3 sm:px-4 py-2">
-                <Github className="mr-2 h-4 w-4" />
+              <Badge className="bg-gradient-to-r from-gray-800/80 to-black/80 text-white border-gray-600/50 px-6 py-3 text-base rounded-full backdrop-blur-sm shadow-lg">
+                <Github className="mr-2 h-5 w-5" />
                 @zidanmubarak
               </Badge>
-            </div>
+            </motion.div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
               {githubStats.map((stat, index) => (
                 <motion.div
                   key={stat.label}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.1 }}
+                  initial={{ opacity: 0, scale: 0.8, rotateY: 90 }}
+                  whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+                  transition={{ delay: index * 0.15, duration: 0.7 }}
                   viewport={{ once: true }}
+                  whileHover={{ scale: 1.05, rotateY: 5 }}
+                  className="group perspective-1000"
                 >
-                  <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm card-hover shadow-lg">
-                    <CardContent className="p-4 sm:p-6 text-center">
-                      <p className="text-slate-400 text-xs sm:text-sm mb-2">{stat.label}</p>
-                      <p className={`text-2xl sm:text-3xl font-bold ${stat.color}`}>{stat.value}</p>
+                  <Card className={`bg-gradient-to-br ${stat.bgGradient} border ${stat.borderColor} backdrop-blur-lg shadow-2xl rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-3xl`}>
+                    <CardContent className="p-8 text-center relative">
+                      <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                        {stat.icon}
+                      </div>
+                      <p className="text-slate-400 text-sm font-medium uppercase tracking-wider mb-3">{stat.label}</p>
+                      <p className={`text-3xl sm:text-4xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
+                        {stat.value}
+                      </p>
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -204,31 +336,44 @@ export function DashboardSection() {
             </div>
 
             {/* Activity Graph */}
-            <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm shadow-xl">
-              <CardHeader>
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                  <CardTitle className="text-white text-lg sm:text-xl mb-4 sm:mb-0">
-                    Activity <span className="text-green-400">Graph</span>
-                  </CardTitle>
-                  <div className="flex items-center space-x-4 text-xs sm:text-sm">
-                    <div className="flex items-center">
-                      <div className="w-3 h-3 bg-slate-800 rounded-sm mr-2"></div>
-                      <span className="text-slate-400">Less</span>
-                    </div>
-                    <div className="flex items-center">
-                      <div className="w-3 h-3 bg-green-400 rounded-sm mr-2"></div>
-                      <span className="text-slate-400">More</span>
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <Card className="bg-gradient-to-br from-slate-900/80 via-slate-800/80 to-slate-900/80 border border-slate-600/50 backdrop-blur-lg shadow-2xl rounded-3xl overflow-hidden">
+                <CardHeader className="pb-8">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                    <CardTitle className="text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-0">
+                      Contribution{" "}
+                      <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
+                        Heatmap
+                      </span>
+                    </CardTitle>
+                    <div className="flex items-center space-x-6 text-sm">
+                      <div className="flex items-center">
+                        <div className="w-4 h-4 bg-slate-700 rounded-md mr-3 shadow-inner"></div>
+                        <span className="text-slate-400 font-medium">Less</span>
+                      </div>
+                      <div className="flex items-center">
+                        <div className="w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-500 rounded-md mr-3 shadow-lg"></div>
+                        <span className="text-slate-400 font-medium">More</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <ActivityGraph />
-                <p className="text-slate-400 text-xs sm:text-sm mt-4 sm:mt-6">
-                  📊 Contribution activity over the past year - showing consistent development work
-                </p>
-              </CardContent>
-            </Card>
+                </CardHeader>
+                <CardContent className="pb-8">
+                  <div className="bg-slate-800/50 rounded-2xl p-6 backdrop-blur-sm">
+                    <ActivityGraph />
+                  </div>
+                  <p className="text-slate-400 text-base mt-6 flex items-center justify-center">
+                    <span className="text-2xl mr-3">📊</span>
+                    Contribution activity over the past year - showing consistent development work
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
         </motion.div>
       </div>
