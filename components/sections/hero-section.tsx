@@ -4,27 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
-  ArrowRight, 
-  Download, 
-  MapPin,
-  Sparkles,
-  Code,
-  Brain,
-  Zap,
-  Github,
-  Linkedin,
-  Mail,
-  Coffee,
-  Terminal,
-  Cpu,
-  Database,
-  Globe,
-  Star,
-  Heart,
-  Rocket,
-  Lightning
-} from 'lucide-react';
+import { ArrowRight, Download, MapPin, Sparkles, Code, Brain, Zap, Github, Linkedin, Mail, Coffee, Terminal, Cpu, Database, Globe, Star, Heart, Rocket, CloudLightning as Lightning } from 'lucide-react';
 
 export function HeroSection() {
   const [displayText, setDisplayText] = useState('');
