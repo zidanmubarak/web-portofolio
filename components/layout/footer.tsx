@@ -1,16 +1,16 @@
 "use client";
 
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { 
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import {
   Github,
   Linkedin,
   Mail,
   Coffee,
   Heart,
   MapPin,
-  Calendar
-} from 'lucide-react';
+  Calendar,
+} from "lucide-react";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -20,33 +20,33 @@ export function Footer() {
       name: "GitHub",
       icon: Github,
       href: "https://github.com/zidanmubarak",
-      color: "hover:text-gray-400"
+      color: "hover:text-gray-400",
     },
     {
-      name: "LinkedIn", 
+      name: "LinkedIn",
       icon: Linkedin,
       href: "https://linkedin.com/in/zidanmubarak",
-      color: "hover:text-blue-400"
+      color: "hover:text-blue-400",
     },
     {
       name: "Email",
       icon: Mail,
       href: "mailto:zidan@example.com",
-      color: "hover:text-green-400"
-    }
+      color: "hover:text-green-400",
+    },
   ];
 
   const quickLinks = [
     { name: "About", href: "#about" },
     { name: "Projects", href: "#projects" },
     { name: "Dashboard", href: "#dashboard" },
-    { name: "Contact", href: "#contact" }
+    { name: "Contact", href: "#contact" },
   ];
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId.replace('#', ''));
+    const element = document.getElementById(sectionId.replace("#", ""));
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -65,8 +65,9 @@ export function Footer() {
               Zidan <span className="gradient-text">Mubarak</span>
             </h3>
             <p className="text-slate-400 mb-6 max-w-md leading-relaxed">
-              Passionate AI/ML engineer and full-stack developer from Indonesia. 
-              Building intelligent solutions that make a difference in the world.
+              Passionate AI/ML engineer and full-stack developer from Indonesia.
+              Building intelligent solutions that make a difference in the
+              world.
             </p>
             <div className="flex items-center space-x-4 text-sm text-slate-400">
               <div className="flex items-center">
@@ -86,7 +87,9 @@ export function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <h4 className="text-lg font-semibold text-white mb-4">Quick Links</h4>
+            <h4 className="text-lg font-semibold text-white mb-4">
+              Quick Links
+            </h4>
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.name}>
@@ -119,18 +122,26 @@ export function Footer() {
                     className={`justify-start w-full text-slate-400 ${social.color} transition-colors duration-200`}
                     asChild
                   >
-                    <a href={social.href} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <Icon className="mr-3 h-4 w-4" />
                       {social.name}
                     </a>
                   </Button>
                 );
               })}
-              <Button 
+              <Button
                 className="w-full bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 mt-4"
                 asChild
               >
-                <a href="https://github.com/sponsors/zidanmubarak" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://github.com/sponsors/zidanmubarak"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Coffee className="mr-2 h-4 w-4" />
                   Support My Work
                 </a>
@@ -151,7 +162,15 @@ export function Footer() {
               © {currentYear} Zidan Mubarak. All rights reserved.
             </p>
             <p className="text-slate-400 text-sm flex items-center">
-              Made with <Heart className="mx-1 h-4 w-4 text-red-400" /> using Next.js & TailwindCSS
+              Made with <Heart className="mx-1 h-4 w-4 text-red-400" /> using{" "}
+              <a
+                href="https://bolt.new"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:underline"
+              >
+                bolt.new
+              </a>
             </p>
           </div>
         </motion.div>
