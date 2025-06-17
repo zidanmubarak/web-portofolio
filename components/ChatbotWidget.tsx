@@ -10,6 +10,8 @@ import {
   StopCircle,
   Trash2,
   Upload,
+  Bot,
+  User,
 } from "lucide-react";
 
 interface Message {
@@ -18,6 +20,7 @@ interface Message {
   sender: "user" | "bot";
   timestamp: Date;
   isLoading?: boolean;
+  isTyping?: boolean;
 }
 
 interface ChatHistory {
@@ -25,18 +28,151 @@ interface ChatHistory {
   parts: { text: string }[];
 }
 
+// Portfolio Context - Informasi tentang Zidan
+const PORTFOLIO_CONTEXT = `
+Saya adalah Portfolio Assistant untuk Zidan Mubarak, seorang AI/ML Engineer dan Full-Stack Developer dari Indonesia. Berikut adalah informasi lengkap tentang Zidan:
+
+**Informasi Pribadi:**
+- Nama: Zidan Mubarak
+- Lokasi: Indonesia
+- Status: Available for projects
+- Remote: Worldwide
+
+**Pendidikan:**
+- S1 Teknologi Informasi (S.Kom.) - Universitas Islam Negeri Ar-Raniry (2022-2026)
+- SMA IPA - MAS Tgk. Chiek Oemar Diyan (2019-2022)
+
+**Pengalaman Kerja:**
+1. Machine Learning Engineer Cohort - Coding Camp powered by DBS Foundation (Feb 2025 - Present)
+   - Mengembangkan solusi AI dengan Django, TensorFlow, PyTorch
+   - Memimpin tim developer dalam membuat solusi AI inovatif
+   - Mengarsiteki sistem machine learning yang scalable
+
+2. Data Management & Analysis - Badan Pengelolaan Keuangan Aceh (Jan 2025 - Mar 2025)
+   - Membantu proses digitalisasi dan pengolahan data keuangan
+   - Menyiapkan dokumentasi internal dan laporan aktivitas operasional
+   - Mendukung tim dalam aktivitas administratif dan pelaporan data keuangan
+
+**Sertifikasi:**
+1. Applied Machine Learning - Dicoding Indonesia (Mei 2025)
+   - Machine Learning System Design
+   - Developing a Machine Learning Project
+   - Case studies: Predictive Analytics, Sentiment Analysis, Computer Vision, Recommendation Systems
+
+2. Learn Data Processing Fundamentals - Dicoding Indonesia (Mei 2025)
+   - Software Engineering with Python
+   - Data Repository
+   - ETL Pipelines: Extract, Transform, Load
+   - Automation with Python
+
+**Keahlian Teknis:**
+- **Programming Languages:** Python, JavaScript, TypeScript
+- **AI/ML:** TensorFlow, PyTorch, Scikit-learn, Pandas, NumPy
+- **Web Development:** React, Next.js, Node.js, Django
+- **Database:** PostgreSQL, MongoDB, SQLite
+- **Tools:** Git, Docker, Jupyter Notebook, VS Code
+- **Cloud:** AWS, Google Cloud Platform
+- **Other:** REST APIs, GraphQL, CI/CD, Agile/Scrum
+
+**Proyek & Portfolio:**
+- Climate Agriculture ML Analysis - Analisis machine learning untuk pertanian berbasis iklim
+- Enkripsi Python - Implementasi algoritma enkripsi dan dekripsi
+- Toko Buku CLI CRUD - Aplikasi CLI untuk manajemen toko buku
+- Data Visualization Dashboard - Dashboard visualisasi data interaktif
+- Guest Book System - Sistem buku tamu web-based dengan PHP
+- Portfolio Website - Website portfolio pribadi dengan React dan Next.js
+- Chatbot AI dengan Gemini API (proyek ini)
+
+**Tujuan & Visi:**
+- Mendemokratisasi teknologi AI dan membuatnya accessible untuk semua orang
+- Membangun solusi AI yang menyelesaikan masalah real-world
+- Berkolaborasi dalam proyek inovatif yang mendorong batas kemungkinan AI
+- Berbagi pengetahuan dengan komunitas developer
+
+**Kontak & Sosial Media:**
+- Email: zidanmubarak00@gmail.com
+- GitHub: github.com/zidanmubarak
+- LinkedIn: linkedin.com/in/zidan-mubarak
+- Portfolio: [URL Portfolio]
+
+**Pesan untuk Klien/Pengunjung:**
+Saya siap membantu Anda dengan pertanyaan tentang portfolio, pengalaman, keahlian teknis, atau proyek yang ingin dikembangkan. Saya juga terbuka untuk kolaborasi dan proyek freelance dalam bidang AI/ML dan web development.
+
+Jawablah pertanyaan pengunjung dengan ramah, profesional, dan berdasarkan informasi di atas. Jika ada pertanyaan yang tidak tercakup dalam konteks ini, berikan jawaban yang umum namun tetap membantu.
+`;
+
+// Typing Indicator Component
+const TypingIndicator = () => (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="flex items-center gap-2 p-3 bg-slate-700/50 rounded-lg max-w-[80%]"
+  >
+    <div className="w-6 h-6 rounded-full bg-blue-600/20 flex items-center justify-center flex-shrink-0">
+      <Bot className="w-3 h-3 text-blue-400" />
+    </div>
+    <div className="flex items-center gap-1">
+      <div className="flex space-x-1">
+        <motion.div
+          className="w-2 h-2 bg-blue-400 rounded-full"
+          animate={{ scale: [1, 1.2, 1] }}
+          transition={{ duration: 0.6, repeat: Infinity, delay: 0 }}
+        />
+        <motion.div
+          className="w-2 h-2 bg-blue-400 rounded-full"
+          animate={{ scale: [1, 1.2, 1] }}
+          transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }}
+        />
+        <motion.div
+          className="w-2 h-2 bg-blue-400 rounded-full"
+          animate={{ scale: [1, 1.2, 1] }}
+          transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }}
+        />
+      </div>
+      <span className="text-xs text-slate-400 ml-2">AI sedang mengetik...</span>
+    </div>
+  </motion.div>
+);
+
+// Thinking Animation Component
+const ThinkingAnimation = () => (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="flex items-center gap-2 p-3 bg-slate-700/50 rounded-lg max-w-[80%]"
+  >
+    <div className="w-6 h-6 rounded-full bg-purple-600/20 flex items-center justify-center flex-shrink-0">
+      <Bot className="w-3 h-3 text-purple-400" />
+    </div>
+    <div className="flex items-center gap-2">
+      <motion.div
+        className="flex space-x-1"
+        animate={{ rotate: [0, 360] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+      >
+        <div className="w-1 h-1 bg-purple-400 rounded-full" />
+        <div className="w-1 h-1 bg-purple-400 rounded-full" />
+        <div className="w-1 h-1 bg-purple-400 rounded-full" />
+      </motion.div>
+      <span className="text-xs text-slate-400">AI sedang berpikir...</span>
+    </div>
+  </motion.div>
+);
+
 export function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      text: "Hello! How can I help you today?",
+      text: "Hello! I'm Zidan's Portfolio Assistant. I can help you learn about his experience, skills, projects, and more! How can I assist you today? 🤖",
       sender: "bot",
       timestamp: new Date(),
     },
   ]);
   const [inputMessage, setInputMessage] = useState("");
   const [isResponding, setIsResponding] = useState(false);
+  const [isThinking, setIsThinking] = useState(false);
+  const [showTyping, setShowTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -51,38 +187,41 @@ export function ChatbotWidget() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, showTyping, isThinking]);
 
-  const typingEffect = (text: string, messageId: string) => {
-    let currentText = "";
-    let wordIndex = 0;
-    const words = text.split(" ");
+  const typeMessage = (text: string, messageId: string) => {
+    return new Promise<void>((resolve) => {
+      let currentText = "";
+      let charIndex = 0;
+      const typingSpeed = 30; // ms per character
 
-    if (typingIntervalRef.current) {
-      clearInterval(typingIntervalRef.current);
-    }
-
-    typingIntervalRef.current = setInterval(() => {
-      if (wordIndex < words.length) {
-        currentText += (wordIndex === 0 ? "" : " ") + words[wordIndex++];
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === messageId ? { ...msg, text: currentText } : msg
-          )
-        );
-        scrollToBottom();
-      } else {
-        if (typingIntervalRef.current) {
-          clearInterval(typingIntervalRef.current);
-        }
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === messageId ? { ...msg, isLoading: false } : msg
-          )
-        );
-        setIsResponding(false);
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
       }
-    }, 40);
+
+      typingIntervalRef.current = setInterval(() => {
+        if (charIndex < text.length) {
+          currentText += text[charIndex];
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === messageId ? { ...msg, text: currentText } : msg
+            )
+          );
+          charIndex++;
+          scrollToBottom();
+        } else {
+          if (typingIntervalRef.current) {
+            clearInterval(typingIntervalRef.current);
+          }
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === messageId ? { ...msg, isTyping: false } : msg
+            )
+          );
+          resolve();
+        }
+      }, typingSpeed);
+    });
   };
 
   const generateResponse = async (userMessage: string) => {
@@ -91,15 +230,47 @@ export function ChatbotWidget() {
       return;
     }
 
-    const userMessageObj: ChatHistory = {
+    // Prepare the system message with portfolio context
+    const systemMessage: ChatHistory = {
       role: "user",
-      parts: [{ text: userMessage }],
+      parts: [
+        {
+          text: `You are Zidan's Portfolio Assistant. Use this context to answer questions about Zidan:
+
+${PORTFOLIO_CONTEXT}
+
+User's question: ${userMessage}
+
+Please respond in a friendly, professional manner. If the question is about Zidan's portfolio, experience, skills, or projects, use the context above. If it's a general question, provide a helpful response. Always respond in the same language as the user's question (Indonesian or English).`,
+        },
+      ],
     };
 
-    chatHistory.current.push(userMessageObj);
+    // If this is the first message, initialize chat history with system message
+    if (chatHistory.current.length === 0) {
+      chatHistory.current = [systemMessage];
+    } else {
+      // Add user message to existing conversation
+      const userMessageObj: ChatHistory = {
+        role: "user",
+        parts: [{ text: userMessage }],
+      };
+      chatHistory.current.push(userMessageObj);
+    }
+
     abortControllerRef.current = new AbortController();
 
     try {
+      // Show thinking animation
+      setIsThinking(true);
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Minimum thinking time
+      setIsThinking(false);
+
+      // Show typing indicator
+      setShowTyping(true);
+      await new Promise((resolve) => setTimeout(resolve, 800)); // Minimum typing delay
+      setShowTyping(false);
+
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -122,7 +293,7 @@ export function ChatbotWidget() {
         text: "",
         sender: "bot",
         timestamp: new Date(),
-        isLoading: true,
+        isTyping: true,
       };
 
       setMessages((prev) => [...prev, botMessage]);
@@ -130,13 +301,19 @@ export function ChatbotWidget() {
         role: "model",
         parts: [{ text: responseText }],
       });
-      typingEffect(responseText, botMessage.id);
+
+      // Type the message character by character
+      await typeMessage(responseText, botMessage.id);
+      setIsResponding(false);
     } catch (error) {
+      setIsThinking(false);
+      setShowTyping(false);
+
       if (error instanceof Error) {
         const errorMessage =
           error.name === "AbortError"
             ? "Response generation stopped."
-            : error.message;
+            : "Sorry, I encountered an error. Please try again.";
 
         setMessages((prev) => [
           ...prev,
@@ -145,7 +322,7 @@ export function ChatbotWidget() {
             text: errorMessage,
             sender: "bot",
             timestamp: new Date(),
-            isLoading: false,
+            isTyping: false,
           },
         ]);
       }
@@ -179,8 +356,10 @@ export function ChatbotWidget() {
       clearInterval(typingIntervalRef.current);
     }
     setIsResponding(false);
+    setIsThinking(false);
+    setShowTyping(false);
     setMessages((prev) =>
-      prev.map((msg) => (msg.isLoading ? { ...msg, isLoading: false } : msg))
+      prev.map((msg) => (msg.isTyping ? { ...msg, isTyping: false } : msg))
     );
   };
 
@@ -188,13 +367,15 @@ export function ChatbotWidget() {
     setMessages([
       {
         id: "1",
-        text: "Hello! How can I help you today?",
+        text: "Hello! I'm Zidan's Portfolio Assistant. I can help you learn about his experience, skills, projects, and more! How can I assist you today? 🤖",
         sender: "bot",
         timestamp: new Date(),
       },
     ]);
     chatHistory.current = [];
     setIsResponding(false);
+    setIsThinking(false);
+    setShowTyping(false);
     if (typingIntervalRef.current) {
       clearInterval(typingIntervalRef.current);
     }
@@ -247,29 +428,22 @@ export function ChatbotWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.8 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed sm:absolute bottom-16 sm:bottom-20 right-0 sm:right-0 w-[calc(100vw-2rem)] sm:w-96 h-[calc(100vh-8rem)] sm:h-[600px] bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-700/50 rounded-xl shadow-2xl flex flex-col overflow-hidden mx-4 sm:mx-0"
+            className="fixed bottom-4 right-4 z-50 w-80 sm:w-96 h-[calc(100vh-8rem)] sm:h-[600px] bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl flex flex-col overflow-hidden mx-4 sm:mx-0"
           >
             <div className="bg-gradient-to-r from-blue-600 to-purple-700 p-3 sm:p-4 text-white font-semibold flex justify-between items-center">
               <div className="flex items-center gap-2">
-                <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/20 flex items-center justify-center">
-                  <svg
-                    className="w-3 h-3 sm:w-4 sm:h-4 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-                    />
-                  </svg>
-                </div>
-                <span className="text-sm sm:text-base">
-                  Portfolio Assistant
-                </span>
+                <motion.div
+                  className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/20 flex items-center justify-center"
+                  animate={{ rotate: isThinking ? 360 : 0 }}
+                  transition={{
+                    duration: 2,
+                    repeat: isThinking ? Infinity : 0,
+                    ease: "linear",
+                  }}
+                >
+                  <Bot className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+                </motion.div>
+                <span className="text-sm sm:text-base">Zidan's Assistant</span>
               </div>
               <div className="flex gap-1 sm:gap-2">
                 <Button
@@ -298,6 +472,7 @@ export function ChatbotWidget() {
                   key={message.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
                   className={`mb-3 sm:mb-4 flex ${
                     message.sender === "user" ? "justify-end" : "justify-start"
                   }`}
@@ -310,66 +485,83 @@ export function ChatbotWidget() {
                     }`}
                   >
                     {message.sender === "bot" && (
-                      <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-600/20 flex items-center justify-center mt-1 flex-shrink-0">
-                        <svg
-                          className="w-3 h-3 sm:w-4 sm:h-4 text-blue-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-                          />
-                        </svg>
+                      <motion.div
+                        className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-600/20 flex items-center justify-center mt-1 flex-shrink-0"
+                        animate={{ scale: message.isTyping ? [1, 1.1, 1] : 1 }}
+                        transition={{
+                          duration: 1,
+                          repeat: message.isTyping ? Infinity : 0,
+                        }}
+                      >
+                        <Bot className="w-3 h-3 sm:w-4 sm:h-4 text-blue-400" />
+                      </motion.div>
+                    )}
+                    {message.sender === "user" && (
+                      <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-green-600/20 flex items-center justify-center mt-1 flex-shrink-0">
+                        <User className="w-3 h-3 sm:w-4 sm:h-4 text-green-400" />
                       </div>
                     )}
-                    <div
+                    <motion.div
                       className={`p-2 sm:p-3 rounded-lg text-sm sm:text-base ${
                         message.sender === "user"
                           ? "bg-blue-600 text-white"
-                          : "bg-slate-700 text-slate-200"
-                      } ${message.isLoading ? "animate-pulse" : ""}`}
+                          : "bg-slate-700/80 text-slate-200"
+                      } ${message.isTyping ? "animate-pulse" : ""}`}
+                      animate={{
+                        scale: message.isTyping ? [1, 1.02, 1] : 1,
+                      }}
+                      transition={{
+                        duration: 0.5,
+                        repeat: message.isTyping ? Infinity : 0,
+                      }}
                     >
                       {message.text}
-                      {message.isLoading && !message.text && (
-                        <span className="inline-block w-2 h-4 bg-white/50 animate-blink" />
+                      {message.isTyping && (
+                        <motion.span
+                          className="inline-block w-0.5 h-4 bg-blue-400 ml-1"
+                          animate={{ opacity: [1, 0, 1] }}
+                          transition={{ duration: 0.8, repeat: Infinity }}
+                        />
                       )}
-                    </div>
+                    </motion.div>
                   </div>
                 </motion.div>
               ))}
+
+              {/* Thinking Animation */}
+              {isThinking && <ThinkingAnimation />}
+
+              {/* Typing Indicator */}
+              {showTyping && <TypingIndicator />}
+
               <div ref={messagesEndRef} />
             </div>
 
             <form
               onSubmit={handleSendMessage}
-              className="p-3 sm:p-4 border-t border-slate-700/50"
+              className="p-3 sm:p-4 border-t border-white/10"
             >
               <div className="flex gap-2">
                 <input
                   type="text"
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
-                  placeholder="Type your message..."
-                  className="flex-1 p-2 text-sm sm:text-base rounded-md bg-slate-700/50 border border-slate-600/50 text-white placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  placeholder="Ask about Zidan's experience, skills, projects..."
+                  className="flex-1 p-2 text-sm sm:text-base rounded-md bg-slate-700/50 border border-slate-600/50 text-white placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all duration-200"
                   disabled={isResponding}
                 />
                 {isResponding ? (
                   <Button
                     type="button"
                     onClick={stopResponse}
-                    className="h-9 sm:h-10 px-3 sm:px-4 bg-red-600 hover:bg-red-700 text-white rounded-md"
+                    className="h-9 sm:h-10 px-3 sm:px-4 bg-red-600 hover:bg-red-700 text-white rounded-md transition-all duration-200"
                   >
                     <StopCircle className="h-4 w-4 sm:h-5 sm:w-5" />
                   </Button>
                 ) : (
                   <Button
                     type="submit"
-                    className="h-9 sm:h-10 px-3 sm:px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
+                    className="h-9 sm:h-10 px-3 sm:px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-all duration-200"
                     disabled={!inputMessage.trim()}
                   >
                     <Send className="h-4 w-4 sm:h-5 sm:w-5" />

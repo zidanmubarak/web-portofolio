@@ -279,7 +279,7 @@ export function ContactSection() {
                   whileHover={{ y: -5, scale: 1.02 }}
                   className="group"
                 >
-                  <Card className="bg-gradient-to-br from-slate-900/80 via-slate-800/80 to-slate-900/80 border border-slate-700/50 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden h-full transition-all duration-500 hover:shadow-3xl">
+                  <Card className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl rounded-3xl overflow-hidden h-full transition-all duration-500 hover:bg-white/8 hover:shadow-3xl">
                     <CardContent className="p-8 text-center">
                       <div
                         className={`w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-r ${method.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}
@@ -321,7 +321,7 @@ export function ContactSection() {
               transition={{ duration: 0.8, delay: 0.6 }}
               viewport={{ once: true }}
             >
-              <Card className="bg-gradient-to-br from-slate-900/80 via-slate-800/80 to-slate-900/80 border border-slate-700/50 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden">
+              <Card className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl rounded-3xl overflow-hidden">
                 <CardHeader>
                   <CardTitle className="text-3xl font-bold text-white flex items-center gap-3">
                     <Send className="h-8 w-8 text-blue-400" />
@@ -457,7 +457,7 @@ export function ContactSection() {
               className="space-y-8"
             >
               {/* Availability Card */}
-              <Card className="bg-gradient-to-br from-slate-900/80 via-slate-800/80 to-slate-900/80 border border-slate-700/50 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden">
+              <Card className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl rounded-3xl overflow-hidden">
                 <CardHeader>
                   <CardTitle className="text-2xl font-bold text-white flex items-center gap-3">
                     <Clock className="h-6 w-6 text-blue-400" />
@@ -523,7 +523,7 @@ export function ContactSection() {
               </Card>
 
               {/* Location & Time Card */}
-              <Card className="bg-gradient-to-br from-slate-900/80 via-slate-800/80 to-slate-900/80 border border-slate-700/50 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden">
+              <Card className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl rounded-3xl overflow-hidden">
                 <CardHeader>
                   <CardTitle className="text-2xl font-bold text-white flex items-center gap-3">
                     <MapPin className="h-6 w-6 text-green-400" />
@@ -619,7 +619,7 @@ export function ContactSection() {
                     whileTap={{ scale: 0.95 }}
                     className="group"
                   >
-                    <Card className="bg-gradient-to-br from-slate-900/80 via-slate-800/80 to-slate-900/80 border border-slate-700/50 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden h-full transition-all duration-500 hover:shadow-3xl">
+                    <Card className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl rounded-3xl overflow-hidden h-full transition-all duration-500 hover:bg-white/8 hover:shadow-3xl">
                       <CardContent className="p-6 text-center">
                         <div
                           className={`w-16 h-16 mx-auto mb-4 rounded-2xl ${social.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}
@@ -663,7 +663,7 @@ export function ContactSection() {
             viewport={{ once: true }}
             className="text-center mt-20"
           >
-            <div className="bg-gradient-to-r from-slate-900/50 via-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-12 shadow-2xl">
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-12 shadow-2xl">
               <div className="flex items-center justify-center gap-3 mb-6">
                 <Heart className="h-8 w-8 text-red-400 animate-pulse" />
                 <Star className="h-6 w-6 text-yellow-400 animate-pulse" />

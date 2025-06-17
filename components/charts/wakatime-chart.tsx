@@ -1,10 +1,10 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function WakatimeChart() {
   return (
-    <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm">
+    <Card className="bg-white/5 backdrop-blur-xl border border-white/10">
       <CardHeader>
         <CardTitle className="text-white">Weekly Coding Activity</CardTitle>
       </CardHeader>
