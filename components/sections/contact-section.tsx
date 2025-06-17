@@ -102,7 +102,7 @@ const contactMethods = [
     icon: MessageCircle,
     color: "from-blue-500 to-cyan-500",
     action: "Start Chat",
-    href: "mailto:zidan@example.com",
+    href: "mailto:zidanmubarak00@gmail.com",
   },
   {
     title: "Video Call",
@@ -118,7 +118,7 @@ const contactMethods = [
     icon: Zap,
     color: "from-green-500 to-emerald-500",
     action: "Send Inquiry",
-    href: "mailto:zidan@example.com",
+    href: "mailto:zidanmubarak00@gmail.com",
   },
 ];
 
@@ -686,7 +686,7 @@ export function ContactSection() {
                   className="bg-gradient-to-r from-blue-500 via-purple-600 to-pink-500 hover:from-blue-600 hover:via-purple-700 hover:to-pink-600 text-white px-10 py-5 text-xl rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105"
                   asChild
                 >
-                  <a href="mailto:zidan@example.com">
+                  <a href="mailto:zidanmubarak00@gmail.com">
                     <Mail className="mr-3 h-6 w-6" />
                     Start a Conversation
                     <ArrowUpRight className="ml-3 h-5 w-5" />

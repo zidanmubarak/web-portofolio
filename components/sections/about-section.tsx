@@ -847,36 +847,32 @@ export function AboutSection() {
             viewport={{ once: true }}
             className="mt-16 sm:mt-20"
           >
-            <Card className="bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-violet-500/10 backdrop-blur-xl border border-pink-500/30 shadow-2xl rounded-3xl overflow-hidden">
-              <CardContent className="p-8 sm:p-12 text-center">
+            <Card className="bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-violet-500/10 backdrop-blur-xl border border-pink-500/30 shadow-2xl rounded-3xl overflow-hidden relative group">
+              {/* Background gradient border effect */}
+              <div
+                className="absolute inset-0 rounded-3xl p-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                style={{
+                  background:
+                    "linear-gradient(45deg, #ec4899, #8b5cf6, #a855f7)",
+                }}
+              ></div>
+              <CardContent className="p-8 sm:p-12 text-center relative z-10 bg-slate-950 rounded-[calc(1.5rem-1px)]">
                 <motion.div
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.01 }} /* Reduced scale on hover */
                   transition={{ duration: 0.3 }}
                 >
-                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-6">
-                    Support My{" "}
-                    <span className="bg-gradient-to-r from-pink-400 via-purple-500 to-violet-500 bg-clip-text text-transparent">
-                      Work
-                    </span>
+                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-6 flex items-center justify-center gap-3">
+                    <Brain className="h-8 w-8 sm:h-10 sm:w-10 text-blue-400 flex-shrink-0 animate-pulse" />
+                    <em className="bg-gradient-to-r from-pink-400 via-purple-500 to-violet-500 bg-clip-text text-transparent">
+                      "Artificial intelligence is not a substitute for human
+                      intelligence; it is a tool to amplify human creativity and
+                      ingenuity."
+                    </em>
+                    <Sparkles className="h-8 w-8 sm:h-10 sm:w-10 text-yellow-400 flex-shrink-0 animate-pulse" />
                   </h3>
-                  <p className="text-slate-300 mb-6 sm:mb-8 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed px-4">
-                    Help me continue creating innovative AI solutions and
-                    sharing knowledge with the developer community!
+                  <p className="text-slate-300 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed px-4">
+                    — Fei-Fei Li
                   </p>
-                  <Button
-                    className="bg-gradient-to-r from-pink-500 via-purple-600 to-violet-500 hover:from-pink-600 hover:via-purple-700 hover:to-violet-600 text-white px-8 sm:px-12 py-3 sm:py-4 text-base sm:text-lg rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 w-full sm:w-auto"
-                    size="lg"
-                    asChild
-                  >
-                    <a
-                      href="https://github.com/sponsors/zidanmubarak"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Coffee className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6" />
-                      Sponsor My Work
-                    </a>
-                  </Button>
                 </motion.div>
               </CardContent>
             </Card>

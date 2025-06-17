@@ -9,13 +9,8 @@ import {
   Activity,
   Code,
   Clock,
-  Calendar,
-  TrendingUp,
   Github,
   Zap,
-  Target,
-  Award,
-  Flame,
   Star,
   GitFork,
   Users,
@@ -48,64 +43,6 @@ interface GitHubRepo {
   language: string;
   updated_at: string;
 }
-
-const wakatimeStats = [
-  {
-    title: "Start Date",
-    value: "December 01, 2024",
-    color: "from-blue-400 to-cyan-400",
-    icon: Calendar,
-    bgGradient: "from-blue-500/20 to-cyan-500/20",
-    borderColor: "border-blue-500/30",
-    change: "+12%",
-  },
-  {
-    title: "End Date",
-    value: "December 07, 2024",
-    color: "from-green-400 to-emerald-400",
-    icon: Target,
-    bgGradient: "from-green-500/20 to-emerald-500/20",
-    borderColor: "border-green-500/30",
-    change: "+8%",
-  },
-  {
-    title: "Daily Average",
-    value: "8 hrs 45 mins",
-    color: "from-purple-400 to-violet-400",
-    icon: TrendingUp,
-    bgGradient: "from-purple-500/20 to-violet-500/20",
-    borderColor: "border-purple-500/30",
-    change: "+15%",
-  },
-  {
-    title: "Total Time",
-    value: "61 hrs 15 mins",
-    color: "from-orange-400 to-red-400",
-    icon: Clock,
-    bgGradient: "from-orange-500/20 to-red-500/20",
-    borderColor: "border-orange-500/30",
-    change: "+23%",
-  },
-  {
-    title: "Best Day",
-    value: "December 05, 2024",
-    subtitle: "12 hrs 30 mins",
-    color: "from-pink-400 to-rose-400",
-    icon: Award,
-    bgGradient: "from-pink-500/20 to-rose-500/20",
-    borderColor: "border-pink-500/30",
-    change: "+45%",
-  },
-  {
-    title: "All Time",
-    value: "1,847 hrs 22 mins",
-    color: "from-cyan-400 to-blue-400",
-    icon: Flame,
-    bgGradient: "from-cyan-500/20 to-blue-500/20",
-    borderColor: "border-cyan-500/30",
-    change: "+156%",
-  },
-];
 
 const activityData = [
   { day: "Mon", hours: 8.5, commits: 12 },
@@ -152,7 +89,7 @@ export function DashboardSection() {
   const [githubUser, setGithubUser] = useState<GitHubUser | null>(null);
   const [githubRepos, setGithubRepos] = useState<GitHubRepo[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("tech");
 
   const username = "zidanmubarak";
 
@@ -248,10 +185,9 @@ export function DashboardSection() {
   ];
 
   const tabs = [
-    { id: "overview", label: "Overview", icon: BarChart3 },
+    { id: "tech", label: "Tech Stack", icon: Code },
     { id: "activity", label: "Activity", icon: Activity },
     { id: "github", label: "GitHub", icon: Github },
-    { id: "tech", label: "Tech Stack", icon: Code },
   ];
 
   if (!mounted) {
@@ -406,57 +342,15 @@ export function DashboardSection() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
             >
-              {activeTab === "overview" && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-                  {wakatimeStats.map((stat, index) => {
-                    const IconComponent = stat.icon;
-                    return (
-                      <motion.div
-                        key={stat.title}
-                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        transition={{ delay: index * 0.1, duration: 0.6 }}
-                        whileHover={{ y: -10, scale: 1.02 }}
-                        className="group"
-                      >
-                        <Card
-                          className={`bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl rounded-3xl overflow-hidden transition-all duration-500 hover:bg-white/8 hover:shadow-3xl`}
-                        >
-                          <CardContent className="p-8 relative">
-                            <div className="flex justify-between items-start mb-4">
-                              <div className="p-3 rounded-2xl bg-white/10 backdrop-blur-sm">
-                                <IconComponent
-                                  className={`h-6 w-6 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}
-                                />
-                              </div>
-                              {stat.change && (
-                                <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
-                                  {stat.change}
-                                </Badge>
-                              )}
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-slate-400 text-sm font-medium uppercase tracking-wider">
-                                {stat.title}
-                              </p>
-                              <p
-                                className={`text-2xl sm:text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent leading-tight`}
-                              >
-                                {stat.value}
-                              </p>
-                              {stat.subtitle && (
-                                <p className="text-slate-400 text-base font-medium">
-                                  {stat.subtitle}
-                                </p>
-                              )}
-                            </div>
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    );
-                  })}
-                </div>
+              {activeTab === "tech" && (
+                <motion.div
+                  className="mb-16"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <TechStackGrid />
+                </motion.div>
               )}
 
               {activeTab === "activity" && (
@@ -627,19 +521,6 @@ export function DashboardSection() {
                   })}
                 </div>
               )}
-
-              {activeTab === "tech" && (
-                <motion.div
-                  className="mb-16"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8 }}
-                >
-                  <div className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl rounded-3xl p-8">
-                    <TechStackGrid />
-                  </div>
-                </motion.div>
-              )}
             </motion.div>
           </AnimatePresence>
 
@@ -651,47 +532,34 @@ export function DashboardSection() {
             viewport={{ once: true }}
             className="text-center"
           >
-            <div className="bg-gradient-to-r from-slate-900/50 via-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-12 shadow-2xl">
-              <h3 className="text-3xl font-bold text-white mb-4">
-                Want to collaborate on something amazing?
-              </h3>
-              <p className="text-slate-400 mb-8 text-lg max-w-2xl mx-auto">
-                Let's build the next big thing together. I'm always excited to
-                work on innovative projects that push the boundaries of
-                technology.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-blue-500 via-purple-600 to-pink-500 hover:from-blue-600 hover:via-purple-700 hover:to-pink-600 text-white px-8 py-4 text-lg rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105"
-                  onClick={() => {
-                    const element = document.getElementById("contact");
-                    if (element) {
-                      element.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
+            <Card className="bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-violet-500/10 backdrop-blur-xl border border-pink-500/30 shadow-2xl rounded-3xl overflow-hidden relative group">
+              {/* Background gradient border effect */}
+              <div
+                className="absolute inset-0 rounded-3xl p-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                style={{
+                  background:
+                    "linear-gradient(45deg, #ec4899, #8b5cf6, #a855f7)",
+                }}
+              ></div>
+              <CardContent className="p-8 sm:p-12 text-center relative z-10 bg-slate-950 rounded-[calc(1.5rem-1px)]">
+                <motion.div
+                  whileHover={{ scale: 1.01 }} /* Reduced scale on hover */
+                  transition={{ duration: 0.3 }}
                 >
-                  <Coffee className="mr-3 h-6 w-6" />
-                  Let's Connect
-                  <ArrowUpRight className="ml-2 h-5 w-5" />
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-slate-600/50 text-slate-300 hover:bg-slate-800/50 hover:text-white hover:border-blue-500/30 px-8 py-4 text-lg rounded-2xl transition-all duration-300 hover:scale-105"
-                  asChild
-                >
-                  <a
-                    href="https://github.com/zidanmubarak"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Github className="mr-3 h-6 w-6" />
-                    View GitHub
-                  </a>
-                </Button>
-              </div>
-            </div>
+                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-6 flex items-center justify-center gap-3">
+                    <Brain className="h-8 w-8 sm:h-10 sm:w-10 text-blue-400 flex-shrink-0 animate-pulse" />
+                    <em className="bg-gradient-to-r from-pink-400 via-purple-500 to-violet-500 bg-clip-text text-transparent">
+                      "The future belongs to those who can collaborate with AI,
+                      not compete against it."
+                    </em>
+                    <Sparkles className="h-8 w-8 sm:h-10 sm:w-10 text-yellow-400 flex-shrink-0 animate-pulse" />
+                  </h3>
+                  <p className="text-slate-300 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed px-4">
+                    — Elon Musk
+                  </p>
+                </motion.div>
+              </CardContent>
+            </Card>
           </motion.div>
         </motion.div>
       </div>
