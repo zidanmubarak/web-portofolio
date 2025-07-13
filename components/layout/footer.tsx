@@ -31,7 +31,7 @@ export function Footer() {
     {
       name: "Email",
       icon: Mail,
-      href: "mailto:zidan@example.com",
+      href: "mailto:zidanmubarak@gmail.com",
       color: "hover:text-green-400",
     },
   ];
@@ -65,7 +65,7 @@ export function Footer() {
               Zidan <span className="gradient-text">Mubarak</span>
             </h3>
             <p className="text-slate-400 mb-6 max-w-md leading-relaxed">
-              Passionate AI/ML engineer and full-stack developer from Indonesia.
+              Passionate AI/ML engineer from Indonesia.
               Building intelligent solutions that make a difference in the
               world.
             </p>
@@ -162,15 +162,7 @@ export function Footer() {
               © {currentYear} Zidan Mubarak. All rights reserved.
             </p>
             <p className="text-slate-400 text-sm flex items-center">
-              Made with <Heart className="mx-1 h-4 w-4 text-red-400" /> using{" "}
-              <a
-                href="https://bolt.new"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-400 hover:underline"
-              >
-                bolt.new
-              </a>
+              Made with <Heart className="mx-1 h-4 w-4 text-red-400" /> v2.0
             </p>
           </div>
         </motion.div>

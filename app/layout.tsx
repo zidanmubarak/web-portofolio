@@ -20,10 +20,14 @@ export const metadata: Metadata = {
     "Portfolio",
   ],
   authors: [{ name: "Zidan Mubarak" }],
-  viewport: "width=device-width, initial-scale=1",
   icons: {
-    icon: "/favicon.png", // Anda bisa menggunakan '/icon.png' jika logo Anda dalam format PNG
+    icon: "images/profil/favicon.png?auto=compress&cs=tinysrgb&w=100", // Anda bisa menggunakan '/icon.png' jika logo Anda dalam format PNG
   },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
