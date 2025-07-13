@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import Spline from "@splinetool/react-spline";
 import {
   ArrowRight,
   Download,
@@ -19,6 +20,9 @@ import {
   Terminal,
   Cpu,
   Database,
+  Bot,
+  CpuIcon,
+  Rocket,
 } from "lucide-react";
 
 export function HeroSection() {
@@ -29,11 +33,7 @@ export function HeroSection() {
   >([]);
   const fullName = "Zidan Mubarak";
 
-  const roles = [
-    "AI/ML Engineer",
-    "Python Enthusiast",
-    "Open Source Contributor",
-  ];
+  const roles = ["AI/ML Engineer", "Python Enthusiast", "ML Project Builder"];
 
   const codeSnippets = [
     "import tensorflow as tf",
@@ -43,6 +43,24 @@ export function HeroSection() {
     "return predictions",
     "# Building the future with AI",
   ];
+
+  // Tambahkan lebih banyak quotes AI/ML
+  const aiQuotes = [
+    "Neural Networks in Action",
+    "Automate. Predict. Innovate.",
+    "AI is not magic, it's mathematics",
+    "From data to decision",
+    "Deep Learning, Deep Impact",
+    "Data is the new oil",
+    "Smart solutions for a smarter world",
+  ];
+
+  // Pilih 7 quotes secara acak untuk orbit
+  const [orbitQuotes, setOrbitQuotes] = useState<string[]>([]);
+  useEffect(() => {
+    const shuffled = aiQuotes.sort(() => 0.5 - Math.random());
+    setOrbitQuotes(shuffled.slice(0, 6));
+  }, []);
 
   useEffect(() => {
     let index = 0;
@@ -75,6 +93,24 @@ export function HeroSection() {
       }));
       setParticleTargetPositions(positions);
     }
+  }, []);
+
+  // Untuk partikel acak, gunakan state dan inisialisasi di client
+  const [particlePositions, setParticlePositions] = useState<
+    Array<{ top: number; left: number }>
+  >([]);
+  useEffect(() => {
+    const arr = Array.from({ length: 5 }, () => ({
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+    }));
+    setParticlePositions(arr);
+  }, []);
+
+  // Tambahkan state untuk cek client
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
   }, []);
 
   const scrollToSection = (sectionId: string) => {
@@ -115,59 +151,64 @@ export function HeroSection() {
           className="absolute inset-0"
           style={{
             backgroundImage: `
-            linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)
-          `,
+              linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)
+            `,
             backgroundSize: "50px 50px",
           }}
         />
       </div>
 
-      {/* Floating Code Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {codeSnippets.map((code, index) => (
-          <motion.div
-            key={index}
-            className="absolute text-blue-400/30 font-mono text-sm"
-            initial={{
-              x: 0,
-              y: 0,
-              opacity: 0,
-            }}
-            animate={{
-              x: particleTargetPositions[index]?.x || 0,
-              y: particleTargetPositions[index]?.y || 0,
-              opacity: [0, 0.7, 0],
-            }}
-            transition={{
-              duration: 15 + Math.random() * 10,
-              repeat: Infinity,
-              delay: index * 2,
-            }}
-          >
-            {code}
-          </motion.div>
-        ))}
-      </div>
+      {/* Render semua elemen acak dan Spline hanya di client */}
+      {isClient && (
+        <>
+          {/* Floating Code Elements */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {codeSnippets.map((code, index) => (
+              <motion.div
+                key={index}
+                className="absolute text-blue-400/30 font-mono text-sm"
+                initial={{
+                  x: 0,
+                  y: 0,
+                  opacity: 0,
+                }}
+                animate={{
+                  x: particleTargetPositions[index]?.x || 0,
+                  y: particleTargetPositions[index]?.y || 0,
+                  opacity: [0, 0.7, 0],
+                }}
+                transition={{
+                  duration: 15 + Math.random() * 10,
+                  repeat: Infinity,
+                  delay: index * 2,
+                }}
+              >
+                {code}
+              </motion.div>
+            ))}
+          </div>
 
-      {/* Geometric Shapes */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-32 h-32 border-2 border-purple-500/20 rounded-full"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-24 h-24 border-2 border-cyan-500/20"
-          animate={{ rotate: -360 }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        />
-        <motion.div
-          className="absolute top-1/2 left-1/6 w-16 h-16 bg-gradient-to-r from-pink-500/10 to-purple-500/10 rounded-lg"
-          animate={{ y: [-20, 20, -20] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        />
-      </div>
+          {/* Geometric Shapes */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <motion.div
+              className="absolute top-1/4 left-1/4 w-32 h-32 border-2 border-purple-500/20 rounded-full"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            />
+            <motion.div
+              className="absolute bottom-1/4 right-1/4 w-24 h-24 border-2 border-cyan-500/20"
+              animate={{ rotate: -360 }}
+              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            />
+            <motion.div
+              className="absolute top-1/2 left-1/6 w-16 h-16 bg-gradient-to-r from-pink-500/10 to-purple-500/10 rounded-lg"
+              animate={{ y: [-20, 20, -20] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </div>
+        </>
+      )}
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -178,17 +219,6 @@ export function HeroSection() {
             animate="visible"
             className="text-center lg:text-left"
           >
-            {/* Status Badge - Removed for cleaner look */}
-            {/* You can uncomment this if you want to keep it with proper spacing */}
-            {/*
-            <motion.div variants={itemVariants}>
-              <Badge className="mb-8 sm:mb-10 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-400 border-green-500/30 backdrop-blur-sm shadow-lg text-sm sm:text-base rounded-full">
-                <div className="w-2 h-2 bg-green-400 rounded-full mr-3 animate-pulse"></div>
-                Available for Projects • Indonesia 🇮🇩
-              </Badge>
-            </motion.div>
-            */}
-
             {/* Main Heading */}
             <motion.div variants={itemVariants} className="mb-6">
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-4">
@@ -229,9 +259,10 @@ export function HeroSection() {
               variants={itemVariants}
               className="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto lg:mx-0 mb-8 leading-relaxed"
             >
-              Passionate about building intelligent systems that solve
-              real-world problems. I specialize in machine learning, web
-              development, and creating innovative AI solutions.
+              I enjoy building intelligent systems that solve real-world
+              problems using machine learning. My main focus is on data-driven
+              solutions, especially in classification, recommendation systems,
+              and computer vision.
             </motion.p>
 
             {/* Action Buttons */}
@@ -320,179 +351,170 @@ export function HeroSection() {
             </motion.div>
           </motion.div>
 
-          {/* Right Side - Visual Element */}
+          {/* Right Side - 3D Robot Display */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
-            className="relative flex justify-center lg:justify-end"
+            className="relative w-full flex justify-center lg:justify-end"
           >
-            {/* Main Profile Container */}
-            <div className="relative">
-              {/* Background Artistic Elements */}
-              <div className="absolute inset-0 -m-8">
-                {/* Colorful Paint Splashes */}
+            <div className="relative w-full max-w-2xl mx-auto">
+              {/* Orbit Quotes - 7 posisi mengelilingi robot */}
+              {orbitQuotes[0] && (
                 <motion.div
-                  className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-blue-400/30 to-cyan-400/30 rounded-full blur-xl"
+                  className="absolute left-1/2 -translate-x-1/2 -top-8 sm:-top-10 text-blue-200 text-xs sm:text-sm font-medium px-2 sm:px-4 py-1.5 sm:py-2 rounded-full bg-blue-900/40 shadow-md backdrop-blur-md pointer-events-none select-none animate-float1"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                  style={{ zIndex: 20 }}
+                >
+                  {orbitQuotes[0]}
+                </motion.div>
+              )}
+              {orbitQuotes[1] && (
+                <motion.div
+                  className="absolute left-0 top-4 sm:top-8 text-purple-200 text-xs sm:text-sm font-medium px-2 sm:px-4 py-1.5 sm:py-2 rounded-full bg-purple-900/40 shadow-md backdrop-blur-md pointer-events-none select-none animate-float2"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 1, delay: 0.7 }}
+                  style={{ zIndex: 20 }}
+                >
+                  {orbitQuotes[1]}
+                </motion.div>
+              )}
+              {orbitQuotes[2] && (
+                <motion.div
+                  className="absolute right-0 top-8 sm:top-16 text-pink-200 text-xs sm:text-sm font-medium px-2 sm:px-4 py-1.5 sm:py-2 rounded-full bg-pink-900/40 shadow-md backdrop-blur-md pointer-events-none select-none animate-float3"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 1, delay: 0.9 }}
+                  style={{ zIndex: 20 }}
+                >
+                  {orbitQuotes[2]}
+                </motion.div>
+              )}
+              {orbitQuotes[3] && (
+                <motion.div
+                  className="absolute left-0 bottom-12 sm:bottom-20 text-green-200 text-xs sm:text-sm font-medium px-2 sm:px-4 py-1.5 sm:py-2 rounded-full bg-green-900/40 shadow-md backdrop-blur-md pointer-events-none select-none animate-float4"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 1, delay: 1.1 }}
+                  style={{ zIndex: 20 }}
+                >
+                  {orbitQuotes[3]}
+                </motion.div>
+              )}
+              {orbitQuotes[4] && (
+                <motion.div
+                  className="absolute right-0 bottom-10 sm:bottom-16 text-yellow-200 text-xs sm:text-sm font-medium px-2 sm:px-4 py-1.5 sm:py-2 rounded-full bg-yellow-900/40 shadow-md backdrop-blur-md pointer-events-none select-none animate-float5"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 1, delay: 1.3 }}
+                  style={{ zIndex: 20 }}
+                >
+                  {orbitQuotes[4]}
+                </motion.div>
+              )}
+              {orbitQuotes[5] && (
+                <motion.div
+                  className="absolute left-1/4 bottom-0 text-cyan-200 text-xs sm:text-sm font-medium px-2 sm:px-4 py-1.5 sm:py-2 rounded-full bg-cyan-900/40 shadow-md backdrop-blur-md pointer-events-none select-none animate-float6"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, delay: 1.5 }}
+                  style={{ zIndex: 20 }}
+                >
+                  {orbitQuotes[5]}
+                </motion.div>
+              )}
+              {orbitQuotes[6] && (
+                <motion.div
+                  className="absolute right-1/4 bottom-0 text-indigo-200 text-xs sm:text-sm font-medium px-2 sm:px-4 py-1.5 sm:py-2 rounded-full bg-indigo-900/40 shadow-md backdrop-blur-md pointer-events-none select-none animate-float7"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, delay: 1.7 }}
+                  style={{ zIndex: 20 }}
+                >
+                  {orbitQuotes[6]}
+                </motion.div>
+              )}
+
+              {/* Subtle Glow Effects */}
+              <div className="absolute inset-0 flex items-center justify-center -z-10">
+                <motion.div
+                  className="w-full h-[300px] md:h-96 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-3xl"
                   animate={{
-                    scale: [1, 1.2, 1],
-                    rotate: [0, 180, 360],
+                    scale: [1, 1.1, 1],
                   }}
                   transition={{ duration: 8, repeat: Infinity }}
                 />
-                <motion.div
-                  className="absolute top-1/4 right-0 w-24 h-24 bg-gradient-to-br from-purple-400/30 to-pink-400/30 rounded-full blur-xl"
-                  animate={{
-                    scale: [1.2, 1, 1.2],
-                    rotate: [360, 180, 0],
-                  }}
-                  transition={{ duration: 6, repeat: Infinity }}
-                />
-                <motion.div
-                  className="absolute bottom-1/4 left-1/4 w-20 h-20 bg-gradient-to-br from-yellow-400/30 to-orange-400/30 rounded-full blur-xl"
-                  animate={{
-                    scale: [1, 1.3, 1],
-                    x: [0, 20, 0],
-                    y: [0, -20, 0],
-                  }}
-                  transition={{ duration: 7, repeat: Infinity }}
-                />
               </div>
 
-              {/* Profile Image Container */}
-              <div className="relative w-80 h-80 sm:w-96 sm:h-96">
-                {/* Geometric Frame */}
-                <div className="absolute inset-0 border-4 border-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-3xl transform rotate-3 bg-gradient-to-br from-slate-900/80 to-slate-800/80 backdrop-blur-sm"></div>
+              {/* Responsive 3D Scene Container */}
+              <motion.div
+                className="relative w-full h-[220px] xs:h-[260px] sm:h-[300px] md:h-[400px] lg:h-[500px] rounded-3xl lg:rounded-[40px] overflow-hidden mx-auto"
+                animate={{
+                  y: [0, -10, 0],
+                  boxShadow: [
+                    "0 15px 30px -12px rgba(59, 130, 246, 0.1)",
+                    "0 20px 40px -10px rgba(139, 92, 246, 0.2)",
+                    "0 15px 30px -12px rgba(59, 130, 246, 0.1)",
+                  ],
+                }}
+                transition={{
+                  y: {
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  },
+                  boxShadow: {
+                    duration: 8,
+                    repeat: Infinity,
+                  },
+                }}
+              >
+                {/* Spline 3D Scene */}
+                {isClient && (
+                  <Spline
+                    scene="https://prod.spline.design/Tc0Gc71hFDDGgfR1/scene.splinecode"
+                    className="w-full h-full"
+                    // title="3D AI Assistant"
+                  />
+                )}
 
-                {/* Main Profile Area */}
-                <div className="relative w-full h-full bg-gradient-to-br from-slate-900/90 to-slate-800/90 rounded-3xl overflow-hidden border border-slate-700/50 backdrop-blur-lg shadow-2xl">
-                  {/* Split Design - Left Side (Designer) */}
-                  <div className="absolute left-0 top-0 w-1/2 h-full bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 backdrop-blur-sm">
-                    <div className="p-6 h-full flex flex-col justify-between">
-                      <div>
-                        <h3 className="text-white font-bold text-xl mb-2">
-                          designer
-                        </h3>
-                        <p className="text-slate-300 text-sm leading-relaxed">
-                          UI/UX Designer with a passion for designing beautiful
-                          and functional user experiences.
-                        </p>
-                      </div>
+                {/* Subtle HUD Elements */}
+                <div className="absolute inset-0 pointer-events-none">
+                  {/* Floating Particles */}
+                  {particlePositions.map((pos, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-1.5 h-1.5 bg-blue-400 rounded-full"
+                      initial={{
+                        opacity: 0,
+                        scale: 0,
+                      }}
+                      animate={{
+                        opacity: [0, 0.8, 0],
+                        scale: [0, 1, 0],
+                      }}
+                      transition={{
+                        duration: 3 + i * 0.3,
+                        repeat: Infinity,
+                        delay: i * 0.3,
+                      }}
+                      style={{
+                        top: `${pos.top}%`,
+                        left: `${pos.left}%`,
+                      }}
+                    />
+                  ))}
 
-                      {/* Artistic Elements */}
-                      <div className="space-y-2">
-                        <motion.div
-                          className="w-full h-2 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"
-                          initial={{ width: 0 }}
-                          animate={{ width: "100%" }}
-                          transition={{ duration: 2, delay: 1 }}
-                        />
-                        <motion.div
-                          className="w-3/4 h-2 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full"
-                          initial={{ width: 0 }}
-                          animate={{ width: "75%" }}
-                          transition={{ duration: 2, delay: 1.5 }}
-                        />
-                        <motion.div
-                          className="w-1/2 h-2 bg-gradient-to-r from-pink-400 to-red-500 rounded-full"
-                          initial={{ width: 0 }}
-                          animate={{ width: "50%" }}
-                          transition={{ duration: 2, delay: 2 }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Split Design - Right Side (Coder) */}
-                  <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-br from-slate-800/80 to-slate-900/80">
-                    <div className="p-6 h-full flex flex-col justify-between">
-                      <div>
-                        <h3 className="text-white font-bold text-xl mb-2 font-mono">
-                          &lt;coder&gt;
-                        </h3>
-                        <p className="text-slate-300 text-sm leading-relaxed">
-                          AI/ML Engineer who focuses on writing clean, elegant
-                          and efficient code.
-                        </p>
-                      </div>
-
-                      {/* Code Elements */}
-                      <div className="space-y-1 font-mono text-xs">
-                        <motion.div
-                          className="text-blue-400"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 2.5 }}
-                        >
-                          &lt;html&gt;
-                        </motion.div>
-                        <motion.div
-                          className="text-green-400 ml-2"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 3 }}
-                        >
-                          &lt;head&gt;
-                        </motion.div>
-                        <motion.div
-                          className="text-purple-400 ml-4"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 3.5 }}
-                        >
-                          class="ai-dev"
-                        </motion.div>
-                        <motion.div
-                          className="text-yellow-400 ml-2"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 4 }}
-                        >
-                          CSS3 HTML5
-                        </motion.div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Center Avatar */}
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl font-bold shadow-2xl border-4 border-white/20">
-                    Z
-                  </div>
-
-                  {/* Tech Icons Floating */}
-                  <motion.div
-                    className="absolute top-4 right-4 p-2 bg-blue-500/20 rounded-lg backdrop-blur-sm"
-                    animate={{ y: [0, -10, 0] }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                  >
-                    <Brain className="h-5 w-5 text-blue-400" />
-                  </motion.div>
-
-                  <motion.div
-                    className="absolute bottom-4 left-4 p-2 bg-purple-500/20 rounded-lg backdrop-blur-sm"
-                    animate={{ y: [0, -8, 0] }}
-                    transition={{ duration: 2.5, repeat: Infinity, delay: 1 }}
-                  >
-                    <Terminal className="h-5 w-5 text-purple-400" />
-                  </motion.div>
-
-                  <motion.div
-                    className="absolute top-1/3 left-2 p-2 bg-green-500/20 rounded-lg backdrop-blur-sm"
-                    animate={{ x: [0, 8, 0] }}
-                    transition={{ duration: 4, repeat: Infinity, delay: 0.5 }}
-                  >
-                    <Database className="h-5 w-5 text-green-400" />
-                  </motion.div>
-
-                  <motion.div
-                    className="absolute bottom-1/3 right-2 p-2 bg-pink-500/20 rounded-lg backdrop-blur-sm"
-                    animate={{ x: [0, -8, 0] }}
-                    transition={{ duration: 3.5, repeat: Infinity, delay: 1.5 }}
-                  >
-                    <Cpu className="h-5 w-5 text-pink-400" />
-                  </motion.div>
+                  {/* Corner Highlights */}
+                  <div className="absolute top-3 left-3 w-2 h-2 bg-blue-400 rounded-full opacity-70"></div>
+                  <div className="absolute top-3 right-3 w-2 h-2 bg-purple-400 rounded-full opacity-70"></div>
+                  <div className="absolute bottom-3 left-3 w-2 h-2 bg-pink-400 rounded-full opacity-70"></div>
+                  <div className="absolute bottom-3 right-3 w-2 h-2 bg-cyan-400 rounded-full opacity-70"></div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>

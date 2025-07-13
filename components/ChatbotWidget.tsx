@@ -159,27 +159,112 @@ const ThinkingAnimation = () => (
   </motion.div>
 );
 
+// Improved ModernThinking spinner
+const ModernThinking = () => (
+  <div className="flex items-center gap-2 p-3">
+    <div className="relative w-8 h-8 flex items-center justify-center">
+      <motion.div
+        className="absolute w-8 h-8 rounded-full bg-gradient-to-tr from-blue-400 to-purple-500 opacity-30"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
+      />
+      {/* Bola utama */}
+      <motion.div
+        className="w-4 h-4 rounded-full bg-blue-400 z-10"
+        animate={{ scale: [1, 1.2, 1] }}
+        transition={{ duration: 0.8, repeat: Infinity }}
+      />
+      {/* Bola kecil keliling */}
+      {[0, 1, 2].map((i) => (
+        <motion.div
+          key={i}
+          className="absolute w-2 h-2 rounded-full bg-purple-400"
+          style={{
+            top: "50%",
+            left: "50%",
+            marginTop: -4,
+            marginLeft: -4,
+          }}
+          animate={{
+            x: [0, 12 * Math.cos((i * 2 * Math.PI) / 3), 0],
+            y: [0, 12 * Math.sin((i * 2 * Math.PI) / 3), 0],
+          }}
+          transition={{
+            duration: 1.2,
+            repeat: Infinity,
+            delay: i * 0.2,
+            ease: "linear",
+          }}
+        />
+      ))}
+    </div>
+    <span className="text-xs text-slate-400">AI sedang berpikir...</span>
+  </div>
+);
+
 export function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      text: "Hello! I'm Zidan's Portfolio Assistant. I can help you learn about his experience, skills, projects, and more! How can I assist you today? 🤖",
-      sender: "bot",
-      timestamp: new Date(),
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isResponding, setIsResponding] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
   const [showTyping, setShowTyping] = useState(false);
+  const [showNotification, setShowNotification] = useState(true);
+  const [hasInteracted, setHasInteracted] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const abortControllerRef = useRef<AbortController | null>(null);
+  const chatbotRef = useRef<HTMLDivElement>(null);
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const chatHistory = useRef<ChatHistory[]>([]);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
   const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+
+  // Hide notification after 5 seconds or when user interacts
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowNotification(false);
+    }, 10000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Hide notification when user clicks on chatbot
+  const handleChatbotClick = () => {
+    setShowNotification(false);
+    setHasInteracted(true);
+
+    // Add welcome message if this is the first time opening
+    if (messages.length === 0) {
+      setMessages([
+        {
+          id: "1",
+          text: "Hello! I'm Zidan's Portfolio Assistant. I can help you learn about his experience, skills, projects, and more! How can I assist you today? 🤖",
+          sender: "bot",
+          timestamp: new Date(),
+        },
+      ]);
+    }
+
+    toggleChat();
+  };
+
+  // Detect click outside for closing
+  useEffect(() => {
+    if (!isOpen) return;
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        chatbotRef.current &&
+        !chatbotRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -263,7 +348,7 @@ Please respond in a friendly, professional manner. If the question is about Zida
     try {
       // Show thinking animation
       setIsThinking(true);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Minimum thinking time
+      await new Promise((resolve) => setTimeout(resolve, 1800)); // Perpanjang waktu thinking
       setIsThinking(false);
 
       // Show typing indicator
@@ -387,10 +472,44 @@ Please respond in a friendly, professional manner. If the question is about Zida
 
   return (
     <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
+      {/* Notification Bubble */}
+      <AnimatePresence>
+        {showNotification && !hasInteracted && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="absolute bottom-full right-0 mb-3 w-64 sm:w-72 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-lg shadow-lg border border-white/20 backdrop-blur-sm"
+          >
+            <div className="flex items-start gap-2">
+              <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Bot className="w-3 h-3 text-white" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-medium mb-1">👋 Hi there!</p>
+                <p className="text-xs text-white/90 leading-relaxed">
+                  I'm Zidan's AI assistant. Ask me about his experience,
+                  projects, skills, or anything about his portfolio!
+                </p>
+              </div>
+              <button
+                onClick={() => setShowNotification(false)}
+                className="text-white/60 hover:text-white transition-colors"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+            {/* Arrow pointing down */}
+            <div className="absolute top-full right-6 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-blue-600"></div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Chat Bubble Button */}
       <Button
         className="relative w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
-        onClick={toggleChat}
+        onClick={handleChatbotClick}
         aria-label={isOpen ? "Close Chat" : "Open Chat"}
       >
         <AnimatePresence mode="wait">
@@ -420,10 +539,26 @@ Please respond in a friendly, professional manner. If the question is about Zida
         </AnimatePresence>
       </Button>
 
+      {/* Backdrop Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            key="backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+            aria-hidden="true"
+          />
+        )}
+      </AnimatePresence>
+
       {/* Chat Window */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            ref={chatbotRef}
             initial={{ opacity: 0, y: 50, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.8 }}
@@ -434,10 +569,10 @@ Please respond in a friendly, professional manner. If the question is about Zida
               <div className="flex items-center gap-2">
                 <motion.div
                   className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/20 flex items-center justify-center"
-                  animate={{ rotate: isThinking ? 360 : 0 }}
+                  animate={{ rotate: isResponding ? 360 : 0 }}
                   transition={{
                     duration: 2,
-                    repeat: isThinking ? Infinity : 0,
+                    repeat: isResponding ? Infinity : 0,
                     ease: "linear",
                   }}
                 >
@@ -468,11 +603,8 @@ Please respond in a friendly, professional manner. If the question is about Zida
 
             <div className="flex-1 p-3 sm:p-4 text-slate-300 overflow-y-auto custom-scrollbar">
               {messages.map((message) => (
-                <motion.div
+                <div
                   key={message.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
                   className={`mb-3 sm:mb-4 flex ${
                     message.sender === "user" ? "justify-end" : "justify-start"
                   }`}
@@ -485,35 +617,21 @@ Please respond in a friendly, professional manner. If the question is about Zida
                     }`}
                   >
                     {message.sender === "bot" && (
-                      <motion.div
-                        className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-600/20 flex items-center justify-center mt-1 flex-shrink-0"
-                        animate={{ scale: message.isTyping ? [1, 1.1, 1] : 1 }}
-                        transition={{
-                          duration: 1,
-                          repeat: message.isTyping ? Infinity : 0,
-                        }}
-                      >
+                      <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-600/20 flex items-center justify-center mt-1 flex-shrink-0">
                         <Bot className="w-3 h-3 sm:w-4 sm:h-4 text-blue-400" />
-                      </motion.div>
+                      </div>
                     )}
                     {message.sender === "user" && (
                       <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-green-600/20 flex items-center justify-center mt-1 flex-shrink-0">
                         <User className="w-3 h-3 sm:w-4 sm:h-4 text-green-400" />
                       </div>
                     )}
-                    <motion.div
+                    <div
                       className={`p-2 sm:p-3 rounded-lg text-sm sm:text-base ${
                         message.sender === "user"
                           ? "bg-blue-600 text-white"
                           : "bg-slate-700/80 text-slate-200"
-                      } ${message.isTyping ? "animate-pulse" : ""}`}
-                      animate={{
-                        scale: message.isTyping ? [1, 1.02, 1] : 1,
-                      }}
-                      transition={{
-                        duration: 0.5,
-                        repeat: message.isTyping ? Infinity : 0,
-                      }}
+                      }`}
                     >
                       {message.text}
                       {message.isTyping && (
@@ -523,17 +641,12 @@ Please respond in a friendly, professional manner. If the question is about Zida
                           transition={{ duration: 0.8, repeat: Infinity }}
                         />
                       )}
-                    </motion.div>
+                    </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
-
-              {/* Thinking Animation */}
-              {isThinking && <ThinkingAnimation />}
-
-              {/* Typing Indicator */}
-              {showTyping && <TypingIndicator />}
-
+              {/* Modern thinking animation */}
+              {isThinking && <ModernThinking />}
               <div ref={messagesEndRef} />
             </div>
 

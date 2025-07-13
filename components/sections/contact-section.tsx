@@ -30,6 +30,7 @@ import {
   Star,
   CheckCircle,
 } from "lucide-react";
+import { Icon } from "@iconify/react";
 
 const socialLinks = [
   {
@@ -72,6 +73,14 @@ const socialLinks = [
     href: "https://github.com/sponsors/zidanmubarak",
     description: "Support my work",
   },
+  {
+    name: "Discord",
+    icon: () => <Icon icon="mdi:discord" className="h-8 w-8 text-white" />,
+    color:
+      "bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700",
+    href: "https://discord.com/users/zidan_00",
+    description: "Join me on Discord",
+  },
 ];
 
 const availability = [
@@ -92,33 +101,6 @@ const availability = [
     time: "Closed",
     status: "unavailable",
     description: "Rest day",
-  },
-];
-
-const contactMethods = [
-  {
-    title: "Quick Chat",
-    description: "For quick questions and discussions",
-    icon: MessageCircle,
-    color: "from-blue-500 to-cyan-500",
-    action: "Start Chat",
-    href: "mailto:zidanmubarak00@gmail.com",
-  },
-  {
-    title: "Video Call",
-    description: "Schedule a video meeting",
-    icon: Video,
-    color: "from-purple-500 to-pink-500",
-    action: "Schedule Call",
-    href: "https://calendly.com/zidanmubarak00/30min",
-  },
-  {
-    title: "Project Inquiry",
-    description: "Discuss your project needs",
-    icon: Zap,
-    color: "from-green-500 to-emerald-500",
-    action: "Send Inquiry",
-    href: "mailto:zidanmubarak00@gmail.com",
   },
 ];
 
@@ -258,59 +240,6 @@ export function ContactSection() {
               amazing together and bring your ideas to life.
             </motion.p>
           </div>
-
-          {/* Contact Methods */}
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            viewport={{ once: true }}
-          >
-            {contactMethods.map((method, index) => {
-              const Icon = method.icon;
-              return (
-                <motion.div
-                  key={method.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                  className="group"
-                >
-                  <Card className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl rounded-3xl overflow-hidden h-full transition-all duration-500 hover:bg-white/8 hover:shadow-3xl">
-                    <CardContent className="p-8 text-center">
-                      <div
-                        className={`w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-r ${method.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}
-                      >
-                        <Icon className="h-8 w-8 text-white" />
-                      </div>
-                      <h3 className="text-2xl font-bold text-white mb-3">
-                        {method.title}
-                      </h3>
-                      <p className="text-slate-400 mb-6 leading-relaxed">
-                        {method.description}
-                      </p>
-                      <Button
-                        className={`w-full bg-gradient-to-r ${method.color} hover:scale-105 transition-all duration-300 rounded-xl shadow-lg`}
-                        asChild
-                      >
-                        <a
-                          href={method.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {method.action}
-                          <ArrowUpRight className="ml-2 h-4 w-4" />
-                        </a>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              );
-            })}
-          </motion.div>
 
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -605,7 +534,7 @@ export function ContactSection() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
               {socialLinks.map((social, index) => {
                 const Icon = social.icon;
                 return (

@@ -114,7 +114,7 @@ const techIcons: { [key: string]: JSX.Element } = {
         fill="#fff"
         d="M128.902 2.393a124.7 124.7 0 0 0-124.7 124.7a124.7 124.7 0 0 0 124.7 124.698A124.7 124.7 0 0 0 253.59 128.676l.01-1.584l-.01-1.584A124.7 124.7 0 0 0 128.902 2.393"
       />
-      <g fill="#afdad2" stroke="#fff" stroke-width="0.25">
+      <g fill="#afdad2" stroke="#fff" strokeWidth="0.25">
         <path d="M100.427 73.98a4.803 4.803 0 1 0 0-9.606a4.803 4.803 0 0 0 0 9.606Zm-10.343 7.242a4.652 4.652 0 1 0 0-9.304a4.652 4.652 0 0 0 0 9.304Zm-9.949 4.608a4.38 4.38 0 1 0 0-8.76a4.38 4.38 0 0 0 0 8.76Zm29.017-17.572a4.946 4.946 0 1 0 0-9.89a4.946 4.946 0 0 0 0 9.89ZM72.67 75.444a3.323 3.323 0 1 0 0-6.646a3.323 3.323 0 0 0 0 6.646Zm-8.205 18.204a3.948 3.948 0 1 0 0-7.896a3.948 3.948 0 0 0 0 7.896Zm5.022-31.26a4.757 4.757 0 1 0 0-9.515a4.757 4.757 0 0 0 0 9.515Zm12.837 8.902a3.68 3.68 0 1 0 0-7.358a3.68 3.68 0 0 0 0 7.359Zm63.444-10.98a4.302 4.302 0 1 0 0-8.605a4.302 4.302 0 0 0 0 8.605ZM55.535 83.116a2.608 2.608 0 1 0 0-5.216a2.608 2.608 0 0 0 0 5.216ZM64.2 80.66a3.095 3.095 0 1 0 0-6.189a3.095 3.095 0 0 0 0 6.19Zm-15.801-9.806a4.103 4.103 0 1 0 0-8.205a4.103 4.103 0 0 0 0 8.205Zm16.141-1.808a2.139 2.139 0 1 0 0-4.277a2.139 2.139 0 0 0 0 4.277Zm28.635-3.334a3.992 3.992 0 1 0 0-7.985a3.992 3.992 0 0 0 0 7.985Zm30.33 2.311a3.446 3.446 0 1 0 0-6.891a3.446 3.446 0 0 0 0 6.89Zm6.307-21.497a2.255 2.255 0 1 0 0-4.51a2.255 2.255 0 0 0 0 4.51Zm7.331 12.982a3.768 3.768 0 1 0 0-7.536a3.768 3.768 0 0 0 0 7.536ZM99.5 57.31a3.872 3.872 0 1 0 0-7.744a3.872 3.872 0 0 0 0 7.744ZM50.998 94.521a3.142 3.142 0 1 0 0-6.284a3.142 3.142 0 0 0 0 6.284Z" />
         <path d="M154.48 61.132a4.785 4.785 0 1 0 0-9.57a4.785 4.785 0 0 0 0 9.57Zm-46.171-3.241a4.392 4.392 0 1 0 0-8.784a4.392 4.392 0 0 0 0 8.784Zm-51.029 3.54a4.072 4.072 0 1 0 0-8.144a4.072 4.072 0 0 0 0 8.144Zm22.662-10.513a4.708 4.708 0 1 0 0-9.416a4.708 4.708 0 0 0 0 9.416Zm88.325 6.34a2.908 2.908 0 1 0 0-5.816a2.908 2.908 0 0 0 0 5.816ZM66.977 45.382a3.7 3.7 0 1 0 0-7.398a3.7 3.7 0 0 0 0 7.398ZM83.658 61.95a3.148 3.148 0 1 0 0-6.296a3.148 3.148 0 0 0 0 6.296Zm7.542-6.832a3.199 3.199 0 1 0-.001-6.397a3.199 3.199 0 0 0 0 6.397Zm-49.398 8.125a3.22 3.22 0 1 0 0-6.44a3.22 3.22 0 0 0 0 6.44Zm8.868-12.521a2.954 2.954 0 1 0 0-5.908a2.954 2.954 0 0 0 0 5.908Zm68.154 9.171a2.476 2.476 0 1 0 0-4.953a2.476 2.476 0 0 0 0 4.953ZM39.53 79.544a4.092 4.092 0 1 0 0-8.185a4.092 4.092 0 0 0 0 8.185Zm-9.14-6.9a3.077 3.077 0 1 0 0-6.153a3.077 3.077 0 0 0 0 6.153Zm96.879-13.47a3.095 3.095 0 1 0 0-6.19a3.095 3.095 0 0 0 0 6.19ZM56.914 75.243a4.77 4.77 0 1 0 0-9.542a4.77 4.77 0 0 0 0 9.542Z" />
         <path d="M162.01 53.552a4.783 4.783 0 1 0 0-9.565a4.783 4.783 0 0 0 0 9.565ZM42.067 98.617a2.776 2.776 0 1 0 0-5.552a2.776 2.776 0 0 0 0 5.552Zm69.34-54.147a3.817 3.817 0 1 0 0-7.633a3.817 3.817 0 0 0 0 7.633Zm79.294 5.256a3.899 3.899 0 1 0 0-7.798a3.899 3.899 0 0 0 0 7.798Zm-51.863-1.986a3.104 3.104 0 1 0 0-6.21a3.104 3.104 0 0 0 0 6.21Zm-67.68 40.953a4.047 4.047 0 1 0 0-8.095a4.047 4.047 0 0 0 0 8.095Zm78.208-39.617a3.875 3.875 0 1 0 0-7.75a3.875 3.875 0 0 0 0 7.75Zm27.438 3.777a3.211 3.211 0 1 0 0-6.423a3.211 3.211 0 0 0 0 6.423Zm30.314 6.96a2.895 2.895 0 1 0 0-5.79a2.895 2.895 0 0 0 0 5.79ZM98.802 38.544a2.495 2.495 0 1 0 0-4.99a2.495 2.495 0 0 0 0 4.99Zm22.683-6.848a3.652 3.652 0 1 0 0-7.305a3.652 3.652 0 0 0 0 7.305Zm84.987 19.578a4.812 4.812 0 1 0 0-9.624a4.812 4.812 0 0 0 0 9.624Zm-90.498 1.966a4.547 4.547 0 1 0 0-9.095a4.547 4.547 0 0 0 0 9.094Zm16.823-17.041a4.536 4.536 0 1 0 0-9.072a4.536 4.536 0 0 0 0 9.072Zm39.323 5.526a4.7 4.7 0 1 0 0-9.399a4.7 4.7 0 0 0 0 9.399Zm48.649 29.541a4.45 4.45 0 1 0 0-8.898a4.45 4.45 0 0 0 0 8.898ZM120.458 17.405a2.54 2.54 0 1 0 0-5.08a2.54 2.54 0 0 0 0 5.08Z" />
@@ -131,7 +131,7 @@ const techIcons: { [key: string]: JSX.Element } = {
         fill="#7db0bc"
         stroke="#fff"
         d="m169.577 60.045l4.643.108l4.643.325l4.642.537l4.641.743l4.64.94l4.638 1.127l4.636 1.3l4.634 1.46l4.632 1.601l4.636 1.73l4.627 1.836l4.626 1.925l4.625 1.997l4.623 2.048l4.201 1.893a120.8 120.8 0 0 1 10.087 45.827l.017 1.024l.01 1.534l-.01 1.531a120.8 120.8 0 0 1-4.933 32.663l-5.07-1.077l-4.63-1.076l-4.63-1.17l-4.629-1.266l-4.63-1.363l-4.628-1.458l-4.628-1.554l-4.628-1.646l-4.627-1.733l-4.627-1.815l-4.626-1.89l-4.624-1.955l-4.624-2.01l-4.622-2.054l-4.622-2.084l-9.238-4.197l-4.618-2.08l-4.615-2.046l-4.614-1.992l-4.612-1.92l-4.61-1.828l-4.615-1.722l-4.608-1.594l-4.606-1.45l-4.604-1.291l-4.602-1.118l-4.6-.932l-4.6-.737l-4.597-.532l-4.598-.321l-4.596-.108l-4.597.108l-4.597.321l-4.598.532l-4.6.737l-4.6.932l-4.602 1.118l-4.604 1.29l-4.606 1.451l-4.607 1.594l-4.605 1.718l-4.612 1.83l-4.614 1.92l-4.616 1.992l-4.617 2.046l-4.619 2.081l-9.241 4.199l-4.622 2.084l-4.647 2.065a120.8 120.8 0 0 1 .465-31.882l3.892-.617l4.611-.809l4.612-.892l4.61-.98l4.611-1.072l4.61-1.165l4.611-1.26l4.611-1.358l4.612-1.453l4.611-1.547l4.612-1.64l4.613-1.728l4.614-1.81l4.614-1.885l4.615-1.951l4.617-2.007l4.617-2.052l4.619-2.083l9.241-4.198l4.623-2.083l4.625-2.05l4.626-1.996l4.627-1.926l4.63-1.836l4.626-1.727l4.632-1.602l4.634-1.459l4.636-1.3l4.638-1.126l4.64-.94l4.64-.744l4.643-.537l4.643-.325z"
-        stroke-width="1"
+        strokeWidth="1"
       />
       <path
         fill="#5c7da2"
@@ -251,8 +251,7 @@ const projects = [
     title: "Guest Book System",
     description:
       "Sistem buku tamu web-based menggunakan PHP. Aplikasi sederhana untuk mengelola dan menampilkan pesan dari pengunjung website.",
-    image:
-      "/dashboard.png?auto=compress&cs=tinysrgb&w=800",
+    image: "/images/projects/dashboard.png?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
     tech: ["PHP", "HTML", "CSS", "MySQL", "Bootstrap", "JavaScript"],
@@ -266,7 +265,7 @@ const projects = [
     description:
       "Website portfolio pribadi yang menampilkan proyek, keahlian, dan pengalaman. Dibangun dengan teknologi modern untuk showcase karya dan kemampuan.",
     image:
-      "/web-portofolio.png?auto=compress&cs=tinysrgb&w=800",
+      "/images/projects/web-portofolio.png?auto=compress&cs=tinysrgb&w=800",
     featured: true,
     category: "Web Development",
     tech: [
@@ -423,21 +422,23 @@ export function ProjectsSection() {
                         initial={{ scale: 0.8 }}
                         whileHover={{ scale: 1 }}
                       >
-                        <Button
-                          size="sm"
-                          variant="secondary"
-                          className="bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-md rounded-xl"
-                          asChild
-                        >
-                          <a
-                            href={project.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                        {project.github && (
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            className="bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-md rounded-xl"
+                            asChild
                           >
-                            <Github className="h-4 w-4 mr-2" />
-                            Code
-                          </a>
-                        </Button>
+                            <a
+                              href={project.github}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <Github className="h-4 w-4 mr-2" />
+                              Code
+                            </a>
+                          </Button>
+                        )}
                         {project.demo && (
                           <Button
                             size="sm"
@@ -454,6 +455,14 @@ export function ProjectsSection() {
                               <ArrowUpRight className="h-3 w-3 ml-1" />
                             </a>
                           </Button>
+                        )}
+                        {/* Jika tidak ada link sama sekali, tampilkan pesan */}
+                        {!project.github && !project.demo && (
+                          <div className="bg-white/10 backdrop-blur-md rounded-xl px-4 py-2 border border-white/20">
+                            <span className="text-white text-sm">
+                              Links coming soon
+                            </span>
+                          </div>
                         )}
                       </motion.div>
                     </div>
@@ -500,38 +509,50 @@ export function ProjectsSection() {
                         </div>
                       </div>
 
-                      {/* Action Buttons (Removed as per previous user changes) */}
-                      {/* <div className="flex gap-3 mt-auto">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="flex-1 border-slate-600/50 text-slate-300 hover:bg-slate-800/50 hover:text-white hover:border-blue-500/30 rounded-xl transition-all duration-300"
-                          asChild
-                        >
-                          <a
-                            href={project.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                      {/* Action Buttons */}
+                      <div className="flex gap-3 mt-auto">
+                        {project.github && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-1 border-slate-600/50 text-slate-300 hover:bg-slate-800/50 hover:text-white hover:border-blue-500/30 rounded-xl transition-all duration-300"
+                            asChild
                           >
-                            <Github className="h-4 w-4 mr-2" />
-                            View Code
-                          </a>
-                        </Button>
-                        <Button
-                          size="sm"
-                          className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-                          asChild
-                        >
-                          <a
-                            href={project.demo}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            <a
+                              href={project.github}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <Github className="h-4 w-4 mr-2" />
+                              View Code
+                            </a>
+                          </Button>
+                        )}
+                        {project.demo && (
+                          <Button
+                            size="sm"
+                            className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                            asChild
                           >
-                            <ExternalLink className="h-4 w-4 mr-2" />
-                            Live Demo
-                          </a>
-                        </Button>
-                      </div> */}
+                            <a
+                              href={project.demo}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <ExternalLink className="h-4 w-4 mr-2" />
+                              Live Demo
+                            </a>
+                          </Button>
+                        )}
+                        {/* Jika tidak ada link sama sekali, tampilkan pesan */}
+                        {!project.github && !project.demo && (
+                          <div className="flex-1 text-center py-2 px-4 bg-slate-800/30 border border-slate-600/30 rounded-xl">
+                            <span className="text-slate-400 text-sm">
+                              Links coming soon
+                            </span>
+                          </div>
+                        )}
+                      </div>
                     </CardContent>
                   </Card>
 

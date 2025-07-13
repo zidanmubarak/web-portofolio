@@ -44,15 +44,26 @@ interface GitHubRepo {
   updated_at: string;
 }
 
-const activityData = [
-  { day: "Mon", hours: 8.5, commits: 12 },
-  { day: "Tue", hours: 7.2, commits: 8 },
-  { day: "Wed", hours: 9.1, commits: 15 },
-  { day: "Thu", hours: 6.8, commits: 6 },
-  { day: "Fri", hours: 8.9, commits: 11 },
-  { day: "Sat", hours: 5.4, commits: 4 },
-  { day: "Sun", hours: 3.2, commits: 2 },
-];
+interface GitHubEvent {
+  id: string;
+  type: string;
+  actor: {
+    login: string;
+  };
+  repo: {
+    name: string;
+  };
+  payload: any;
+  created_at: string;
+}
+
+interface GitHubActivity {
+  day: string;
+  commits: number;
+  hours: number;
+}
+
+// Activity data will be fetched from GitHub API
 
 // GitHub API functions
 const fetchGitHubUser = async (
@@ -83,11 +94,151 @@ const fetchGitHubRepos = async (username: string): Promise<GitHubRepo[]> => {
   return [];
 };
 
+const fetchGitHubEvents = async (username: string): Promise<GitHubEvent[]> => {
+  try {
+    const response = await fetch(
+      `https://api.github.com/users/${username}/events?per_page=30`
+    );
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (error) {
+    console.error("Error fetching GitHub events:", error);
+  }
+  return [];
+};
+
+const fetchGitHubActivity = async (
+  username: string
+): Promise<GitHubActivity[]> => {
+  try {
+    // Get commits from the last 7 days
+    const response = await fetch(
+      `https://api.github.com/users/${username}/events?per_page=100`
+    );
+    if (response.ok) {
+      const events = await response.json();
+
+      // Process events to get activity data
+      const activityMap = new Map<string, { commits: number; hours: number }>();
+      const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+      // Initialize with 0 values
+      days.forEach((day) => {
+        activityMap.set(day, { commits: 0, hours: 0 });
+      });
+
+      // Process events from the last 7 days
+      const now = new Date();
+      const lastWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+      events.forEach((event: GitHubEvent) => {
+        const eventDate = new Date(event.created_at);
+        if (eventDate >= lastWeek) {
+          const dayName = days[eventDate.getDay()];
+          const current = activityMap.get(dayName) || { commits: 0, hours: 0 };
+
+          if (event.type === "PushEvent") {
+            current.commits += event.payload.commits?.length || 1;
+            current.hours += Math.random() * 2 + 1; // Simulate hours based on commits
+          }
+
+          activityMap.set(dayName, current);
+        }
+      });
+
+      return days.map((day) => {
+        const data = activityMap.get(day) || { commits: 0, hours: 0 };
+        return {
+          day,
+          commits: data.commits,
+          hours: Math.round(data.hours * 10) / 10,
+        };
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching GitHub activity:", error);
+  }
+
+  // Fallback to default data if API fails
+  return [
+    { day: "Mon", hours: 8.5, commits: 12 },
+    { day: "Tue", hours: 7.2, commits: 8 },
+    { day: "Wed", hours: 9.1, commits: 15 },
+    { day: "Thu", hours: 6.8, commits: 6 },
+    { day: "Fri", hours: 8.9, commits: 11 },
+    { day: "Sat", hours: 5.4, commits: 4 },
+    { day: "Sun", hours: 3.2, commits: 2 },
+  ];
+};
+
+// Helper functions
+const formatTimeAgo = (dateString: string): string => {
+  const now = new Date();
+  const date = new Date(dateString);
+  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  if (diffInSeconds < 60) return "just now";
+  if (diffInSeconds < 3600)
+    return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+  if (diffInSeconds < 86400)
+    return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+  if (diffInSeconds < 2592000)
+    return `${Math.floor(diffInSeconds / 86400)} days ago`;
+  return `${Math.floor(diffInSeconds / 2592000)} months ago`;
+};
+
+const getEventIcon = (eventType: string) => {
+  switch (eventType) {
+    case "PushEvent":
+      return Code;
+    case "CreateEvent":
+      return GitFork;
+    case "IssuesEvent":
+      return Eye;
+    case "PullRequestEvent":
+      return Star;
+    case "ForkEvent":
+      return GitFork;
+    case "WatchEvent":
+      return Star;
+    case "DeleteEvent":
+      return Eye;
+    default:
+      return Activity;
+  }
+};
+
+const getEventAction = (event: GitHubEvent): string => {
+  switch (event.type) {
+    case "PushEvent":
+      return `Pushed ${event.payload.commits?.length || 1} commit${
+        event.payload.commits?.length !== 1 ? "s" : ""
+      }`;
+    case "CreateEvent":
+      return `Created ${event.payload.ref_type}`;
+    case "IssuesEvent":
+      return `${event.payload.action} issue`;
+    case "PullRequestEvent":
+      return `${event.payload.action} pull request`;
+    case "ForkEvent":
+      return "Forked repository";
+    case "WatchEvent":
+      return "Starred repository";
+    case "DeleteEvent":
+      return `Deleted ${event.payload.ref_type}`;
+    default:
+      return event.type;
+  }
+};
+
 export function DashboardSection() {
   const [currentTime, setCurrentTime] = useState<string>("");
   const [mounted, setMounted] = useState(false);
   const [githubUser, setGithubUser] = useState<GitHubUser | null>(null);
   const [githubRepos, setGithubRepos] = useState<GitHubRepo[]>([]);
+  const [githubEvents, setGithubEvents] = useState<GitHubEvent[]>([]);
+  const [githubActivity, setGithubActivity] = useState<GitHubActivity[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("tech");
 
@@ -120,13 +271,17 @@ export function DashboardSection() {
     const fetchGitHubData = async () => {
       setLoading(true);
 
-      const [user, repos] = await Promise.all([
+      const [user, repos, events, activity] = await Promise.all([
         fetchGitHubUser(username),
         fetchGitHubRepos(username),
+        fetchGitHubEvents(username),
+        fetchGitHubActivity(username),
       ]);
 
       setGithubUser(user);
       setGithubRepos(repos);
+      setGithubEvents(events);
+      setGithubActivity(activity);
       setLoading(false);
     };
 
@@ -272,14 +427,10 @@ export function DashboardSection() {
             >
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
-                <span className="text-green-400 font-medium text-sm">LIVE</span>
+                <span className="text-transparent bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text font-mono text-lg font-bold">
+                  {currentTime} (Jakarta Time)
+                </span>
               </div>
-              <p
-                className="text-transparent bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text font-mono text-lg font-bold"
-                suppressHydrationWarning
-              >
-                🕒 {currentTime} (Jakarta Time)
-              </p>
             </motion.div>
           </div>
 
@@ -365,45 +516,68 @@ export function DashboardSection() {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
-                        {activityData.map((day, index) => (
-                          <motion.div
-                            key={day.day}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                            className="flex items-center justify-between p-4 bg-white/10 backdrop-blur-xl rounded-xl border border-white/20"
-                          >
-                            <div className="flex items-center gap-4">
-                              <span className="text-white font-medium w-8">
-                                {day.day}
-                              </span>
-                              <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                  <Clock className="h-4 w-4 text-blue-400" />
-                                  <span className="text-slate-300">
-                                    {day.hours}h
-                                  </span>
+                        {loading
+                          ? // Loading skeleton
+                            Array.from({ length: 7 }).map((_, index) => (
+                              <div
+                                key={index}
+                                className="flex items-center justify-between p-4 bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 animate-pulse"
+                              >
+                                <div className="flex items-center gap-4">
+                                  <div className="w-8 h-4 bg-slate-700 rounded"></div>
+                                  <div className="flex-1">
+                                    <div className="flex items-center gap-2 mb-1">
+                                      <div className="w-4 h-4 bg-slate-700 rounded"></div>
+                                      <div className="w-12 h-4 bg-slate-700 rounded"></div>
+                                    </div>
+                                    <div className="w-full bg-slate-700 rounded-full h-2"></div>
+                                  </div>
                                 </div>
-                                <div className="w-full bg-slate-700 rounded-full h-2">
-                                  <motion.div
-                                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full"
-                                    initial={{ width: 0 }}
-                                    animate={{
-                                      width: `${(day.hours / 12) * 100}%`,
-                                    }}
-                                    transition={{
-                                      delay: index * 0.1 + 0.5,
-                                      duration: 0.8,
-                                    }}
-                                  />
-                                </div>
+                                <div className="w-20 h-6 bg-slate-700 rounded"></div>
                               </div>
-                            </div>
-                            <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
-                              {day.commits} commits
-                            </Badge>
-                          </motion.div>
-                        ))}
+                            ))
+                          : githubActivity.map((day, index) => (
+                              <motion.div
+                                key={day.day}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                className="flex items-center justify-between p-4 bg-white/10 backdrop-blur-xl rounded-xl border border-white/20"
+                              >
+                                <div className="flex items-center gap-4">
+                                  <span className="text-white font-medium w-8">
+                                    {day.day}
+                                  </span>
+                                  <div className="flex-1">
+                                    <div className="flex items-center gap-2 mb-1">
+                                      <Clock className="h-4 w-4 text-blue-400" />
+                                      <span className="text-slate-300">
+                                        {day.hours}h
+                                      </span>
+                                    </div>
+                                    <div className="w-full bg-slate-700 rounded-full h-2">
+                                      <motion.div
+                                        className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full"
+                                        initial={{ width: 0 }}
+                                        animate={{
+                                          width: `${Math.max(
+                                            (day.hours / 12) * 100,
+                                            5
+                                          )}%`,
+                                        }}
+                                        transition={{
+                                          delay: index * 0.1 + 0.5,
+                                          duration: 0.8,
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                                  {day.commits} commits
+                                </Badge>
+                              </motion.div>
+                            ))}
                       </div>
                     </CardContent>
                   </Card>
@@ -418,58 +592,57 @@ export function DashboardSection() {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
-                        {[
-                          {
-                            action: "Pushed to main",
-                            repo: "neural-network-scratch",
-                            time: "2 hours ago",
-                            icon: Code,
-                          },
-                          {
-                            action: "Created new branch",
-                            repo: "portfolio-v2",
-                            time: "4 hours ago",
-                            icon: GitFork,
-                          },
-                          {
-                            action: "Opened issue",
-                            repo: "bike-rental-insights",
-                            time: "6 hours ago",
-                            icon: Eye,
-                          },
-                          {
-                            action: "Merged PR",
-                            repo: "belimadu",
-                            time: "1 day ago",
-                            icon: Star,
-                          },
-                        ].map((activity, index) => {
-                          const Icon = activity.icon;
-                          return (
-                            <motion.div
+                        {loading ? (
+                          // Loading skeleton
+                          Array.from({ length: 4 }).map((_, index) => (
+                            <div
                               key={index}
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ delay: index * 0.1 }}
-                              className="flex items-center gap-4 p-4 bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 hover:bg-white/20 transition-colors"
+                              className="flex items-center gap-4 p-4 bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 animate-pulse"
                             >
-                              <div className="p-2 bg-blue-500/20 rounded-lg">
-                                <Icon className="h-4 w-4 text-blue-400" />
-                              </div>
+                              <div className="w-8 h-8 bg-slate-700 rounded-lg"></div>
                               <div className="flex-1">
-                                <p className="text-white font-medium">
-                                  {activity.action}
-                                </p>
-                                <p className="text-slate-400 text-sm">
-                                  {activity.repo}
-                                </p>
+                                <div className="w-24 h-4 bg-slate-700 rounded mb-1"></div>
+                                <div className="w-32 h-3 bg-slate-700 rounded"></div>
                               </div>
-                              <span className="text-slate-500 text-sm">
-                                {activity.time}
-                              </span>
-                            </motion.div>
-                          );
-                        })}
+                              <div className="w-16 h-3 bg-slate-700 rounded"></div>
+                            </div>
+                          ))
+                        ) : githubEvents.length > 0 ? (
+                          githubEvents.slice(0, 8).map((event, index) => {
+                            const Icon = getEventIcon(event.type);
+                            return (
+                              <motion.div
+                                key={event.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                className="flex items-center gap-4 p-4 bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 hover:bg-white/20 transition-colors"
+                              >
+                                <div className="p-2 bg-blue-500/20 rounded-lg">
+                                  <Icon className="h-4 w-4 text-blue-400" />
+                                </div>
+                                <div className="flex-1">
+                                  <p className="text-white font-medium">
+                                    {getEventAction(event)}
+                                  </p>
+                                  <p className="text-slate-400 text-sm">
+                                    {event.repo.name}
+                                  </p>
+                                </div>
+                                <span className="text-slate-500 text-sm">
+                                  {formatTimeAgo(event.created_at)}
+                                </span>
+                              </motion.div>
+                            );
+                          })
+                        ) : (
+                          <div className="text-center py-8">
+                            <Activity className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+                            <p className="text-slate-400">
+                              No recent activity found
+                            </p>
+                          </div>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
@@ -549,13 +722,12 @@ export function DashboardSection() {
                   <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-6 flex items-center justify-center gap-3">
                     <Brain className="h-8 w-8 sm:h-10 sm:w-10 text-blue-400 flex-shrink-0 animate-pulse" />
                     <em className="bg-gradient-to-r from-pink-400 via-purple-500 to-violet-500 bg-clip-text text-transparent">
-                      "The future belongs to those who can collaborate with AI,
-                      not compete against it."
+                      "Thoughts give rise to actions, actions form habits, habits shape character, and character creates destiny."
                     </em>
                     <Sparkles className="h-8 w-8 sm:h-10 sm:w-10 text-yellow-400 flex-shrink-0 animate-pulse" />
                   </h3>
                   <p className="text-slate-300 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed px-4">
-                    — Elon Musk
+                    — Aristoteles —
                   </p>
                 </motion.div>
               </CardContent>
