@@ -1,27 +1,24 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { ChatbotWidget } from "@/components/ChatbotWidget";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export const metadata: Metadata = {
-  title: "Zidan Mubarak - AI/ML Enthusiast & Python Developer",
+  title: "Zidan Mubarak - AI/ML Engineer",
   description:
-    "Professional portfolio of Zidan Mubarak - Machine Learning Mentor, Python Developer, and Open Source Contributor specializing in AI solutions.",
+    "AI/ML Engineer specializing in machine learning, deep learning, and intelligent systems. Building data-driven solutions for real-world problems.",
   keywords: [
     "AI",
     "Machine Learning",
     "Python",
     "Data Science",
-    "Web Development",
+    "Deep Learning",
     "Portfolio",
   ],
   authors: [{ name: "Zidan Mubarak" }],
   icons: {
-    icon: "images/profil/favicon.png?auto=compress&cs=tinysrgb&w=100", // Anda bisa menggunakan '/icon.png' jika logo Anda dalam format PNG
+    icon: "/images/profil/favicon.png",
   },
 };
 
@@ -37,7 +34,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

@@ -10,7 +10,7 @@ import { ContactSection } from "@/components/sections/contact-section";
 
 export default function Home() {
   return (
-    <div className="min-h-screen animated-bg">
+    <div className="min-h-screen bg-black">
       <Header />
       <main>
         <section id="home">
