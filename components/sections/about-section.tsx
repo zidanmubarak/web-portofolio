@@ -7,7 +7,7 @@ export function AboutSection() {
 
   return (
     <section id="about" className="sec" aria-labelledby="about-heading">
-      <div className="sec-head">
+      <div className="sec-head" data-settle>
         <span className="secnum num" aria-hidden="true">
           01
         </span>

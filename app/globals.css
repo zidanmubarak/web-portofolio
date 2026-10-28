@@ -1,5 +1,5 @@
-/* Instrument Serif + Geist Mono: the only two families in the design. */
-@import url("https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300..600&family=Instrument+Serif:ital@0;1&display=swap");
+/* Instrument Serif + Geist Mono are self-hosted through next/font (app/layout.tsx):
+   no render-blocking third-party @import before first paint. */
 
 @tailwind base;
 @tailwind components;
@@ -19,8 +19,8 @@
   --rule-paper: rgba(10, 10, 10, 0.16);
   --hover: #141312;
 
-  --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
-  --mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+  --serif: var(--font-serif), Georgia, "Times New Roman", serif;
+  --mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Consolas,
     monospace;
 
   /* Canonical DESIGN.md scale (A) */
@@ -33,7 +33,7 @@
   --fs-meta: 0.6875rem;
 
   /* C's composition overrides display sizes only */
-  --fs-c-name: clamp(2.3rem, 4.6vw, 4rem);
+  --fs-c-name: clamp(3.2rem, 6.5vw, 6.5rem);
   --fs-c-bignum: clamp(3.2rem, 8.5vw, 7.5rem);
   --fs-c-secnum: clamp(2.6rem, 6.5vw, 5.5rem);
   --fs-c-h2: clamp(1.35rem, 2.2vw, 1.8rem);
@@ -334,8 +334,12 @@ ol {
 }
 
 /* ── Hero index sheet ──────────────────────────────────────────────────── */
+/* 00 shrinks to its glyph, the headline takes the freed width, the portrait
+   keeps a fixed optical panel (REVISIONS-v2 §1). */
 .hero {
-  grid-template-columns: 1.05fr 1.05fr 1.1fr;
+  grid-template-columns:
+    clamp(9rem, 18vw, 15rem) minmax(0, 1fr)
+    clamp(20rem, 32vw, 36rem);
   grid-template-areas:
     "num name photo"
     "meta meta photo";
@@ -578,15 +582,27 @@ ol {
 
 .arow {
   display: grid;
-  grid-template-columns: 5rem minmax(0, 1fr) 10rem 15rem auto;
+  /* idx · cover · title+desc · stack · year · links
+     Every track but the title is fixed, so the year column cannot slide.
+     The cover is 192px from 1280 up (a legible poster), 96px between
+     1024–1279 where the title needs the width. */
+  grid-template-columns: 4rem 12rem minmax(0, 1fr) 10rem 6.5rem 7rem;
+  grid-template-areas: "num cover title stack year links";
   gap: 1rem;
   align-items: baseline;
-  padding: clamp(0.9rem, 1.8vw, 1.25rem) var(--pad);
+  padding: 18px var(--pad);
   border-bottom: 1px solid var(--rule);
   transition: background 260ms var(--ease-cell);
 }
 
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .arow {
+    grid-template-columns: 4rem 6rem minmax(0, 1fr) 9rem 6.5rem 7rem;
+  }
+}
+
 .arow .ano {
+  grid-area: num;
   font-size: 1.05rem;
   letter-spacing: -0.02em;
   color: var(--mute);
@@ -596,7 +612,48 @@ ol {
   transform-origin: left;
 }
 
+/* 4:3 project cover; the index numeral sits underneath as the type-only
+   fallback when the image fails to load (no layout change either way). */
+.arow .acover {
+  grid-area: cover;
+  align-self: start;
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--hover);
+}
+
+.arow .acover img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* A hairline so the cover reads as a framed image on the ink field. */
+.arow .acover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--rule);
+  pointer-events: none;
+}
+
+.arow .acover .acover-fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  color: var(--mute);
+}
+
 .arow .acell {
+  grid-area: title;
   min-width: 0;
 }
 
@@ -604,8 +661,8 @@ ol {
   display: block;
   font-family: var(--serif);
   font-weight: 400;
-  font-size: clamp(1.15rem, 1.7vw, 1.45rem);
-  line-height: 1.15;
+  font-size: 22px;
+  line-height: 25px;
   letter-spacing: -0.01em;
 }
 
@@ -621,17 +678,25 @@ ol {
 }
 
 .arow .ayear {
+  grid-area: year;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  white-space: nowrap;
   font-size: 0.8125rem;
+  line-height: 20.8px;
   color: var(--paper);
 }
 
 .arow .astack {
+  grid-area: stack;
   font-size: 0.75rem;
   color: var(--mute);
   line-height: 1.45;
 }
 
 .arow .alink {
+  grid-area: links;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -644,9 +709,29 @@ ol {
 }
 
 .arow .alink a {
-  white-space: nowrap;
-  overflow-wrap: normal;
+  position: relative;
+  white-space: normal;
+  overflow-wrap: anywhere;
   transition: color 180ms var(--ease-link);
+}
+
+/* Underline sweep — transform only. */
+.arow .alink a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 240ms var(--ease-link);
+}
+
+.arow .alink a:hover::after,
+.arow .alink a:focus-visible::after {
+  transform: scaleX(1);
 }
 
 .arow:hover,
@@ -796,40 +881,78 @@ ol {
   color: var(--mute);
 }
 
-/* ── 04 · skills spec grid ─────────────────────────────────────────────── */
-.stackgrid {
+/* ── 04 · skills: icon strip + labelled spec sheet ─────────────────────── */
+/* Nine entries that exist in the deck and have a brand mark render as icons;
+   every other entry keeps its label, grouped by the deck's own four groups. */
+.toolstrip {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  margin: 0 var(--pad);
+}
+
+.tcell {
+  background: var(--ink);
+  display: grid;
+  place-items: center;
+  min-height: 3.5rem;
+  color: var(--paper);
+  transition: color 200ms var(--ease-link);
+}
+
+.tcell:hover,
+.tcell:focus-within {
+  color: var(--accent);
+}
+
+/* The icon is a mask filled with currentColor: the SVG file stays an asset
+   (not inline JS) and the mark still takes the surrounding colour. */
+.ticon {
+  display: block;
+  width: 1.6rem;
+  height: 1.6rem;
+  background-color: currentColor;
+  -webkit-mask-image: var(--icon);
+  mask-image: var(--icon);
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.skillgroups {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1px;
   background: var(--rule);
+  margin: 16px var(--pad) 0;
+  border-top: 1px solid var(--rule);
+}
+
+.skillcol {
+  background: var(--ink);
+  padding: 10px 12px 12px;
+}
+
+.skillcol-title {
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.skillcol li {
+  font-size: 0.75rem;
+  line-height: 19px;
+  color: var(--paper);
   border-bottom: 1px solid var(--rule);
 }
 
-.scell {
-  background: var(--ink);
-  padding: 0.9rem 1rem 1.1rem;
-  min-height: 4.4rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 0.6rem;
-}
-
-.scell .idx {
-  font-size: 0.625rem;
-  letter-spacing: 0.16em;
-  color: var(--mute);
-}
-
-.scell .name {
-  font-size: 0.9375rem;
-}
-
-.scell .kind {
-  font-size: var(--fs-meta);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--mute);
+.skillcol li:last-child {
+  border-bottom: 0;
 }
 
 /* ── live GitHub slot ──────────────────────────────────────────────────── */
@@ -964,6 +1087,7 @@ ol {
 }
 
 .cgrid a {
+  position: relative;
   background: var(--ink);
   padding: 0.8rem 1rem;
   min-height: 44px;
@@ -1150,6 +1274,17 @@ ol {
   isolation: isolate;
 }
 
+/* The plate holds the photo AND the overlay, so one transform moves both with
+   the same matrix: a parallax can never detach the stripes from the figure.
+   The 6% overscan is what the parallax travels inside; it also tightens the
+   half-body crop. */
+.rgb-plate {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(0, var(--rgb-parallax, 0px), 0) scale(1.06);
+  transform-origin: 50% 50%;
+}
+
 .rgb-picture {
   display: block;
   width: 100%;
@@ -1164,17 +1299,45 @@ ol {
   filter: saturate(0.95) contrast(1.06);
 }
 
-.rgb-grid {
+/* The screen's own luminance layer: monochrome, so the R/G/B stripes below it
+   integrate to a neutral tone instead of a colour cast. */
+.rgb-mono {
+  position: absolute;
+  inset: 0;
+}
+
+.rgb-mono img {
+  filter: grayscale(1) contrast(1.06) brightness(1.05);
+}
+
+/* Stripe grid + scanlines. `--rgb-mask` is the subject matte: when it is set
+   the pattern only exists over the person and the background stays a plain
+   photograph. Both layers live inside this masked box. */
+.rgb-fx {
   position: absolute;
   inset: 0;
   z-index: 2;
   pointer-events: none;
+  -webkit-mask-image: var(--rgb-mask, none);
+  mask-image: var(--rgb-mask, none);
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
+/* Channel order is R → G → B, one third of the pitch each. */
+.rgb-grid {
+  position: absolute;
+  inset: 0;
   background-image: repeating-linear-gradient(
     90deg,
-    rgb(255, 32, 24) 0 calc(var(--rgb-pitch) / 3),
-    rgb(24, 255, 88) calc(var(--rgb-pitch) / 3)
+    rgb(255, 24, 16) 0 calc(var(--rgb-pitch) / 3),
+    rgb(18, 255, 76) calc(var(--rgb-pitch) / 3)
       calc(var(--rgb-pitch) * 2 / 3),
-    rgb(32, 88, 255) calc(var(--rgb-pitch) * 2 / 3) var(--rgb-pitch)
+    rgb(24, 72, 255) calc(var(--rgb-pitch) * 2 / 3) var(--rgb-pitch)
   );
   background-size: var(--rgb-pitch) 100%;
   mix-blend-mode: multiply;
@@ -1187,20 +1350,22 @@ ol {
 .rgb-scan {
   position: absolute;
   inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  opacity: 0.4;
+  opacity: 0.34;
   background-image: repeating-linear-gradient(
     0deg,
-    rgba(10, 10, 10, 0.4) 0 1px,
+    rgba(10, 10, 10, 0.45) 0 1px,
     rgba(10, 10, 10, 0) 1px 4px
   );
 }
 
-.rgb-host:hover .rgb-grid,
-.rgb-host:focus-within .rgb-grid {
-  --rgb-pitch: 2.4px;
-  animation: rgb-shift 2s ease-in-out infinite alternate;
+/* Shimmer: pointer hover only, and it drifts the grid inside the matte so the
+   silhouette itself never moves. */
+@media (hover: hover) and (pointer: fine) {
+  .rgb-host:hover .rgb-grid,
+  .rgb-host:focus-within .rgb-grid {
+    --rgb-pitch: 2.4px;
+    animation: rgb-shift 2s ease-in-out infinite alternate;
+  }
 }
 
 @keyframes rgb-shift {
@@ -1239,15 +1404,6 @@ ol {
   }
 }
 
-@keyframes mask-wipe {
-  from {
-    clip-path: inset(0 0 100% 0);
-  }
-  to {
-    clip-path: inset(0);
-  }
-}
-
 .hero > .cell:not(.hero-photo) {
   animation: enter-rise 560ms var(--ease-out) both;
 }
@@ -1260,17 +1416,98 @@ ol {
   animation-delay: 120ms;
 }
 
-.hero .rgb-panel {
-  animation: mask-wipe 900ms cubic-bezier(0.65, 0, 0.35, 1) both;
-}
+/* The portrait is the LCP element: nothing animates over it at first paint. */
 
+/* Staggered reveal: each [data-settle] group gets 0/60/120/180ms by position
+   (SettleController sets --settle-delay). Transform only, never opacity, so a
+   JS-less page still shows every word. */
 [data-settle] {
   transform: translateY(14px);
-  transition: transform 560ms var(--ease-out);
+  transition: transform 560ms var(--ease-out) var(--settle-delay, 0ms);
 }
 
 [data-settle].in {
   transform: none;
+}
+
+/* Portrait parallax: one custom property per frame, written by
+   MotionController. The plate owns the transform (see .rgb-plate). */
+.hero-photo .rgb-plate {
+  will-change: transform;
+}
+
+/* Magnetic/underline hover exists only for a real pointer. */
+@media (hover: hover) and (pointer: fine) {
+  .alink a,
+  .cgrid a,
+  .arch-foot a {
+    transition:
+      color 180ms var(--ease-link),
+      transform 180ms var(--ease-link);
+  }
+
+  .alink a.magnetic {
+    transform: translate3d(var(--mx, 0px), var(--my, 0px), 0);
+  }
+
+  .cgrid a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 240ms var(--ease-link);
+  }
+
+  .cgrid a:hover::after,
+  .cgrid a:focus-visible::after {
+    transform: scaleX(1);
+  }
+}
+
+/* ── Signature intro (first visit per session, never on the LCP path) ──── */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  pointer-events: none;
+  opacity: 1;
+}
+
+.intro.is-out {
+  opacity: 0;
+  transition: opacity 240ms var(--ease-out);
+}
+
+.intro-svg {
+  width: min(56vw, 32rem);
+  height: auto;
+  color: var(--paper);
+  overflow: visible;
+}
+
+.intro-svg path {
+  stroke-dasharray: var(--intro-len);
+  stroke-dashoffset: var(--intro-len);
+  animation: intro-draw 1200ms linear forwards;
+}
+
+@keyframes intro-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ── Number tick ───────────────────────────────────────────────────────── */
+.gh-grid dd {
+  min-inline-size: 5ch;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1291,6 +1528,10 @@ ol {
     transform: none;
   }
 
+  .rgb-plate {
+    --rgb-parallax: 0px;
+  }
+
   .rgb-grid {
     animation: none !important;
     transition: none !important;
@@ -1299,6 +1540,18 @@ ol {
   .rgb-host:hover .rgb-grid {
     --rgb-pitch: 3px;
     animation: none;
+  }
+
+  .alink a,
+  .cgrid a,
+  .arch-foot a {
+    transform: none !important;
+  }
+
+  .cgrid a::after,
+  .alink a::after {
+    transform: none;
+    transition: none;
   }
 }
 
@@ -1323,8 +1576,18 @@ ol {
   }
 
   .arow {
-    grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+    grid-template-columns: 2.5rem 4rem minmax(0, 1fr) 5.5rem;
+    grid-template-areas:
+      "num cover title year"
+      "num cover title links";
     gap: 0.75rem;
+    align-items: start;
+    padding-block: 16px;
+  }
+
+  .arow .atitle {
+    font-size: clamp(1.15rem, 3.2vw, 1.35rem);
+    line-height: 1.15;
   }
 
   .arow .astack {
@@ -1332,8 +1595,14 @@ ol {
   }
 
   .arow .alink {
-    grid-column: 3;
+    grid-area: links;
     text-align: right;
+  }
+
+  .arow .ayear {
+    grid-area: year;
+    text-align: right;
+    line-height: 1.4;
   }
 
   .xrow {
@@ -1370,6 +1639,14 @@ ol {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .toolstrip {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .skillgroups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .cgrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1387,7 +1664,7 @@ ol {
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 767px) {
   .hero {
     grid-template-columns: 1fr;
     grid-template-areas:
@@ -1413,7 +1690,9 @@ ol {
   .hero-meta > div:last-child {
     grid-column: 1 / -1;
   }
+}
 
+@media (max-width: 640px) {
   .sec-head {
     grid-template-columns: auto minmax(0, 1fr);
     gap: 0.75rem;
@@ -1425,19 +1704,24 @@ ol {
   }
 
   .arow {
-    grid-template-columns: 2.5rem minmax(0, 1fr);
+    grid-template-columns: 2rem 3rem minmax(0, 1fr);
+    grid-template-areas:
+      "num cover title"
+      ".   .     year"
+      ".   .     links";
     gap: 0.5rem 0.75rem;
     padding-block: 1.1rem;
   }
 
   .arow .alink {
-    grid-column: 2;
+    grid-area: links;
     text-align: left;
     align-items: flex-start;
   }
 
   .arow .ayear {
-    grid-column: 2;
+    grid-area: year;
+    text-align: left;
   }
 
   .bar-right .cv {
@@ -1460,6 +1744,14 @@ ol {
 
   .stackgrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .toolstrip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .skillgroups {
+    grid-template-columns: 1fr;
   }
 
   .cgrid-cells {

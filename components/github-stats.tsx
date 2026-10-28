@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useChrome, useLocale } from "@/lib/i18n/provider";
 
 const GITHUB_USER = "zidanmubarak";
@@ -28,6 +28,62 @@ type Status =
   | { kind: "loading" }
   | { kind: "ready"; stats: Stats }
   | { kind: "error" };
+
+/**
+ * Number tick (REVISIONS-v2 motion #5): counts 0 → value once the stat grid
+ * enters the viewport. The span reserves its width (`min-inline-size: 5ch`,
+ * tabular numerals) so the count cannot move the layout. Reduced motion
+ * renders the final value immediately.
+ */
+function CountUp({
+  value,
+  format,
+}: {
+  value: number;
+  format: (input: number) => string;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setDisplay(value);
+      return;
+    }
+
+    let frame = 0;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          observer.disconnect();
+          const start = performance.now();
+          const step = (now: number) => {
+            const progress = Math.min(1, (now - start) / 900);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setDisplay(Math.round(value * eased));
+            if (progress < 1) frame = window.requestAnimationFrame(step);
+          };
+          frame = window.requestAnimationFrame(step);
+        });
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(node);
+    return () => {
+      observer.disconnect();
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, [value]);
+
+  return (
+    <span ref={ref} className="num">
+      {format(display)}
+    </span>
+  );
+}
 
 function isCount(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value) && value >= 0;
@@ -132,9 +188,14 @@ export function GitHubStats() {
           <div key={field.key}>
             <dt>{field.label}</dt>
             <dd className="num">
-              {status.kind === "ready"
-                ? numberFormat.format(status.stats[field.key])
-                : "—"}
+              {status.kind === "ready" ? (
+                <CountUp
+                  value={status.stats[field.key]}
+                  format={(input) => numberFormat.format(input)}
+                />
+              ) : (
+                "—"
+              )}
             </dd>
           </div>
         ))}

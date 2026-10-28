@@ -9,6 +9,7 @@ import { WorkSection } from "@/components/sections/work-section";
 import { Footer } from "@/components/layout/footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteRail } from "@/components/layout/site-rail";
+import { MotionController } from "@/components/motion-controller";
 import { SettleController } from "@/components/settle-controller";
 import { SkipLink } from "@/components/skip-link";
 
@@ -32,6 +33,7 @@ export default function Home() {
         <Footer />
       </div>
       <SettleController />
+      <MotionController />
     </>
   );
 }

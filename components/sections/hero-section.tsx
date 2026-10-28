@@ -42,11 +42,12 @@ export function HeroSection() {
 
       <figure className="cell hero-photo">
         <RgbSubpixelImage
-          src="/images/portrait/hero-01"
+          src="/images/portrait/hero-02"
           alt={chrome.portraitAlt}
           aspect="2 / 3"
-          objectPosition="50% 8%"
-          intensity={0.36}
+          objectPosition="50% 45%"
+          intensity={0.82}
+          maskSrc="/images/portrait/hero-02-mask.svg"
           priority
         />
         <figcaption className="meta">

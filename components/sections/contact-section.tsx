@@ -78,7 +78,7 @@ export function ContactSection() {
             <a className="cmail" href={`mailto:${SITE.email}`}>
               {SITE.email}
             </a>
-            <div className="cgrid">
+            <div className="cgrid" data-settle>
               <a
                 href={SITE.github}
                 target="_blank"
@@ -106,7 +106,7 @@ export function ContactSection() {
             </div>
           </div>
 
-          <form className="cform" onSubmit={handleSubmit}>
+          <form className="cform" onSubmit={handleSubmit} data-settle>
             {status === "success" ? (
               <div className="form-status ok" role="status">
                 <p className="form-status__title">

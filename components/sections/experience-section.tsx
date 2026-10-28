@@ -11,7 +11,7 @@ export function ExperienceSection() {
       className="sec"
       aria-labelledby="experience-heading"
     >
-      <div className="sec-head">
+      <div className="sec-head" data-settle>
         <span className="secnum num" aria-hidden="true">
           03
         </span>
@@ -20,7 +20,9 @@ export function ExperienceSection() {
           <span className="num">03</span> / 05
         </p>
       </div>
-      <p className="sec-intro">{copy.experience.intro}</p>
+      <p className="sec-intro" data-settle>
+        {copy.experience.intro}
+      </p>
 
       {copy.experience.items.map((item, index) => (
         <article className="xrow" key={item.id} data-settle>

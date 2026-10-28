@@ -15,7 +15,7 @@ export function WorkSection() {
 
   return (
     <section id="work" className="sec" aria-labelledby="work-heading">
-      <div className="sec-head">
+      <div className="sec-head" data-settle>
         <span className="secnum num" aria-hidden="true">
           02
         </span>
@@ -24,45 +24,63 @@ export function WorkSection() {
           <span className="num">02</span> / 05
         </p>
       </div>
-      <p className="sec-intro">{copy.work.intro}</p>
+      <p className="sec-intro" data-settle>
+        {copy.work.intro}
+      </p>
 
       <ol className="arch">
-        {copy.work.items.map((item, index) => (
-          <li className="arow" key={item.id} data-settle>
-            <span className="ano num">
-              {String(index + 1).padStart(3, "0")}
-            </span>
-            <span className="acell">
-              <h3 className="atitle serif">
-                {FEATURED.has(item.id) ? (
-                  <Link href={`/work/${item.id}`}>
-                    {item.title}
-                    <span className="atitle-mark" aria-hidden="true">
-                      →
-                    </span>
-                  </Link>
-                ) : (
-                  item.title
-                )}
-              </h3>
-              <span className="adesc">{item.description}</span>
-            </span>
-            <span className="ayear num">{item.year}</span>
-            <span className="astack">{item.stack.join(", ")}</span>
-            <span className="alink">
-              {item.links.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {link.label} <span aria-hidden="true">↗</span>
-                </a>
-              ))}
-            </span>
-          </li>
-        ))}
+        {copy.work.items.map((item, index) => {
+          const ordinal = String(index + 1).padStart(2, "0");
+          return (
+            <li className="arow" key={item.id} data-settle>
+              <span className="ano num">{String(index + 1).padStart(3, "0")}</span>
+              <span className="acover" aria-hidden="true">
+                <span className="acover-fallback num">{ordinal}</span>
+                {/* eslint-disable-next-line @next/next/no-img-element -- static 4:3 vector cover, no loader needed */}
+                <img
+                  src={`/images/work/${item.id}.svg`}
+                  alt=""
+                  width={1200}
+                  height={900}
+                  loading="lazy"
+                  decoding="async"
+                  onError={(event) => {
+                    event.currentTarget.style.display = "none";
+                  }}
+                />
+              </span>
+              <span className="acell">
+                <h3 className="atitle serif">
+                  {FEATURED.has(item.id) ? (
+                    <Link href={`/work/${item.id}`}>
+                      {item.title}
+                      <span className="atitle-mark" aria-hidden="true">
+                        →
+                      </span>
+                    </Link>
+                  ) : (
+                    item.title
+                  )}
+                </h3>
+                <span className="adesc">{item.description}</span>
+              </span>
+              <span className="astack">{item.stack.join(", ")}</span>
+              <span className="ayear num">{item.year}</span>
+              <span className="alink">
+                {item.links.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {link.label} <span aria-hidden="true">↗</span>
+                  </a>
+                ))}
+              </span>
+            </li>
+          );
+        })}
         <li className="arch-foot">
           <span className="meta">{range}</span>
           <a

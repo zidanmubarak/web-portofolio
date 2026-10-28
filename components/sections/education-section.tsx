@@ -17,7 +17,7 @@ export function EducationSection() {
       />
       <div className="sec-body">
         {copy.education.items.map((item) => (
-          <dl className="metagrid edgrid" key={item.id}>
+          <dl className="metagrid edgrid" key={item.id} data-settle>
             <div>
               <dt>{copy.education.labels.degree}</dt>
               <dd>{item.degree}</dd>

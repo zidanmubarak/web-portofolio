@@ -14,7 +14,7 @@ export function SectionHead({
   subdued = false,
 }: SectionHeadProps) {
   return (
-    <div className="sec-head">
+    <div className="sec-head" data-settle>
       <span
         className={`secnum num${subdued ? " sub" : ""}`}
         aria-hidden="true"
