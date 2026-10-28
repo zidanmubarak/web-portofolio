@@ -1,35 +1,37 @@
-"use client";
-
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-import { HeroSection } from "@/components/sections/hero-section";
 import { AboutSection } from "@/components/sections/about-section";
-import { ProjectsSection } from "@/components/sections/projects-section";
-import { DashboardSection } from "@/components/sections/dashboard-section";
+import { CertificationsSection } from "@/components/sections/certifications-section";
 import { ContactSection } from "@/components/sections/contact-section";
+import { EducationSection } from "@/components/sections/education-section";
+import { ExperienceSection } from "@/components/sections/experience-section";
+import { HeroSection } from "@/components/sections/hero-section";
+import { SkillsSection } from "@/components/sections/skills-section";
+import { WorkSection } from "@/components/sections/work-section";
+import { Footer } from "@/components/layout/footer";
+import { SiteHeader } from "@/components/layout/site-header";
+import { SiteRail } from "@/components/layout/site-rail";
+import { SettleController } from "@/components/settle-controller";
+import { SkipLink } from "@/components/skip-link";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-black">
-      <Header />
-      <main>
-        <section id="home">
+    <>
+      <SkipLink />
+      <SiteRail />
+      <div className="page">
+        <SiteHeader />
+        <main id="main">
           <HeroSection />
-        </section>
-        <section id="about">
           <AboutSection />
-        </section>
-        <section id="projects">
-          <ProjectsSection />
-        </section>
-        <section id="dashboard">
-          <DashboardSection />
-        </section>
-        <section id="contact">
+          <WorkSection />
+          <ExperienceSection />
+          <EducationSection />
+          <CertificationsSection />
+          <SkillsSection />
           <ContactSection />
-        </section>
-      </main>
-      <Footer />
-    </div>
+        </main>
+        <Footer />
+      </div>
+      <SettleController />
+    </>
   );
 }

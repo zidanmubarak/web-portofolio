@@ -1,0 +1,79 @@
+{
+  "jawi": {
+    "slug": "jawi",
+    "kicker": "Qwen2.5-VL adapter for printed Jawi",
+    "summary": "A vision-language adapter that reads printed Jawi off a page image and writes it back out in Rumi. Fine-tuned from Qwen2.5-VL-3B with QLoRA, it cut character error rate from 82.51% to 17.35% on extraction and from 90.59% to 16.48% on transliteration.",
+    "context": "Jawi is the Arabic-Malay script used across Malay and Indonesian print, and most readers today cannot parse it. Opening one Jawi page takes two steps in order: pull the Arabic characters off the image, then transliterate them into Rumi under the PEJYD spelling rules. Linguists, historians, and philologists digitising Jawi documents need both steps from one image.",
+    "approach": [
+      "Fine-tuned Qwen2.5-VL-3B-Instruct with QLoRA in Unsloth, at 4-bit NF4 quantization and bfloat16 mixed precision.",
+      "Generated synthetic Jawi text from several Arabic and Jawi fonts, then mixed it with crops from books, newspapers, and historical documents.",
+      "Compared synthetic-only, authentic-only, and combined data in a three-way ablation, then kept the Skenario C checkpoint from epoch 3.",
+      "Scored both scripts with CER plus WER on Rumi, then published the adapter with a Gradio demo."
+    ],
+    "result": [
+      "Extraction CER fell from 82.51% (zero-shot Qwen baseline) to 17.35%; Rumi transliteration CER went from 90.59% to 16.48%.",
+      "Word error rate on the Rumi output fell from 107.08% to 39.36%.",
+      "Figures come from the held-out 10% of authentic pages: 790 test images in the thesis write-up."
+    ],
+    "links": [
+      { "label": "Model on Hugging Face", "href": "https://huggingface.co/zidanmubarak/jawi-qwen25-vl-qlora" },
+      { "label": "Gradio demo", "href": "https://huggingface.co/spaces/zidanmubarak/jawi-transliterasi-demo" }
+    ],
+    "sources": [
+      "https://huggingface.co/zidanmubarak/jawi-qwen25-vl-qlora",
+      "https://huggingface.co/spaces/zidanmubarak/jawi-transliterasi-demo",
+      "https://docs.google.com/document/d/1B3Lv2ZyZuLOva0zn8Y4hWBECGRSaAdYBpVMW1La75Xs/edit"
+    ]
+  },
+  "pacu-pintar": {
+    "slug": "pacu-pintar",
+    "kicker": "Learning-pace classifier and advice API",
+    "summary": "The machine learning half of Pacu Pintar: a Random Forest that sorts a learner's pace into consistent, fast, or reflective, plus a FastAPI service that turns that label into LLM-written study advice. Built with one teammate for the Asah capstone.",
+    "context": "Pacu Pintar is an AI learning-analytics platform for an online course site. Its ML component had to answer two questions about each learner: what pace they study at, and what advice would keep them moving. The repo README names the two needs behind it: learners want motivation and suggestions, and they cannot see their own progress.",
+    "approach": [
+      "Derived pace features from course activity: study duration against scheduled hours, spread of study hours, and completed versus viewed module counts.",
+      "Trained a Random Forest to label each learner consistent, fast, or reflective.",
+      "Served predictions through separate FastAPI pace and advice endpoints, leaving feature calculation to the backend rather than the API.",
+      "Sent the pace label, exam average, and course name to an LLM for the advice text, with a plain template fallback when no API key is set."
+    ],
+    "result": [
+      "The pace classifier reports about 90% accuracy across the three classes.",
+      "The pace endpoint answers in roughly 50–100 ms on the repo's own measurements.",
+      "The capstone closed with the Best Capstone Project award at Asah, January 2026."
+    ],
+    "links": [
+      { "label": "Repository", "href": "https://github.com/Capstone-Project-Team-DC-08" },
+      { "label": "Demo video", "href": "https://drive.google.com/file/d/13IS9Zqi9NkDdG1eVsL489_-uzhGJE7Q2/view" }
+    ],
+    "sources": [
+      "https://github.com/Capstone-Project-Team-DC-08/ML",
+      "https://github.com/Capstone-Project-Team-DC-08",
+      "https://docs.google.com/document/d/1B3Lv2ZyZuLOva0zn8Y4hWBECGRSaAdYBpVMW1La75Xs/edit"
+    ]
+  },
+  "memory-vault": {
+    "slug": "memory-vault",
+    "kicker": "Persistent memory layer for any LLM",
+    "summary": "A Python layer that gives any LLM memory across sessions: it captures conversation turns, extracts facts, compresses old context, and injects the relevant memories into each new prompt. Published on PyPI as memory-vault, currently 0.1.2.",
+    "context": "Most assistants start every session with no memory of the one before. Replaying the whole transcript into the next prompt is not a real fix either, because the context window fills up. Memory Vault AI sits between the app and the model so only the facts that matter travel with each request.",
+    "approach": [
+      "Split storage into four memory types — episodic, semantic, working, procedural — so raw turns, extracted facts, session context, and preferences age differently.",
+      "Retrieved memories by vector similarity over local embeddings instead of keyword matching, which keeps the system runnable offline.",
+      "Compressed old episodic memories into summaries and held the injected block to a 2000-token default budget.",
+      "Exposed one core through four modes: Python SDK, REST API, CLI, and an MCP server for Claude Desktop and Cursor."
+    ],
+    "result": [
+      "Version 0.1.2 is live on PyPI for Python 3.11 and up, under MIT.",
+      "Four memory types, four access modes, and 6 built-in MCP tools.",
+      "Local-first by default: ChromaDB plus sentence-transformers embeddings, with SQLite for metadata and no external database."
+    ],
+    "links": [
+      { "label": "Repository", "href": "https://github.com/zidanmubarak/Memory-Vault-AI" },
+      { "label": "PyPI package", "href": "https://pypi.org/project/memory-vault/" }
+    ],
+    "sources": [
+      "https://pypi.org/project/memory-vault/",
+      "https://github.com/zidanmubarak/Memory-Vault-AI"
+    ]
+  }
+}

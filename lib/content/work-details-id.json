@@ -1,0 +1,79 @@
+{
+  "jawi": {
+    "slug": "jawi",
+    "kicker": "Adapter Qwen2.5-VL untuk Jawi cetak",
+    "summary": "Adapter vision-language yang membaca Jawi cetak dari gambar halaman lalu menuliskannya kembali dalam huruf Rumi. Berangkat dari Qwen2.5-VL-3B yang di-fine-tune dengan QLoRA, model ini menurunkan character error rate ekstraksi dari 82,51% ke 17,35%, dan pada transliterasi dari 90,59% ke 16,48%.",
+    "context": "Aksara Jawi dipakai di banyak terbitan Melayu dan Indonesia, tetapi pembaca hari ini umumnya tak lagi bisa membacanya. Membuka satu halaman Jawi butuh dua langkah berurutan: menarik huruf Arab dari gambar, lalu mentransliterasinya ke Rumi menurut pedoman PEJYD. Linguis, sejarawan, dan filolog yang mendigitalkan dokumen Jawi membutuhkan kedua langkah itu berjalan otomatis dari satu gambar.",
+    "approach": [
+      "Fine-tune Qwen2.5-VL-3B-Instruct dengan QLoRA di Unsloth, memakai kuantisasi 4-bit NF4 dan mixed precision bfloat16.",
+      "Membangun teks Jawi sintetis dari beberapa font Arab dan Jawi, lalu mencampurnya dengan potongan gambar dari buku, koran, dan dokumen sejarah.",
+      "Membandingkan data sintetis saja, asli saja, dan gabungan dalam ablasi tiga skenario, lalu memakai checkpoint Skenario C dari epoch 3.",
+      "Mengukur CER pada kedua aksara dan WER di sisi Rumi, lalu menerbitkan adapter bersama demo Gradio."
+    ],
+    "result": [
+      "CER ekstraksi turun dari 82,51% (Qwen zero-shot) ke 17,35%; CER transliterasi Rumi turun dari 90,59% ke 16,48%.",
+      "Word error rate keluaran Rumi turun dari 107,08% ke 39,36%.",
+      "Semua angka diukur pada 10% data asli yang disisihkan—790 gambar uji menurut catatan skripsi."
+    ],
+    "links": [
+      { "label": "Model di Hugging Face", "href": "https://huggingface.co/zidanmubarak/jawi-qwen25-vl-qlora" },
+      { "label": "Demo Gradio", "href": "https://huggingface.co/spaces/zidanmubarak/jawi-transliterasi-demo" }
+    ],
+    "sources": [
+      "https://huggingface.co/zidanmubarak/jawi-qwen25-vl-qlora",
+      "https://huggingface.co/spaces/zidanmubarak/jawi-transliterasi-demo",
+      "https://docs.google.com/document/d/1B3Lv2ZyZuLOva0zn8Y4hWBECGRSaAdYBpVMW1La75Xs/edit"
+    ]
+  },
+  "pacu-pintar": {
+    "slug": "pacu-pintar",
+    "kicker": "Klasifikasi ritme belajar dan API saran",
+    "summary": "Sisi machine learning Pacu Pintar: Random Forest yang memilah ritme belajar ke tiga kategori, plus layanan FastAPI yang mengubah label itu jadi saran belajar yang ditulis LLM. Dikerjakan bersama satu rekan untuk capstone Asah.",
+    "context": "Pacu Pintar adalah platform analitik pembelajaran berbasis AI untuk sebuah situs kursus online. Komponen ML-nya harus menjawab dua hal tentang tiap peserta: seperti apa ritme belajarnya, dan saran apa yang bisa membuatnya bertahan. README repo menyebut dua kebutuhan di baliknya: peserta ingin motivasi dan saran, dan mereka tidak tahu sejauh mana progresnya.",
+    "approach": [
+      "Menurunkan fitur ritme dari aktivitas kursus: durasi belajar terhadap jam yang dijadwalkan, sebaran jam belajar, serta jumlah modul yang selesai dibanding yang dibuka.",
+      "Melatih Random Forest untuk melabeli tiap peserta sebagai konsisten, cepat, atau reflektif.",
+      "Menyajikan prediksi lewat endpoint pace dan advice FastAPI yang terpisah, sementara perhitungan fitur tetap di backend, bukan di API.",
+      "Mengirim label ritme, rata-rata nilai ujian, dan nama kelas ke LLM untuk teks saran, dengan template sederhana sebagai cadangan bila API key tidak diisi."
+    ],
+    "result": [
+      "Classifier ritme belajar mencatat akurasi sekitar 90% untuk tiga kelas.",
+      "Endpoint pace menjawab dalam kisaran 50–100 ms menurut pengukuran di repo.",
+      "Capstone ditutup dengan penghargaan Best Capstone Project dari Asah, Januari 2026."
+    ],
+    "links": [
+      { "label": "Repositori", "href": "https://github.com/Capstone-Project-Team-DC-08" },
+      { "label": "Video demo", "href": "https://drive.google.com/file/d/13IS9Zqi9NkDdG1eVsL489_-uzhGJE7Q2/view" }
+    ],
+    "sources": [
+      "https://github.com/Capstone-Project-Team-DC-08/ML",
+      "https://github.com/Capstone-Project-Team-DC-08",
+      "https://docs.google.com/document/d/1B3Lv2ZyZuLOva0zn8Y4hWBECGRSaAdYBpVMW1La75Xs/edit"
+    ]
+  },
+  "memory-vault": {
+    "slug": "memory-vault",
+    "kicker": "Lapisan memori untuk LLM apa pun",
+    "summary": "Pustaka Python yang memberi LLM memori lintas sesi: menangkap giliran percakapan, mengekstrak fakta, memadatkan konteks lama, lalu menyelipkan memori yang relevan ke setiap prompt baru. Terbit di PyPI sebagai memory-vault versi 0.1.2.",
+    "context": "Asisten AI umumnya memulai tiap sesi dari nol: tidak ingat siapa penggunanya, apa yang pernah dibahas, atau gaya jawaban yang disukai. Menempelkan seluruh transkrip ke prompt berikutnya juga bukan solusi karena jendela konteks cepat penuh. Memory Vault AI berdiri di antara aplikasi dan model supaya hanya fakta yang relevan yang ikut di setiap permintaan.",
+    "approach": [
+      "Memisahkan penyimpanan ke empat tipe memori — episodic, semantic, working, procedural — agar giliran percakapan, fakta hasil ekstraksi, konteks sesi, dan preferensi punya masa simpan masing-masing.",
+      "Mengambil memori lewat kemiripan vektor dari embedding lokal, bukan pencocokan kata kunci, sehingga sistem tetap bisa jalan offline.",
+      "Memadatkan memori episodik lama menjadi ringkasan dan menahan blok yang diselipkan pada batas bawaan 2000 token.",
+      "Membuka akses ke inti yang sama lewat empat mode: SDK Python, REST API, CLI, dan server MCP untuk Claude Desktop maupun Cursor."
+    ],
+    "result": [
+      "Versi 0.1.2 tersedia di PyPI untuk Python 3.11 ke atas, dengan lisensi MIT.",
+      "Empat tipe memori, empat mode akses, dan 6 tool MCP bawaan.",
+      "Local-first secara bawaan: ChromaDB dan embedding sentence-transformers, dengan SQLite untuk metadata, tanpa database eksternal."
+    ],
+    "links": [
+      { "label": "Repositori", "href": "https://github.com/zidanmubarak/Memory-Vault-AI" },
+      { "label": "Paket PyPI", "href": "https://pypi.org/project/memory-vault/" }
+    ],
+    "sources": [
+      "https://pypi.org/project/memory-vault/",
+      "https://github.com/zidanmubarak/Memory-Vault-AI"
+    ]
+  }
+}

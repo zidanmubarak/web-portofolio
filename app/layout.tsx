@@ -1,13 +1,11 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
-import { ChatbotWidget } from "@/components/ChatbotWidget";
+import { LocaleProvider } from "@/lib/i18n/provider";
+import { en } from "@/lib/i18n/copy-en";
 
 export const metadata: Metadata = {
-  title: "Zidan Mubarak - AI/ML Engineer",
-  description:
-    "AI/ML Engineer specializing in machine learning, deep learning, and intelligent systems. Building data-driven solutions for real-world problems.",
+  title: en.meta.title,
+  description: en.meta.description,
   keywords: [
     "AI",
     "Machine Learning",
@@ -25,6 +23,7 @@ export const metadata: Metadata = {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
+  themeColor: "#0A0A0A",
 };
 
 export default function RootLayout({
@@ -34,17 +33,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          {children}
-          <Toaster />
-          <ChatbotWidget />
-        </ThemeProvider>
+      <body>
+        <LocaleProvider>{children}</LocaleProvider>
       </body>
     </html>
   );

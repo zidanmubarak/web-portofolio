@@ -36,3 +36,23 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# qa screenshot evidence (large binaries, regenerable)
+/qa/evidence/**/*.png
+/qa/evidence/**/*.jpg
+/qa/evidence/**/*.webp
+
+# design prototypes and art-direction docs are kept local only
+/design/
+
+# local working material — never published:
+# source decks and provenance notes, QA runs, internal docs and agent skills
+# stay on disk but out of the repository
+/content/
+/qa/
+/docs/
+/.hermes/
+
+# leftover shadcn/ui CLI config: it points at components/ui and hooks that no
+# longer exist in this codebase
+/components.json

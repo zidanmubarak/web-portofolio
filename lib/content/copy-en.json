@@ -1,0 +1,302 @@
+{
+  "schemaVersion": "1.0",
+  "meta": {
+    "lang": "en",
+    "title": "Zidan Mubarak — AI/ML Engineer",
+    "description": "I fine-tune vision-language models, build ML APIs, and ship data tools. Six projects, from Jawi OCR to a memory library on PyPI."
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "work": "Work",
+    "experience": "Experience",
+    "education": "Education",
+    "skills": "Skills",
+    "contact": "Contact",
+    "cv": "Download CV",
+    "switchLanguage": "Bahasa Indonesia",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "hero": {
+    "name": "Zidan Mubarak",
+    "roleLine": "AI/ML engineer building vision and language models",
+    "availability": "Open to AI/ML internship roles",
+    "location": "Banda Aceh, Indonesia",
+    "intro": "I fine-tune vision-language models, build ML APIs, and turn raw datasets into prototypes that run.",
+    "cta": {
+      "work": "View work",
+      "contact": "Get in touch",
+      "cv": "Download CV"
+    },
+    "scroll": "Scroll"
+  },
+  "about": {
+    "heading": "About",
+    "paragraphs": [
+      "I build machine learning systems end to end: clean the data, train the model, measure it honestly, then ship it as an API or a small web demo. Most of my work sits in computer vision and language models.",
+      "I graduated in Information Technology from UIN Ar-Raniry Banda Aceh with a 3.77/4.00 GPA. For my thesis I fine-tuned Qwen2.5-VL with QLoRA to read printed Jawi script and transliterate it into Rumi, then published the adapter on Hugging Face.",
+      "Before that I built the tourism recommender NusantaraGo-ML, took Best Capstone Project at Asah led by Dicoding with Pacu Pintar, and worked as a lab assistant for a semester teaching computer vision and Java fundamentals."
+    ]
+  },
+  "work": {
+    "heading": "Selected work",
+    "intro": "Six projects across research, ML APIs, and data tooling. Each one started with a problem worth solving.",
+    "viewAll": "See all repositories on GitHub",
+    "items": [
+      {
+        "id": "jawi",
+        "title": "Jawi OCR and Transliteration",
+        "year": "2026",
+        "role": "Thesis project, model engineer",
+        "stack": ["Python", "PyTorch", "Qwen2.5-VL", "QLoRA", "Unsloth", "Hugging Face", "Gradio"],
+        "description": "Jawi texts use an Arabic-Malay script that most readers today cannot parse. The model targets printed Jawi (cetak): I fine-tuned Qwen2.5-VL-3B with QLoRA on synthetic and scanned page images, then ran a three-way data ablation. The final adapter cut character error rate from 82.5% to 17.4% on Jawi extraction and from 90.6% to 16.5% on Rumi transliteration.",
+        "links": [
+          { "label": "Model on Hugging Face", "href": "https://huggingface.co/zidanmubarak/jawi-qwen25-vl-qlora", "kind": "model" },
+          { "label": "Live demo", "href": "https://huggingface.co/spaces/zidanmubarak/jawi-transliterasi-demo", "kind": "demo" }
+        ]
+      },
+      {
+        "id": "pacu-pintar",
+        "title": "Pacu Pintar",
+        "year": "2025–2026",
+        "role": "ML engineer, team of two",
+        "stack": ["Python", "Scikit-learn", "Random Forest", "FastAPI"],
+        "description": "Students stall when course material outruns their learning pace. With one teammate I built the ML side of Pacu Pintar: a Random Forest that sorts learners into consistent, fast, or reflective pace at about 90% accuracy, plus a FastAPI service that returns LLM-written study suggestions.",
+        "links": [
+          { "label": "Repository", "href": "https://github.com/Capstone-Project-Team-DC-08", "kind": "source" },
+          { "label": "Demo video", "href": "https://drive.google.com/file/d/13IS9Zqi9NkDdG1eVsL489_-uzhGJE7Q2/view", "kind": "demo" }
+        ]
+      },
+      {
+        "id": "nusantarago",
+        "title": "NusantaraGo-ML",
+        "year": "2025",
+        "role": "ML engineer, capstone team",
+        "stack": ["Python", "Scikit-learn", "Flask", "Pandas"],
+        "description": "Travelers get generic destination lists that ignore what they actually like. I built a hybrid recommender, content-based scoring plus user-based collaborative filtering, and served it through Flask so a short preference form returns ranked Indonesian destinations.",
+        "links": [
+          { "label": "Repository", "href": "https://github.com/NusantaraGo/NusantaraGo-ML", "kind": "source" }
+        ]
+      },
+      {
+        "id": "climate-agriculture",
+        "title": "Climate Impact on Agriculture",
+        "year": "2025",
+        "role": "Solo, course final project",
+        "stack": ["Python", "Pandas", "Scikit-learn", "Matplotlib", "Seaborn"],
+        "description": "Agricultural planners lack a clear read on how climate shifts hit crop yields. I clustered a Kaggle agriculture-climate dataset to surface regional patterns, then trained classifiers to predict specific harvest yields from climate variables, and wrote both notebooks so the analysis could be rerun.",
+        "links": [
+          { "label": "Repository", "href": "https://github.com/zidanmubarak/climate-agriculture-ml-analysis", "kind": "source" }
+        ]
+      },
+      {
+        "id": "bike-sharing",
+        "title": "Bike-Sharing Demand Dashboard",
+        "year": "2025",
+        "role": "Solo, course final project",
+        "stack": ["Python", "Pandas", "Matplotlib", "Streamlit"],
+        "description": "Bike-sharing operators need to know which conditions drive rentals. I compared seasonal, weather, and hourly patterns in the UCI rental dataset, ran clustering to separate usage groups, and shipped a Streamlit dashboard with date, season, and weather filters.",
+        "links": [
+          { "label": "Repository", "href": "https://github.com/zidanmubarak/data-visualization-dashboard", "kind": "source" }
+        ]
+      },
+      {
+        "id": "memory-vault",
+        "title": "Memory Vault AI",
+        "year": "2026",
+        "role": "Solo, author and maintainer",
+        "stack": ["Python", "FastAPI", "SQLModel", "SQLite", "ChromaDB", "PyPI"],
+        "description": "Assistants forget everything the moment a session ends. I built Memory Vault AI, a Python layer between an app and any LLM: it captures turns, extracts facts, compresses old context, then injects relevant memories into each new prompt. Published on PyPI as memory-vault.",
+        "links": [
+          { "label": "Repository", "href": "https://github.com/zidanmubarak/Memory-Vault-AI", "kind": "source" },
+          { "label": "PyPI package", "href": "https://pypi.org/project/memory-vault/", "kind": "package" }
+        ]
+      }
+    ]
+  },
+  "experience": {
+    "heading": "Experience",
+    "intro": "Research, teaching, and internship work.",
+    "items": [
+      {
+        "id": "lab-big-data",
+        "role": "Laboratory Assistant, Big Data Analytics",
+        "org": "Information Technology Study Program, UIN Ar-Raniry Banda Aceh",
+        "place": "Banda Aceh, Indonesia",
+        "period": "May 2026 – Jul 2026",
+        "bullets": [
+          "Mentored students through computer vision practicum: image processing with Python and OpenCV, CNN classification, transfer learning, and fine-tuning.",
+          "Debugged student code during practice sessions and explained the cause behind each error."
+        ]
+      },
+      {
+        "id": "lab-algorithms",
+        "role": "Laboratory Assistant, Algorithms and Programming",
+        "org": "Information Technology Study Program, UIN Ar-Raniry Banda Aceh",
+        "place": "Banda Aceh, Indonesia",
+        "period": "May 2026 – Jul 2026",
+        "bullets": [
+          "Guided Java fundamentals practicum: variables, data types, input handling, arithmetic operators, and branching.",
+          "Wrote graded case studies at matched difficulty and built the scoring rubric for each."
+        ]
+      },
+      {
+        "id": "asah",
+        "role": "Machine Learning Cohort, Best Capstone Project",
+        "org": "Asah led by Dicoding",
+        "place": "Remote, Bandung, Indonesia",
+        "period": "Aug 2025 – Jan 2026",
+        "bullets": [
+          "Built Pacu Pintar's ML component with one teammate: a Random Forest sorting student learning pace into three categories at about 90% accuracy.",
+          "Shipped a FastAPI service that turned model output into LLM-written study suggestions for the team's web app.",
+          "Closed the program with the Best Capstone Project award."
+        ]
+      },
+      {
+        "id": "coding-camp",
+        "role": "Machine Learning Engineer Cohort",
+        "org": "Coding Camp powered by DBS Foundation",
+        "place": "Remote, Bandung, Indonesia",
+        "period": "Feb 2025 – Jul 2025",
+        "bullets": [
+          "Completed the certified ML track, including a soft-skills path and an Introduction to Financial Literacy class.",
+          "Trained CNN image classifiers with transfer learning for the computer vision coursework.",
+          "Built NusantaraGo-ML, a tourism recommender using content-based and user-based collaborative filtering, served through Flask."
+        ]
+      },
+      {
+        "id": "bpka",
+        "role": "Data Management and Analysis",
+        "org": "Badan Pengelolaan Keuangan Aceh (BPKA)",
+        "place": "Banda Aceh, Indonesia",
+        "period": "Feb 2025 – Mar 2025",
+        "bullets": [
+          "Digitized and processed financial records in spreadsheets and analysis tools.",
+          "Wrote internal documentation and daily operational reports, then supported finance data reporting."
+        ]
+      }
+    ]
+  },
+  "education": {
+    "heading": "Education",
+    "intro": "Formal study and academic record.",
+    "labels": {
+      "degree": "Degree",
+      "institution": "Institution",
+      "period": "Period",
+      "gpa": "GPA"
+    },
+    "items": [
+      {
+        "id": "s1-informatics",
+        "degree": "S1 Teknologi Informasi",
+        "institution": "UIN Ar-Raniry Banda Aceh",
+        "period": "2022 – 2026",
+        "gpa": "3.77/4.00"
+      }
+    ]
+  },
+  "skills": {
+    "heading": "Skills",
+    "intro": "Tools I use, grouped by how I use them.",
+    "groups": [
+      {
+        "id": "ml",
+        "title": "Machine learning and AI",
+        "items": ["Python", "PyTorch", "TensorFlow", "Keras", "Scikit-learn", "Hugging Face", "QLoRA fine-tuning with Unsloth", "CNN and transfer learning", "OpenCV", "Recommender systems", "Classification"]
+      },
+      {
+        "id": "data",
+        "title": "Data",
+        "items": ["SQL", "Pandas", "NumPy", "Matplotlib", "Plotly", "Preprocessing and feature engineering", "Model evaluation with CER, WER, and accuracy"]
+      },
+      {
+        "id": "deploy",
+        "title": "Deployment and tooling",
+        "items": ["Flask", "FastAPI", "Gradio", "Hugging Face Hub and Spaces", "Git and GitHub", "Google Colab", "Jupyter Notebook", "VS Code"]
+      },
+      {
+        "id": "collab",
+        "title": "Languages and collaboration",
+        "items": ["Indonesian, active", "English, passive", "Problem solving", "Technical documentation", "Teamwork", "Student mentoring"]
+      }
+    ]
+  },
+  "certifications": {
+    "heading": "Certifications and awards",
+    "intro": "Credentials issued by Dicoding Indonesia and Asah.",
+    "items": [
+      {
+        "id": "best-capstone",
+        "name": "Best Capstone Project",
+        "issuer": "Asah led by Dicoding",
+        "year": "January 2026",
+        "type": "award"
+      },
+      {
+        "id": "mlops",
+        "name": "Building Machine Learning Systems (MLOps)",
+        "issuer": "Dicoding Indonesia",
+        "year": "2025",
+        "type": "certification"
+      },
+      {
+        "id": "applied-ml",
+        "name": "Applied Machine Learning",
+        "issuer": "Dicoding Indonesia",
+        "year": "2025",
+        "type": "certification"
+      },
+      {
+        "id": "data-processing",
+        "name": "Learning Data Processing Fundamentals",
+        "issuer": "Dicoding Indonesia",
+        "year": "2025",
+        "type": "certification"
+      }
+    ]
+  },
+  "contact": {
+    "heading": "Get in touch",
+    "body": "Have a role, a project, or a dataset that needs a model? Send a message and tell me what you are working on.",
+    "labels": {
+      "name": "Name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Message",
+      "submit": "Send message",
+      "sending": "Sending"
+    },
+    "placeholders": {
+      "name": "Your name",
+      "email": "you@example.com",
+      "subject": "What is this about?",
+      "message": "Tell me about the project"
+    },
+    "success": {
+      "heading": "Message sent",
+      "body": "Thanks. I will reply to the email address you left."
+    },
+    "error": "Message could not be sent. Try again, or email me directly.",
+    "info": {
+      "emailLabel": "Email",
+      "locationLabel": "Location",
+      "locationValue": "Banda Aceh, Indonesia",
+      "connectLabel": "Elsewhere"
+    },
+    "availability": {
+      "heading": "Open to internship roles",
+      "body": "I am looking for an AI engineer internship where I can work on real models and real data."
+    }
+  },
+  "footer": {
+    "tagline": "AI/ML engineer in Banda Aceh. I build vision and language models, then ship them.",
+    "navHeading": "Navigation",
+    "contactHeading": "Contact",
+    "availability": "Open to internship roles",
+    "rights": "© {year} Zidan Mubarak. All rights reserved.",
+    "builtWith": "Built with Next.js and Tailwind CSS",
+    "backToTop": "Back to top"
+  }
+}
