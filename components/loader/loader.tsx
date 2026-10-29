@@ -347,7 +347,10 @@ export function Loader({
 
       {/* Signature lives above the wipe so it can land in the top bar while
           the overlay is still clipping away. */}
-      <div className="pointer-events-none fixed inset-0 z-[calc(var(--z-loader)+2)] flex items-center justify-center">
+      <div
+        data-loader-root
+        className="pointer-events-none fixed inset-0 z-[calc(var(--z-loader)+2)] flex items-center justify-center"
+      >
         <div ref={signatureRef} className="will-change-transform">
           <SignatureDraw variant="loader" play="mount" duration={drawDuration} />
         </div>
