@@ -10,9 +10,9 @@ import type { Project } from "./types";
  */
 export const projects: readonly Project[] = [
   {
-    slug: "jawi-htr",
+    slug: "jawi-ocr",
     index: "01",
-    title: "Jawi HTR",
+    title: "Jawi OCR",
     year: "2026",
     period: "Thesis",
     category: "research",
@@ -20,7 +20,7 @@ export const projects: readonly Project[] = [
     role: "Researcher and ML engineer (solo)",
     team: "Undergraduate thesis, UIN Ar-Raniry",
     summary:
-      "A Qwen2.5-VL-3B adapter that reads Jawi and transliterates it to Rumi, cutting character error on unseen samples by 79%.",
+      "A Qwen2.5-VL-3B adapter that reads printed Jawi and transliterates it to Rumi, cutting character error on unseen scans by 79%.",
     description:
       "Jawi is written in Arabic script but carries Malay, and general-purpose OCR handles it badly. The thesis fine-tunes a 3B vision-language model with QLoRA, tests three data scenarios, and evaluates extraction and transliteration separately so the failure is visible instead of averaged away.",
     stack: [
@@ -62,23 +62,26 @@ export const projects: readonly Project[] = [
       {
         id: "jawi-sample",
         label: "Before / after sample",
-        status: "missing",
-        source: { kind: "owner-supplied", value: "One handwritten or scanned Jawi sample with base and fine-tuned outputs side by side." },
-        alt: "A Jawi sample image next to the base model's output and the fine-tuned model's output.",
+        status: "needs-capture",
+        source: {
+          kind: "owner-supplied",
+          value: "Gradio comparison notebook: one- or two-line crops, base model versus fine-tuned adapter.",
+        },
+        alt: "A one-line Jawi crop next to the base model's output and the fine-tuned model's output.",
         aspect: "16/10",
-        note: "Not published anywhere yet. Ask the owner before designing a layout that depends on it.",
+        note: "Owner confirmed the demo uses one- or two-line crops from the Gradio notebook. Capture both outputs on the same crop.",
       },
     ],
     selected: true,
     featured: true,
     highlights: [
-      "QLoRA fine-tune of Qwen2.5-VL-3B-Instruct on ≈26,000 synthetic and ≈7,900 authentic Jawi samples.",
+      "QLoRA fine-tune of Qwen2.5-VL-3B-Instruct on ≈26,000 synthetic and ≈7,902 authentic Jawi samples.",
       "Three data scenarios compared; the combined scenario was the one that generalised.",
       "On unseen authentic data: CER Jawi 82.51% → 17.35%, CER Rumi 90.59% → 16.48%, WER Rumi 107.08% → 39.36%.",
       "Epoch 4 overfitted, so epoch 3 shipped.",
       "Adapter and a Gradio demo are public on Hugging Face.",
     ],
-    caseStudy: "jawi-htr",
+    caseStudy: "jawi-ocr",
     sources: [
       "cv",
       "hf-model-card",
@@ -88,14 +91,14 @@ export const projects: readonly Project[] = [
     verification: {
       verified: true,
       sources: ["cv", "hf-model-card"],
-      note: "CER and WER values are identical on the CV and the model card; the 26,000 / 7,900 sample counts come from the CV, and the card confirms the 10% unseen split and epoch 3. The wording of the task (handwritten vs. printed Jawi) is unresolved — see open question Q1.",
+      note: "CER and WER values are identical on the CV and the model card; the thesis title and the 26,000 / 7,902 counts come from the owner's answers. Scope confirmed as printed Jawi.",
     },
   },
   {
     slug: "pacu-pintar",
     index: "02",
     title: "Pacu Pintar",
-    year: "2025",
+    year: "2026",
     period: "Aug 2025 — Jan 2026",
     category: "ai-ml",
     categoryLabel: "Machine learning",
@@ -114,16 +117,19 @@ export const projects: readonly Project[] = [
       "Next.js",
       "Hapi.js",
     ],
-    links: {},
+    links: {
+      live: "https://pacupintar.netlify.app/",
+      repo: "https://github.com/Capstone-Project-Team-DC-08",
+    },
     image: {
-      status: "missing",
+      status: "needs-capture",
       source: {
-        kind: "owner-supplied",
-        value: "Screenshot of the Pacu Pintar web app or the ML API response.",
+        kind: "live-capture",
+        value: "https://pacupintar.netlify.app/",
       },
-      alt: "Pacu Pintar dashboard showing a student's study-pace category and recommendation.",
+      alt: "Pacu Pintar dashboard showing a student's learning pace and AI study recommendation.",
       aspect: "16/10",
-      note: "No public repository or deployment URL was found. Do not substitute a mockup.",
+      note: "The live site is up; capture the student dashboard. The ML service lives in the team's ML repository.",
     },
     selected: true,
     featured: true,
@@ -133,11 +139,11 @@ export const projects: readonly Project[] = [
       "Integrated with the team's Next.js and Hapi.js web application.",
       "Best Capstone Project, Asah led by Dicoding.",
     ],
-    sources: ["cv", "owner-brief"],
+    sources: ["cv", "owner-brief", "github-capstone"],
     verification: {
       verified: true,
-      sources: ["cv"],
-      note: "Award date on the CV (May 2025) conflicts with the cohort period (Aug 2025 — Jan 2026); see open question Q6.",
+      sources: ["cv", "github-capstone", "owner-answers"],
+      note: "Award date confirmed as Jan 2026 (owner answer), inside the cohort window. Live site and both repositories are public.",
     },
   },
   {
@@ -225,15 +231,11 @@ export const projects: readonly Project[] = [
       repo: "https://github.com/NusantaraGo/NusantaraGo-ML",
     },
     image: {
-      status: "missing",
-      source: {
-        kind: "owner-supplied",
-        value:
-          "Screenshot of the running Flask app, or a capture of the recommendation results in a notebook.",
-      },
-      alt: "NusantaraGo recommendation page showing attraction cards and a selected destination.",
+      status: "generated",
+      source: { kind: "none" },
+      alt: "Abstract typographic composition representing the NusantaraGo recommendation model.",
       aspect: "16/10",
-      note: "The old site's NusantaraGo image is an AI-generated phone mockup with stock tourism photos. It cannot be used.",
+      note: "No real screenshot exists and the owner declined to run the app. Owner authorised a generated visual; it must be abstract or typographic — never a fake app screen with invented UI copy.",
     },
     selected: true,
     featured: false,
@@ -265,15 +267,11 @@ export const projects: readonly Project[] = [
       repo: "https://github.com/zidanmubarak/guest-book-system",
     },
     image: {
-      status: "missing",
-      source: {
-        kind: "owner-supplied",
-        value:
-          "Screenshot of the event dashboard and the QR check-in screen from a running installation.",
-      },
-      alt: "Guest Book System dashboard listing registered guests and check-in status.",
+      status: "generated",
+      source: { kind: "none" },
+      alt: "Abstract typographic composition representing a QR check-in and ID card system.",
       aspect: "16/10",
-      note: "The old site's guest book image is an AI mockup filled with John Doe entries. It cannot be used.",
+      note: "No real screenshot exists and the owner declined to run the app. Owner authorised a generated visual; it must be abstract or typographic — never a fake admin panel.",
     },
     selected: true,
     featured: false,
@@ -305,15 +303,11 @@ export const projects: readonly Project[] = [
       repo: "https://github.com/zidanmubarak/climate-agriculture-ml-analysis",
     },
     image: {
-      status: "missing",
-      source: {
-        kind: "repo",
-        value:
-          "Re-run the classification notebook and export the confusion matrix and cluster plots.",
-      },
-      alt: "Confusion matrix and cluster distribution charts from the climate-agriculture notebooks.",
+      status: "generated",
+      source: { kind: "none" },
+      alt: "Abstract typographic composition built from a yield-versus-climate sequence.",
       aspect: "16/10",
-      note: "The old site's climate image is a fabricated dashboard mockup with invented figures. It cannot be used.",
+      note: "Owner has no exported charts. Prefer a real export if a notebook can be run; otherwise a generated abstract visual, never a dashboard with invented figures.",
     },
     selected: true,
     featured: false,

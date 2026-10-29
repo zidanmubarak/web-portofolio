@@ -94,7 +94,7 @@ export const experience: readonly ExperienceEntry[] = [
     verification: {
       verified: true,
       sources: ["cv"],
-      note: "The award date on the CV (May 2025) conflicts with this period; see open question Q6.",
+      note: "Award date confirmed as Jan 2026 (owner answer), inside the cohort window.",
     },
   },
   {

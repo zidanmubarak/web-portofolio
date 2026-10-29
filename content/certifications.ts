@@ -1,31 +1,48 @@
 import type { Credential } from "./types";
 
 /**
- * Certifications, the journal paper and the award, newest first.
- * Only two certificates have a public credential page; both were opened
- * and matched to the holder name during research.
+ * Certifications, the award and the journal paper, newest first.
+ * All three certificates now have a public credential page that was
+ * opened and matched to the holder name during research.
  */
 export const certifications: readonly Credential[] = [
   {
     index: "01",
-    id: "dicoding-membangun-sistem-ml",
-    kind: "certification",
-    title: "Membangun Sistem Machine Learning",
-    issuer: "Dicoding Indonesia",
-    date: "2025-11",
-    displayDate: "Nov 2025",
+    id: "asah-best-capstone",
+    kind: "award",
+    title: "Best Capstone Project",
+    issuer: "Asah led by Dicoding",
+    date: "2026-01",
+    displayDate: "Jan 2026",
     summary:
-      "MLOps foundations: experiment metadata, model serving, monitoring and alerting.",
-    skills: ["MLOps", "Model serving", "Monitoring"],
-    sources: ["cv"],
+      "Awarded for Pacu Pintar, the AI learning-analytics platform built by a two-person ML team inside a larger web team.",
+    sources: ["cv", "owner-answers"],
     verification: {
       verified: true,
-      sources: ["cv"],
-      note: "Listed on the CV without a credential URL; no public certificate page was provided.",
+      sources: ["owner-answers"],
+      note: "Owner confirmed Jan 2026, inside the cohort window. The award has a PDF certificate but no public URL.",
     },
   },
   {
     index: "02",
+    id: "dicoding-membangun-sistem-ml",
+    kind: "certification",
+    title: "Membangun Sistem Machine Learning",
+    issuer: "Dicoding Indonesia",
+    date: "2025-11-25",
+    displayDate: "25 Nov 2025",
+    level: "Advanced",
+    validUntil: "2028-11-25",
+    credentialId: "2VX35EDOJPYQ",
+    url: "https://www.dicoding.com/certificates/2VX35EDOJPYQ",
+    summary:
+      "MLOps foundations: experiment metadata, model serving, monitoring and alerting.",
+    skills: ["MLOps", "Model serving", "Monitoring"],
+    sources: ["cv", "dicoding-mlops"],
+    verification: { verified: true, sources: ["dicoding-mlops"] },
+  },
+  {
+    index: "03",
     id: "ajcsr-hebb-rule",
     kind: "publication",
     title:
@@ -45,7 +62,7 @@ export const certifications: readonly Credential[] = [
     },
   },
   {
-    index: "03",
+    index: "04",
     id: "dicoding-ml-terapan",
     kind: "certification",
     title: "Machine Learning Terapan",
@@ -63,7 +80,7 @@ export const certifications: readonly Credential[] = [
     verification: { verified: true, sources: ["dicoding-mlt"] },
   },
   {
-    index: "04",
+    index: "05",
     id: "dicoding-pemrosesan-data",
     kind: "certification",
     title: "Belajar Fundamental Pemrosesan Data",
@@ -79,23 +96,6 @@ export const certifications: readonly Credential[] = [
     skills: ["Data processing", "SQL", "PostgreSQL"],
     sources: ["cv", "dicoding-bfpd"],
     verification: { verified: true, sources: ["dicoding-bfpd"] },
-  },
-  {
-    index: "05",
-    id: "asah-best-capstone",
-    kind: "award",
-    title: "Best Capstone Project",
-    issuer: "Asah led by Dicoding",
-    date: "2025-05",
-    displayDate: "May 2025",
-    summary:
-      "Awarded for Pacu Pintar, the AI learning-analytics platform built by a two-person ML team inside a larger web team.",
-    sources: ["cv"],
-    verification: {
-      verified: true,
-      sources: ["cv"],
-      note: "The CV date (May 2025) falls outside the cohort window (Aug 2025 — Jan 2026); see open question Q6.",
-    },
   },
 ];
 

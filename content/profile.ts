@@ -36,7 +36,7 @@ export const profile: Profile = {
 
   availability: {
     open: true,
-    label: "Open to AI/ML internships and junior roles",
+    label: "Open to AI/ML internships and entry-level roles",
     kinds: ["AI engineering", "Machine learning", "Data"],
   },
 
@@ -68,12 +68,12 @@ export const profile: Profile = {
     },
     {
       id: "authentic-samples",
-      value: 7900,
+      value: 7902,
       prefix: "≈",
       label: "authentic Jawi samples",
-      context: "Evaluation set excluded from training",
+      context: "Scanned printed documents and handwriting",
       hero: true,
-      sourceIds: ["cv"],
+      sourceIds: ["owner-answers"],
       verified: true,
     },
     {
@@ -105,5 +105,12 @@ export const profile: Profile = {
     },
   ],
 
-  sources: ["cv", "github-profile", "hf-model-card", "journal-hebb", "owner-brief"],
+  sources: [
+    "cv",
+    "github-profile",
+    "hf-model-card",
+    "journal-hebb",
+    "owner-brief",
+    "owner-answers",
+  ],
 };

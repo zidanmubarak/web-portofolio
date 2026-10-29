@@ -18,7 +18,7 @@ export const services: readonly Service[] = [
       "Recommendation systems",
       "Evaluation: CER, WER, accuracy",
     ],
-    proof: ["jawi-htr", "pacu-pintar", "nusantarago"],
+    proof: ["jawi-ocr", "pacu-pintar", "nusantarago"],
     sources: ["cv", "hf-model-card", "github-nusantara"],
   },
   {

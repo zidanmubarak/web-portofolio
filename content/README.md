@@ -13,7 +13,7 @@ Owned by T5. Read `content-source.md` in the vault for provenance and
 | `links.ts` | Contact points and public profiles. |
 | `services.ts` | The four numbered work areas, each with proof. |
 | `projects.ts` | Six selected projects with links, images and verification state. |
-| `case-studies/jawi-htr.ts` | The Jawi case study as renderable blocks. |
+| `case-studies/jawi-ocr.ts` | The Jawi case study as renderable blocks. |
 | `experience.ts` | Roles, reverse chronological. |
 | `education.ts` | Degrees, reverse chronological. |
 | `certifications.ts` | Certificates, award, and the journal paper. |
@@ -30,8 +30,10 @@ Owned by T5. Read `content-source.md` in the vault for provenance and
    with `hero: true` on the two or three that may appear in the hero.
 3. **Images are real.** `projects[].image.status` says whether an asset
    exists. `available` means a real file is at `image.source`;
-   `needs-capture` means T8 must take it; `missing` means the owner has
-   to supply it. Stock photos and AI mockups are never acceptable.
+   `needs-capture` means T8 must take it; `generated` means the owner
+   authorised an abstract generated visual (never a fake screenshot);
+   `missing` means the asset does not exist yet. Stock photos and AI
+   mockups of real interfaces are never acceptable.
 4. **English first.** Translatable prose lives here; a future `content/id/`
    folder re-declares the same shapes. Nothing in this folder imports
    from `app/`, `components/`, `lib/` or `next/*`.

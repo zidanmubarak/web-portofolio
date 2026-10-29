@@ -29,6 +29,13 @@ export const sources = {
     retrievedAt: "2026-10-29",
     note: "Owner's own statement of the work areas (AI/ML, web development, design) and the project's framing.",
   },
+  ownerAnswers: {
+    id: "owner-answers",
+    label: "Owner answers to open-questions T5",
+    kind: "owner-brief",
+    retrievedAt: "2026-10-29",
+    note: "Resolves Q1–Q13: printed Jawi thesis title, 26k synthetic / 7,902 authentic / 790 test, award date Jan 2026, MLOps credential URL, capstone team repos, no screenshots, generated visuals permitted.",
+  },
   githubProfile: {
     id: "github-profile",
     label: "GitHub profile — github.com/zidanmubarak",
@@ -92,6 +99,14 @@ export const sources = {
     retrievedAt: "2026-10-29",
     note: "Documents the climate dataset shape (10,002 rows × 15 columns) and GitHub Actions preprocessing workflow.",
   },
+  githubCapstone: {
+    id: "github-capstone",
+    label: "Capstone Project Team DC-08 — Pacu Pintar organisation",
+    kind: "github",
+    url: "https://github.com/Capstone-Project-Team-DC-08",
+    retrievedAt: "2026-10-29",
+    note: "Full application (ai-learning-insight), ML service (ML) and the live demo at pacupintar.netlify.app.",
+  },
   pypiMemoryVault: {
     id: "pypi-memory-vault",
     label: "PyPI — memory-vault",
@@ -131,6 +146,14 @@ export const sources = {
     url: "https://journal.global.ac.id/index.php/AJCSR/article/view/15770",
     retrievedAt: "2026-10-29",
     note: "Co-authored paper on Hebb rule recognition of Hijaiyyah letters; DOI 10.38101/ajcsr.v7i2.15770.",
+  },
+  dicodingMlops: {
+    id: "dicoding-mlops",
+    label: "Dicoding credential 2VX35EDOJPYQ — Membangun Sistem Machine Learning",
+    kind: "credential",
+    url: "https://www.dicoding.com/certificates/2VX35EDOJPYQ",
+    retrievedAt: "2026-10-29",
+    note: "Issued 2025-11-25, valid until 2028-11-25, level Mahir, holder name matches.",
   },
   dicodingMlt: {
     id: "dicoding-mlt",

@@ -175,7 +175,11 @@ export interface Service {
 
 export type ProjectCategory = "ai-ml" | "web" | "data" | "research";
 
-export type ProjectImageStatus = "available" | "needs-capture" | "missing";
+export type ProjectImageStatus =
+  | "available"
+  | "needs-capture"
+  | "generated"
+  | "missing";
 
 export interface ProjectImage {
   readonly status: ProjectImageStatus;
@@ -279,7 +283,7 @@ export interface CaseStudyStep {
 export interface CaseStudyFigure {
   readonly id: string;
   readonly alt: string;
-  readonly status: "available" | "needs-capture" | "missing";
+  readonly status: "available" | "needs-capture" | "generated" | "missing";
   readonly source:
     | { readonly kind: "url"; readonly value: string }
     | { readonly kind: "owner-supplied"; readonly value: string }

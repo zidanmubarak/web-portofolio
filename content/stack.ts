@@ -22,7 +22,7 @@ export const stack: readonly StackItem[] = [
     slug: "python",
     primary: true,
     category: "ml",
-    evidence: ["jawi-htr", "pacu-pintar", "nusantarago"],
+    evidence: ["jawi-ocr", "pacu-pintar", "nusantarago"],
   },
   {
     id: "pytorch",
@@ -30,7 +30,7 @@ export const stack: readonly StackItem[] = [
     slug: "pytorch",
     primary: true,
     category: "ml",
-    evidence: ["jawi-htr"],
+    evidence: ["jawi-ocr"],
   },
   {
     id: "tensorflow",
@@ -54,7 +54,7 @@ export const stack: readonly StackItem[] = [
     slug: "huggingface",
     primary: true,
     category: "ml",
-    evidence: ["jawi-htr"],
+    evidence: ["jawi-ocr"],
   },
   {
     id: "keras",
@@ -213,7 +213,7 @@ export const stack: readonly StackItem[] = [
     slug: "gradio",
     primary: false,
     category: "deployment",
-    evidence: ["jawi-htr"],
+    evidence: ["jawi-ocr"],
   },
   {
     id: "docker",
@@ -279,7 +279,7 @@ export const stack: readonly StackItem[] = [
     slug: "googlecolab",
     primary: false,
     category: "tools",
-    evidence: ["jawi-htr", "climate-agriculture"],
+    evidence: ["jawi-ocr", "climate-agriculture"],
   },
 ];
 

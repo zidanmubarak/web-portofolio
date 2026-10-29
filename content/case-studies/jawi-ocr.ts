@@ -1,19 +1,20 @@
 import type { CaseStudy } from "../types";
 
 /**
- * The main case study. Every number here is copied from the CV or the
- * Hugging Face model card; nothing is estimated.
+ * The main case study. Every number here is copied from the CV,
+ * the Hugging Face model card, or the owner's answers to the T5
+ * open questions (2026-10-29); nothing is estimated.
  *
- * Open question Q1 (handwriting vs. printed Jawi) is tracked in
- * `open-questions/T5.md`. Until it is answered, the prose says
- * "authentic samples" rather than claiming handwriting or print.
+ * The official thesis title covers *printed* Jawi. The dataset also
+ * contains handwriting, so the prose names both where the data is
+ * described.
  */
-export const jawiHtrCaseStudy: CaseStudy = {
-  slug: "jawi-htr",
-  projectSlug: "jawi-htr",
-  title: "Reading Jawi with a vision-language model",
+export const jawiOcrCaseStudy: CaseStudy = {
+  slug: "jawi-ocr",
+  projectSlug: "jawi-ocr",
+  title: "Reading printed Jawi with a vision-language model",
   subtitle:
-    "Fine-tuning Qwen2.5-VL-3B to extract Jawi script and transliterate it to Rumi — and evaluating both steps separately.",
+    "Fine-tuning Qwen2.5-VL-3B to extract Jawi script and transliterate it to Rumi, with the two stages evaluated separately.",
   year: "2026",
   role: "Researcher and ML engineer (solo)",
   readingTime: "6 min",
@@ -45,6 +46,7 @@ export const jawiHtrCaseStudy: CaseStudy = {
       id: "setup",
       label: "02 — Setup",
       items: [
+        { term: "Thesis", value: "Implementasi Multimodal Large Language Model untuk Ekstraksi dan Transliterasi Printed Jawi Script" },
         { term: "Base model", value: "Qwen2.5-VL-3B-Instruct" },
         { term: "Method", value: "QLoRA, 4-bit NF4, bfloat16" },
         { term: "Training stack", value: "Unsloth, PyTorch, PEFT" },
@@ -72,11 +74,10 @@ export const jawiHtrCaseStudy: CaseStudy = {
         {
           id: "authentic",
           label: "Authentic",
-          count: 7900,
+          count: 7902,
           countLabel: "samples",
           description:
-            "Scanned Jawi samples collected from real documents, split so that the evaluation set stays unseen.",
-          note: "The CV calls these handwriting samples; the model card describes printed books, newspapers and historical documents. See open question Q1.",
+            "Scanned Jawi samples — printed documents and handwriting — split so that the evaluation set stays unseen.",
         },
         {
           id: "test",
@@ -187,6 +188,7 @@ export const jawiHtrCaseStudy: CaseStudy = {
   limitations: [
     "39.36% word error rate on transliteration means a human still reviews the output.",
     "The model card warns that blur, cropping and heavy background noise push CER up.",
+    "Cursive, heavily aged handwriting is harder than printed typesetting; the thesis scope is printed Jawi.",
     "PEJYD has exceptions for Arabic loanwords that the model can still get wrong.",
     "790 test images is small by OCR standards; read the numbers as an estimate.",
   ],
@@ -212,27 +214,27 @@ export const jawiHtrCaseStudy: CaseStudy = {
     },
     {
       id: "demo",
-      alt: "Gradio demo showing an uploaded Jawi image with base and fine-tuned outputs.",
+      alt: "Gradio notebook comparing the base model and the fine-tuned adapter on a one-line Jawi crop.",
       status: "needs-capture",
       source: {
         kind: "url",
         value: "https://huggingface.co/spaces/zidanmubarak/jawi-transliterasi-demo",
       },
       caption:
-        "The public Space compares both models on the same image. It sleeps on free CPU hardware.",
+        "The Gradio comparison on a one- or two-line crop. It sleeps on free CPU hardware, so wake it before capturing.",
       aspect: "16/10",
     },
     {
       id: "sample",
-      alt: "A Jawi sample image with the base model's output and the fine-tuned output side by side.",
-      status: "missing",
+      alt: "A one-line Jawi crop with the base model's output above the fine-tuned output.",
+      status: "needs-capture",
       source: {
         kind: "owner-supplied",
         value:
-          "One real Jawi sample plus both outputs; needs to come from the thesis material.",
+          "Gradio comparison notebook: one- or two-line crops, base model versus fine-tuned adapter.",
       },
       caption:
-        "The most persuasive image for this case study, and the one asset that does not exist publicly yet.",
+        "The most persuasive image for this case study: the same crop read by both models.",
       aspect: "16/10",
     },
   ],
@@ -242,11 +244,12 @@ export const jawiHtrCaseStudy: CaseStudy = {
     "hf-model-card",
     "hf-model-files",
     "hf-space",
+    "owner-answers",
   ],
 
   verification: {
     verified: true,
-    sources: ["cv", "hf-model-card"],
-    note: "CER/WER values and the epoch-3 choice appear on both sources; the sample counts come from the CV. The description of the authentic samples depends on open question Q1.",
+    sources: ["cv", "hf-model-card", "owner-answers"],
+    note: "Metrics and the epoch-3 choice are on both the CV and the model card; the 26,000 / 7,902 counts and the thesis title come from the owner's answers on 2026-10-29. Printed scope confirmed; handwriting is present in the data but is the harder case.",
   },
 };
