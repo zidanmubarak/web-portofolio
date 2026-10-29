@@ -24,7 +24,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       <MenuOverlay open={menuOpen} onClose={closeMenu} />
       <ScrollMeter />
 
-      <main id="main" className="relative">
+      <main id="main" tabIndex={-1} className="relative focus:outline-none">
         {children}
       </main>
     </>

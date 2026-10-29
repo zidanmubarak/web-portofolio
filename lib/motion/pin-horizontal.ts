@@ -39,12 +39,18 @@ export function pinHorizontal(config: PinHorizontalConfig): gsap.MatchMedia {
       };
 
       const total = cards.length;
+      let lastIndex = -1;
+      const emitIndex = (index: number) => {
+        if (index === lastIndex) return;
+        lastIndex = index;
+        onIndex?.(index, total);
+      };
 
       if (!desktop || reduce) {
         section.dataset.pinState = "static";
         gsap.set(track, { clearProps: "transform" });
         if (progress) gsap.set(progress, { scaleX: 1 });
-        onIndex?.(1, total);
+        emitIndex(1);
         return () => {
           delete section.dataset.pinState;
         };
@@ -76,16 +82,15 @@ export function pinHorizontal(config: PinHorizontalConfig): gsap.MatchMedia {
               total,
               Math.max(1, Math.round(self.progress * (total - 1)) + 1)
             );
-            onIndex?.(index, total);
+            emitIndex(index);
             if (progress) gsap.set(progress, { scaleX: self.progress });
           },
           onRefresh: (self) => {
-            onIndex?.(
+            emitIndex(
               Math.min(
                 total,
                 Math.max(1, Math.round(self.progress * (total - 1)) + 1)
-              ),
-              total
+              )
             );
           },
         },
