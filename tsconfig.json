@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2017",
     "lib": [
       "dom",
       "dom.iterable",
@@ -33,7 +33,27 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    ".next/dev/types/**/*.ts",
+    ".next-t1/types/**/*.ts",
+    ".next-t1/dev/types/**/*.ts",
+    ".next-t2/types/**/*.ts",
+    ".next-t2/dev/types/**/*.ts",
+    ".next-t3/types/**/*.ts",
+    ".next-t3/dev/types/**/*.ts",
+    ".next-t4/types/**/*.ts",
+    ".next-t4/dev/types/**/*.ts",
+    ".next-t5/types/**/*.ts",
+    ".next-t5/dev/types/**/*.ts",
+    ".next-t6/types/**/*.ts",
+    ".next-t6/dev/types/**/*.ts",
+    ".next-t7/types/**/*.ts",
+    ".next-t7/dev/types/**/*.ts",
+    ".next-t8/types/**/*.ts",
+    ".next-t8/dev/types/**/*.ts",
+    ".next-t9/types/**/*.ts",
+    ".next-t9/dev/types/**/*.ts",
+    ".next-t10/types/**/*.ts",
+    ".next-t10/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

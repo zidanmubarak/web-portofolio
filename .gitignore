@@ -10,8 +10,9 @@
 # testing
 /coverage
 
-# next.js
+# next.js (every terminal uses its own build dir, e.g. .next-t1 / .next-t3)
 /.next/
+/.next*
 /out/
 
 # production
@@ -26,9 +27,18 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
+# local env files (never commit secrets; keep the example only)
 .env
 .env*.local
+.env.*
+!.env.example
+
+# offline tooling (scripts/<name>/ has its own venv/node_modules)
+scripts/**/.venv
+scripts/**/node_modules
+
+# generated assets (derived cutouts, crops, signed SVGs stay out of the repo)
+assets/derived/
 
 # vercel
 .vercel
