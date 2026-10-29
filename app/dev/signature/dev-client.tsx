@@ -68,6 +68,7 @@ export function SignatureDev() {
     const next = Math.min(1, Math.max(0, value));
     progressRef.current = next;
     setProgress(next * 100);
+    setPlaying(false);
     signatureRef.current?.seek(next);
   }, []);
 
@@ -223,7 +224,6 @@ export function SignatureDev() {
                     progressRef.current = value / 100;
                     setProgress(value);
                   });
-                  timeline.eventCallback("onComplete", () => setPlaying(false));
                   timeline.pause();
                   timeline.progress(progressRef.current);
                 }}
