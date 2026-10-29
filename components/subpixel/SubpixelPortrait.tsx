@@ -592,6 +592,7 @@ const SubpixelPortrait = forwardRef<SubpixelPortraitHandle, SubpixelPortraitProp
           alt=""
           aria-hidden="true"
           fill
+          loading="eager"
           sizes="(max-width: 900px) 100vw, 44vw"
           draggable={false}
           style={{
