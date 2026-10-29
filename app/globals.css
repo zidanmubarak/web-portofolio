@@ -279,6 +279,11 @@
     border-top: 0;
   }
 
+  /* Native hash jumps and scrollIntoView stop below the fixed top bar. */
+  [data-section] {
+    scroll-margin-top: var(--topbar-h);
+  }
+
   .u-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
