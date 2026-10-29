@@ -1,90 +1,144 @@
-import type { Config } from 'tailwindcss';
+import type { Config } from "tailwindcss";
 
+/**
+ * RUBRIC design system — Tailwind mapping for `app/globals.css`.
+ *
+ * CSS variable names are the contract (design-direction.md §2). Tailwind
+ * aliases below are the ergonomic layer used by components:
+ *   surface / surface-elevated / surface-sunken → --bg / --bg-elevated / --bg-sunken
+ *   ink / ink-muted                              → --fg / --muted
+ *   line / line-strong                           → --line / --line-strong
+ *   accent / accent-hover / accent-ink           → --accent / --accent-hover / --accent-ink
+ *   paper / paper-ink / paper-muted              → --paper / --paper-ink / --paper-muted
+ *
+ * Only transforms that exist in the design direction are exposed: no
+ * shadow scale, no large radii, no gradient backgrounds.
+ */
 const config: Config = {
-  darkMode: ['class'],
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./app/**/*.{ts,tsx,mdx}",
+    "./components/**/*.{ts,tsx,mdx}",
+    "./content/**/*.{ts,tsx,mdx}",
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
-      borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
-      },
       colors: {
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
+        surface: {
+          DEFAULT: "var(--bg)",
+          elevated: "var(--bg-elevated)",
+          sunken: "var(--bg-sunken)",
         },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
+        ink: {
+          DEFAULT: "var(--fg)",
+          muted: "var(--muted)",
         },
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
+        line: {
+          DEFAULT: "var(--line)",
+          strong: "var(--line-strong)",
         },
         accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
+          DEFAULT: "var(--accent)",
+          hover: "var(--accent-hover)",
+          ink: "var(--accent-ink)",
         },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
+        paper: {
+          DEFAULT: "var(--paper)",
+          ink: "var(--paper-ink)",
+          muted: "var(--paper-muted)",
         },
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        chart: {
-          '1': 'hsl(var(--chart-1))',
-          '2': 'hsl(var(--chart-2))',
-          '3': 'hsl(var(--chart-3))',
-          '4': 'hsl(var(--chart-4))',
-          '5': 'hsl(var(--chart-5))',
-        },
+        focus: "var(--focus)",
       },
-      keyframes: {
-        'accordion-down': {
-          from: {
-            height: '0',
-          },
-          to: {
-            height: 'var(--radix-accordion-content-height)',
-          },
-        },
-        'accordion-up': {
-          from: {
-            height: 'var(--radix-accordion-content-height)',
-          },
-          to: {
-            height: '0',
-          },
-        },
+      fontFamily: {
+        display: [
+          "var(--font-display)",
+          "Archivo Fallback",
+          "system-ui",
+          "sans-serif",
+        ],
+        mono: [
+          "var(--font-mono)",
+          "Martian Mono Fallback",
+          "ui-monospace",
+          "monospace",
+        ],
       },
-      animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
+      fontSize: {
+        mega: [
+          "var(--fs-mega)",
+          { lineHeight: "var(--lh-mega)", letterSpacing: "var(--tracking-mega)" },
+        ],
+        display: [
+          "var(--fs-display)",
+          {
+            lineHeight: "var(--lh-display)",
+            letterSpacing: "var(--tracking-display)",
+          },
+        ],
+        title: ["var(--fs-title)", { lineHeight: "1" }],
+        heading: ["var(--fs-heading)", { lineHeight: "1.15" }],
+        lead: ["var(--fs-lead)", { lineHeight: "1.4" }],
+        body: ["var(--fs-body)", { lineHeight: "var(--lh-body)" }],
+        small: ["var(--fs-small)", { lineHeight: "1.45" }],
+        label: [
+          "var(--fs-label)",
+          { lineHeight: "1.2", letterSpacing: "var(--tracking-label)" },
+        ],
+      },
+      spacing: {
+        section: "var(--section-y)",
+        page: "var(--margin-page)",
+        grid: "var(--gap-grid)",
+        topbar: "var(--topbar-h)",
+      },
+      maxWidth: {
+        site: "var(--max-width)",
+      },
+      height: {
+        svh: "100svh",
+        dvh: "100dvh",
+      },
+      minHeight: {
+        svh: "100svh",
+        dvh: "100dvh",
+      },
+      borderColor: {
+        DEFAULT: "var(--line)",
+      },
+      borderRadius: {
+        none: "var(--radius)",
+        xs: "var(--radius-xs)",
+        full: "var(--radius-full)",
+      },
+      boxShadow: {
+        none: "none",
+      },
+      screens: {
+        sm: "480px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+        "2xl": "1440px",
+        "3xl": "1920px",
+      },
+      transitionTimingFunction: {
+        expo: "var(--ease-out-expo)",
+        quart: "var(--ease-out-quart)",
+        inout: "var(--ease-in-out)",
+      },
+      transitionDuration: {
+        micro: "var(--dur-micro)",
+        ui: "var(--dur-ui)",
+        reveal: "var(--dur-reveal)",
+        page: "var(--dur-page)",
+      },
+      zIndex: {
+        nav: "var(--z-nav)",
+        menu: "var(--z-menu)",
+        loader: "var(--z-loader)",
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [],
 };
+
 export default config;

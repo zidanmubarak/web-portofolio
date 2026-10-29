@@ -1,157 +1,534 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   RUBRIC — design tokens
+   Source of truth: vault `design-direction.md` §2. Names are frozen for T7/T8.
+   ========================================================================== */
+
 :root {
-  --foreground: 0 0% 100%;
-  --background: 0 0% 0%;
-  --muted: 0 0% 15%;
-  --muted-foreground: 0 0% 65%;
-  --border: 0 0% 15%;
-  --accent: 24 100% 50%;
-  --radius: 0.5rem;
+  /* Colour ---------------------------------------------------------------- */
+  --bg: #0b0b0a;
+  --bg-elevated: #141412;
+  --bg-sunken: #070706;
+  --fg: #f2ede4;
+  --muted: #9a968c;
+  --line: #2b2a26;
+  --line-strong: #3d3b35;
+  --accent: #ff4a2e;
+  --accent-hover: #ff6a4d;
+  --accent-ink: #111110;
+  --paper: #e7e1d5;
+  --paper-ink: #111110;
+  --paper-muted: #5f5b52;
+  --focus: #ff4a2e;
+  --selection-bg: #ff4a2e;
+  --selection-fg: #111110;
+
+  /* Type ------------------------------------------------------------------ */
+  --fs-mega: clamp(4rem, 15vw, 13.5rem);
+  --fs-display: clamp(3rem, 8.5vw, 7.5rem);
+  --fs-title: clamp(2.25rem, 4.5vw, 4rem);
+  --fs-heading: clamp(1.5rem, 2.2vw, 2rem);
+  --fs-lead: clamp(1.125rem, 1.45vw, 1.375rem);
+  --fs-body: 1rem;
+  --fs-small: 0.8125rem;
+  --fs-label: 0.6875rem;
+
+  --lh-mega: 0.82;
+  --lh-display: 0.9;
+  --lh-body: 1.55;
+
+  --tracking-mega: -0.055em;
+  --tracking-display: -0.035em;
+  --tracking-label: 0.12em;
+
+  /* Space, grid, shape ---------------------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+  --space-11: 160px;
+  --space-12: 240px;
+
+  --section-y: clamp(96px, 12vh, 200px);
+  --section-y-mobile: 72px;
+  --gap-grid: 16px;
+  --margin-page: clamp(16px, 3.33vw, 48px);
+  --max-width: 1680px;
+
+  --radius: 0px;
+  --radius-xs: 2px;
+  --radius-full: 999px;
+  --border: 1px solid var(--line);
+  --shadow: none;
+
+  --topbar-h: 56px;
+
+  --z-nav: 50;
+  --z-menu: 80;
+  --z-loader: 100;
+
+  /* Motion ---------------------------------------------------------------- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 180ms;
+  --dur-ui: 320ms;
+  --dur-reveal: 760ms;
+  --dur-page: 1100ms;
 }
 
+@media (min-width: 768px) {
+  :root {
+    --section-y-mobile: var(--section-y);
+    --topbar-h: 60px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --gap-grid: 24px;
+    --topbar-h: 64px;
+  }
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
 @layer base {
-  * {
-    @apply border-neutral-800;
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
   }
-  
+
   html {
-    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scrollbar-color: var(--line-strong) var(--bg-sunken);
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+    background-color: var(--bg);
+    overflow-x: clip;
   }
-  
+
   body {
-    @apply bg-black text-white;
-    font-family: "Geist Mono", monospace;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    margin: 0;
+    min-height: 100svh;
+    overflow-x: clip;
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-display), "Archivo Fallback", system-ui, sans-serif;
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    font-variation-settings: "wdth" 100;
+    font-feature-settings: "kern" 1, "calt" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
 
-  /* Ensure all elements inherit the font */
-  h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea {
-    font-family: inherit;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  figure,
+  blockquote,
+  dl,
+  dd,
+  ul,
+  ol {
+    margin: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 500;
+    text-wrap: balance;
+  }
+
+  ul,
+  ol {
+    padding: 0;
+    list-style: none;
+  }
+
+  img,
+  svg,
+  video,
+  canvas {
+    display: block;
+    max-width: 100%;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+  }
+
+  button {
+    background: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  ::selection {
+    background-color: var(--selection-bg);
+    color: var(--selection-fg);
+  }
+
+  /* A visible, designed focus ring on every interactive element. */
+  :where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: var(--radius);
+  }
+
+  :where(a, button, input, textarea, select, summary, [tabindex]):focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* On the paper plate the accent fails contrast; use ink instead. */
+  [data-surface="paper"] :where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+    outline-color: var(--paper-ink);
+  }
+
+  ::placeholder {
+    color: var(--muted);
+    opacity: 1;
+  }
+
+  [data-surface="paper"] ::placeholder {
+    color: var(--paper-muted);
   }
 }
 
-/* Minimal scrollbar like factory.ai */
+/* Scrollbar (WebKit) — themed from the palette, not the browser default. */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--bg-sunken);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
+  background: var(--line-strong);
+  border: 2px solid var(--bg-sunken);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--muted);
 }
 
-/* Selection color */
-::selection {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-}
+/* ==========================================================================
+   Layout utilities
+   ========================================================================== */
 
-/* Custom utilities */
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@layer components {
+  .u-container {
+    width: 100%;
+    max-width: var(--max-width);
+    margin-inline: auto;
+    padding-inline: var(--margin-page);
   }
-  
-  .gradient-text {
-    background: linear-gradient(to right, #fff, rgba(255, 255, 255, 0.7));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+
+  .u-section {
+    position: relative;
+    padding-block: var(--section-y-mobile);
+    border-top: var(--border);
   }
-  
-  .gradient-text-orange {
-    background: linear-gradient(135deg, #ff6b35, #f7931e);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+
+  @media (min-width: 768px) {
+    .u-section {
+      padding-block: var(--section-y);
+    }
+  }
+
+  .u-section--flush {
+    padding-block: 0;
+  }
+
+  .u-section--no-rule {
+    border-top: 0;
+  }
+
+  .u-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--gap-grid);
+  }
+
+  @media (min-width: 1024px) {
+    .u-grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+  }
+
+  .u-rule {
+    height: 1px;
+    width: 100%;
+    background-color: var(--line);
+    border: 0;
+  }
+
+  .u-paper {
+    background-color: var(--paper);
+    color: var(--paper-ink);
+  }
+
+  .u-label {
+    font-family: var(--font-mono), "Martian Mono Fallback", ui-monospace, monospace;
+    font-size: var(--fs-label);
+    line-height: 1.2;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+    font-variation-settings: "wdth" 100;
+  }
+
+  .u-mono {
+    font-family: var(--font-mono), "Martian Mono Fallback", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    font-variation-settings: "wdth" 100;
+  }
+
+  .u-tnum {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .u-display {
+    font-family: var(--font-display), "Archivo Fallback", system-ui, sans-serif;
+    font-variation-settings: "wdth" 78;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .menu-title {
+    font-size: clamp(2.5rem, 4.2vw, 4.5rem);
+    line-height: 1;
+  }
+
+  .skip-link {
+    position: fixed;
+    left: var(--margin-page);
+    top: 16px;
+    z-index: var(--z-loader);
+    transform: translateY(-200%);
+    background-color: var(--accent);
+    color: var(--accent-ink);
+    padding: 12px 16px;
+    font-family: var(--font-mono), "Martian Mono Fallback", ui-monospace, monospace;
+    font-size: var(--fs-label);
+    line-height: 1.2;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    transition: transform var(--dur-ui) var(--ease-out-expo);
+  }
+
+  .skip-link:focus,
+  .skip-link:focus-visible {
+    transform: translateY(0);
+    outline-color: var(--fg);
   }
 }
 
-/* Subtle grid background like factory.ai */
-.grid-background {
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
+/* ==========================================================================
+   Primitives shared by components/ui
+   ========================================================================== */
 
-/* Gradient border effect */
-.gradient-border {
+/* TextLink — underline wipes from the left, never a static decoration. */
+.link-wipe {
   position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4em;
+  color: inherit;
 }
 
-.gradient-border::before {
-  content: '';
+.link-wipe::after {
+  content: "";
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-/* Glow effects */
-.glow {
-  box-shadow: 0 0 40px rgba(255, 107, 53, 0.15);
-}
-
-/* Animated background gradient - very subtle */
-.animated-gradient {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 107, 53, 0.03) 0%,
-    transparent 50%,
-    rgba(147, 51, 234, 0.03) 100%
-  );
-}
-
-/* Card styles */
-.card-hover {
-  transition: all 0.3s ease;
-}
-
-.card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-}
-
-/* Link underline animation */
-.link-underline {
-  position: relative;
-}
-
-.link-underline::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
   left: 0;
-  width: 0;
+  right: 0;
+  bottom: -0.18em;
   height: 1px;
-  background: white;
-  transition: width 0.3s ease;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-ui) var(--ease-out-expo);
 }
 
-.link-underline:hover::after {
+.link-wipe:hover::after,
+.link-wipe:focus-visible::after {
+  transform: scaleX(1);
+}
+
+@media (hover: none) {
+  .link-wipe:hover::after {
+    transform: scaleX(0);
+  }
+}
+
+/* Button — magnetic pull is applied by JS only on fine pointers. */
+.btn-magnet {
+  transform: translate3d(var(--magnet-x, 0px), var(--magnet-y, 0px), 0);
+  transition: transform var(--dur-ui) var(--ease-out-expo),
+    background-color var(--dur-micro) linear, color var(--dur-micro) linear,
+    border-color var(--dur-micro) linear;
+}
+
+/* Odometer — one overflow window per digit, strip rendered server-side. */
+.odometer {
+  display: inline-flex;
+  align-items: baseline;
+  font-variant-numeric: tabular-nums;
+  font-variation-settings: "wdth" 100;
+  line-height: 1;
+}
+
+.odometer__digit {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  width: 0.62em;
+  text-align: center;
+}
+
+.odometer__strip {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+
+.odometer__strip > span {
+  display: block;
+  height: 1em;
+  line-height: 1;
+}
+
+/* Accordion — the panel height snaps once; only transform/clip-path animate. */
+.accordion-row {
+  position: relative;
+  border-top: var(--border);
+}
+
+.accordion-row:last-child {
+  border-bottom: var(--border);
+}
+
+.accordion-trigger {
+  display: grid;
   width: 100%;
+  align-items: center;
+  gap: var(--gap-grid);
+  text-align: left;
+  background: transparent;
+  color: inherit;
+}
+
+.accordion-sign {
+  transition: transform 250ms var(--ease-out-expo), color var(--dur-micro) linear;
+}
+
+.accordion-trigger[aria-expanded="true"] .accordion-sign {
+  transform: rotate(45deg);
+}
+
+.accordion-panel[hidden] {
+  display: none;
+}
+
+/* Tools-style icon swap — two stacked layers, circle wipe from the centre.
+   Sections may set --swap-x/--swap-y from the pointer; the default is centre. */
+.icon-swap-layer {
+  clip-path: circle(0% at var(--swap-x, 50%) var(--swap-y, 50%));
+  transition: clip-path 280ms var(--ease-out-expo);
+}
+
+.group:hover .icon-swap-layer,
+.group:focus-visible .icon-swap-layer,
+.group:focus-within .icon-swap-layer {
+  clip-path: circle(150% at var(--swap-x, 50%) var(--swap-y, 50%));
+}
+
+.motion-line,
+.motion-word {
+  will-change: transform;
+}
+
+/* Static fallback for horizontal rails. pinHorizontal() sets this on the
+   section when the viewport is <1024 px or motion is reduced; T8's track and
+   cards then stack instead of being clipped. */
+[data-pin-state="static"] [data-work-track] {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+[data-pin-state="static"] [data-work-track] > * {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon-swap-layer {
+    clip-path: circle(0% at 50% 50%);
+    transition: none;
+  }
+
+  .group:hover .icon-swap-layer,
+  .group:focus-visible .icon-swap-layer,
+  .group:focus-within .icon-swap-layer {
+    clip-path: circle(150% at 50% 50%);
+  }
+}
+
+/* Menu overlay scroll lock fallback when Lenis is off (reduced motion). */
+html[data-menu="open"] body {
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   Motion fallbacks
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
 }
