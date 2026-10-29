@@ -1,0 +1,4 @@
+# Offline signature vectorisation pipeline (T4).
+# Python 3.10+. No Node/npm involved.
+numpy>=1.24
+opencv-python-headless>=4.8
