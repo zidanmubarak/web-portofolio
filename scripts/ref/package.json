@@ -1,0 +1,18 @@
+{
+  "name": "portfolio-ref-capture",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Playwright capture + audit harness for the T2 reference study. Isolated from the app and never imported by Next.js.",
+  "type": "module",
+  "scripts": {
+    "capture": "node capture.mjs",
+    "capture:alejandro": "node capture.mjs alejandroha",
+    "capture:curtis": "node capture.mjs curtisdesignr",
+    "video": "node record-video.mjs",
+    "loader": "node measure-loader.mjs",
+    "probe": "node probe.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.56.0"
+  }
+}
