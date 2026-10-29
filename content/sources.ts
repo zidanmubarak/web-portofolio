@@ -1,0 +1,163 @@
+import type { SourceRef } from "./types";
+
+/**
+ * Provenance registry. Every `sources` array in this folder points here.
+ * Read order of truth: CV > LinkedIn > GitHub / Hugging Face.
+ * Retrieved 2026-10-29 unless noted otherwise.
+ */
+export const sources = {
+  cv: {
+    id: "cv",
+    label: "CV — Zidan Mubarak (Google Docs export, updated 29 Oct 2026)",
+    kind: "cv",
+    url: "https://docs.google.com/document/d/1B3Lv2ZyZuLOva0zn8Y4hWBECGRSaAdYBpVMW1La75Xs/edit",
+    retrievedAt: "2026-10-29",
+    note: "Primary source for roles, dates, GPA, certifications, skill list and thesis metrics.",
+  },
+  linkedin: {
+    id: "linkedin",
+    label: "LinkedIn — linkedin.com/in/zidan-mubarak",
+    kind: "linkedin",
+    url: "https://www.linkedin.com/in/zidan-mubarak",
+    retrievedAt: "2026-10-29",
+    note: "Not readable: LinkedIn returned HTTP 999 to every automated request. No fact in this folder relies on it.",
+  },
+  ownerBrief: {
+    id: "owner-brief",
+    label: "Owner brief — 00-aturan-bersama.md, section 1",
+    kind: "owner-brief",
+    retrievedAt: "2026-10-29",
+    note: "Owner's own statement of the work areas (AI/ML, web development, design) and the project's framing.",
+  },
+  githubProfile: {
+    id: "github-profile",
+    label: "GitHub profile — github.com/zidanmubarak",
+    kind: "github",
+    url: "https://github.com/zidanmubarak",
+    retrievedAt: "2026-10-29",
+    note: "Bio, 17 public repositories, pinned repositories, profile README (includes publication details).",
+  },
+  githubRepos: {
+    id: "github-repos",
+    label: "GitHub REST API — /users/zidanmubarak/repos",
+    kind: "github",
+    url: "https://api.github.com/users/zidanmubarak/repos",
+    retrievedAt: "2026-10-29",
+    note: "Repository names, languages, creation dates and push dates used for project years.",
+  },
+  githubMemoryVault: {
+    id: "github-memory-vault",
+    label: "Memory Vault AI — repository README",
+    kind: "github",
+    url: "https://github.com/zidanmubarak/Memory-Vault-AI",
+    retrievedAt: "2026-10-29",
+    note: "Feature set, four modes (SDK/API/CLI/MCP), local-first stack.",
+  },
+  githubNusantara: {
+    id: "github-nusantara",
+    label: "NusantaraGo-ML — organisation repository and contributors",
+    kind: "github",
+    url: "https://github.com/NusantaraGo/NusantaraGo-ML",
+    retrievedAt: "2026-10-29",
+    note: "README feature list; contributor graph shows zidanmubarak with 107 commits (top contributor).",
+  },
+  githubGuestBook: {
+    id: "github-guest-book",
+    label: "Guest Book System — repository README",
+    kind: "github",
+    url: "https://github.com/zidanmubarak/guest-book-system",
+    retrievedAt: "2026-10-29",
+    note: "CodeIgniter 3, MySQL, QR check-in, ID card generation, Excel export.",
+  },
+  githubClimate: {
+    id: "github-climate",
+    label: "climate-agriculture-ml-analysis — repository README",
+    kind: "github",
+    url: "https://github.com/zidanmubarak/climate-agriculture-ml-analysis",
+    retrievedAt: "2026-10-29",
+    note: "K-Means clustering plus Random Forest / Gradient Boosting classification on a 10,002-row Kaggle dataset.",
+  },
+  githubPortfolio: {
+    id: "github-portfolio",
+    label: "web-portofolio — repository (this site)",
+    kind: "github",
+    url: "https://github.com/zidanmubarak/web-portofolio",
+    retrievedAt: "2026-10-29",
+  },
+  githubEksperimen: {
+    id: "github-eksperimen",
+    label: "Eksperimen_SML_Zidan-Mubarak — preprocessing and CI repository",
+    kind: "github",
+    url: "https://github.com/zidanmubarak/Eksperimen_SML_Zidan-Mubarak",
+    retrievedAt: "2026-10-29",
+    note: "Documents the climate dataset shape (10,002 rows × 15 columns) and GitHub Actions preprocessing workflow.",
+  },
+  pypiMemoryVault: {
+    id: "pypi-memory-vault",
+    label: "PyPI — memory-vault",
+    kind: "package",
+    url: "https://pypi.org/project/memory-vault/",
+    retrievedAt: "2026-10-29",
+    note: "Package published; latest release at retrieval was 0.1.2.",
+  },
+  hfModelCard: {
+    id: "hf-model-card",
+    label: "Hugging Face model card — zidanmubarak/jawi-qwen25-vl-qlora",
+    kind: "huggingface",
+    url: "https://huggingface.co/zidanmubarak/jawi-qwen25-vl-qlora",
+    retrievedAt: "2026-10-29",
+    note: "Training data, QLoRA setup, evaluation protocol, CER/WER table, limitations.",
+  },
+  hfModelFiles: {
+    id: "hf-model-files",
+    label: "Hugging Face model files — adapter and showcase chart",
+    kind: "huggingface",
+    url: "https://huggingface.co/zidanmubarak/jawi-qwen25-vl-qlora/tree/main",
+    retrievedAt: "2026-10-29",
+    note: "adapter_model.safetensors (328,799,032 bytes) plus showcase_chart.png, the only real results graphic available.",
+  },
+  hfSpace: {
+    id: "hf-space",
+    label: "Hugging Face Space — jawi-transliterasi-demo (Gradio)",
+    kind: "huggingface",
+    url: "https://huggingface.co/spaces/zidanmubarak/jawi-transliterasi-demo",
+    retrievedAt: "2026-10-29",
+    note: "Space exists on cpu-basic hardware; runtime stage was SLEEPING at retrieval and wakes on first request.",
+  },
+  journalHebb: {
+    id: "journal-hebb",
+    label: "Academic Journal of Computer Science Research — Vol 7 No 2 (2025)",
+    kind: "journal",
+    url: "https://journal.global.ac.id/index.php/AJCSR/article/view/15770",
+    retrievedAt: "2026-10-29",
+    note: "Co-authored paper on Hebb rule recognition of Hijaiyyah letters; DOI 10.38101/ajcsr.v7i2.15770.",
+  },
+  dicodingMlt: {
+    id: "dicoding-mlt",
+    label: "Dicoding credential 1RXYEGQ3KZVM — Machine Learning Terapan",
+    kind: "credential",
+    url: "https://www.dicoding.com/certificates/1RXYEGQ3KZVM",
+    retrievedAt: "2026-10-29",
+    note: "Issued 2025-05-27, valid until 2028-05-27, level Mahir, holder name matches.",
+  },
+  dicodingBfpd: {
+    id: "dicoding-bfpd",
+    label: "Dicoding credential JLX1964EGP72 — Belajar Fundamental Pemrosesan Data",
+    kind: "credential",
+    url: "https://www.dicoding.com/certificates/JLX1964EGP72",
+    retrievedAt: "2026-10-29",
+    note: "Issued 2025-05-04, valid until 2028-05-04, level Menengah, holder name matches.",
+  },
+  oldSite: {
+    id: "old-site",
+    label: "Previous portfolio — live site and source in this repository",
+    kind: "live-site",
+    url: "https://zidanmubarak.vercel.app",
+    retrievedAt: "2026-10-29",
+    note: "Source of the high-school entry and old credential URLs. Its project images are AI mockups and are not reused.",
+  },
+} as const satisfies Record<string, SourceRef>;
+
+export type SourceKey = keyof typeof sources;
+
+export const sourceList: readonly SourceRef[] = Object.values(sources);
