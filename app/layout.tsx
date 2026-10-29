@@ -2,7 +2,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { ChatbotWidget } from "@/components/ChatbotWidget";
 
 export const metadata: Metadata = {
   title: "Zidan Mubarak - AI/ML Engineer",
@@ -43,7 +42,6 @@ export default function RootLayout({
         >
           {children}
           <Toaster />
-          <ChatbotWidget />
         </ThemeProvider>
       </body>
     </html>
