@@ -191,6 +191,18 @@
     letter-spacing: inherit;
   }
 
+  input,
+  textarea,
+  select {
+    caret-color: var(--accent);
+  }
+
+  [data-surface="paper"] input,
+  [data-surface="paper"] textarea,
+  [data-surface="paper"] select {
+    caret-color: var(--paper-ink);
+  }
+
   button {
     background: none;
     padding: 0;

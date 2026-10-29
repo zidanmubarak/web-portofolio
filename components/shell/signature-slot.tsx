@@ -23,7 +23,10 @@ export function SignatureSlot({
         className
       )}
     >
-      <span data-signature-label className="u-label">
+      <span
+        data-signature-label
+        className="u-label text-[0.6875rem] md:text-[0.8125rem]"
+      >
         {name}
       </span>
     </span>
