@@ -171,7 +171,13 @@ function SpecSection({
   children: React.ReactNode;
 }) {
   return (
-    <section id={id} className="border-t border-line py-16 md:py-24">
+    <section
+      id={id}
+      data-section={id}
+      data-index={index}
+      data-label={title}
+      className="border-t border-line py-16 md:py-24"
+    >
       <div className="u-container grid gap-10 md:grid-cols-12">
         <div className="min-w-0 md:col-span-3">
           <p className="u-label text-accent">{index}</p>
