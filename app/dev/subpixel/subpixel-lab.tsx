@@ -162,6 +162,7 @@ export function SubpixelLab() {
   const [scroll, setScroll] = useState(0);
   const [lens, setLens] = useState(true);
   const [plate, setPlate] = useState(true);
+  const [intro, setIntro] = useState<"auto" | "manual">("manual");
   const [mode, setMode] = useState("loading");
   const [fps, setFps] = useState(0);
   const [presetJson, setPresetJson] = useState("");
@@ -178,6 +179,7 @@ export function SubpixelLab() {
     const params = new URLSearchParams(window.location.search);
     if (params.get("plate") === "0") setPlate(false);
     if (params.get("lens") === "0") setLens(false);
+    if (params.get("intro") === "auto") setIntro("auto");
   }, []);
 
   useEffect(() => {
@@ -281,7 +283,7 @@ export function SubpixelLab() {
               src={SRC}
               poster={POSTER}
               className="h-full w-full"
-              intro="manual"
+              intro={intro}
               lens={lens}
               plate={plate}
               params={params}
