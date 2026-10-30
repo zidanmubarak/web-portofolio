@@ -336,13 +336,6 @@ async function scrollTo(page, scroller, y) {
   );
 }
 
-async function getScrollY(page, scroller) {
-  return page.evaluate((sel) => {
-    const el = sel ? document.querySelector(sel) : document.scrollingElement;
-    return Math.round(el?.scrollTop || 0);
-  }, scroller.selector);
-}
-
 async function hoverStates(page, dir, meta) {
   const results = [];
   const candidates = await page.$$eval("header a, header button, nav a, nav button", (els) =>
