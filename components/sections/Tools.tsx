@@ -19,7 +19,6 @@ export function Tools() {
       label="Tools"
       meta={`${stack.length} Items · ${stackCategories.length} Categories`}
       labelledBy="tools-heading"
-      bodyClassName="lg:pr-14"
     >
       <div className="u-grid items-end gap-y-6">
         <h2
@@ -52,11 +51,11 @@ export function Tools() {
                   </h3>
                 </div>
 
-                <ul className="col-span-4 grid grid-cols-3 border-l border-t border-line bg-surface sm:grid-cols-4 lg:col-span-9 lg:grid-cols-6">
+                <ul className="col-span-4 grid grid-cols-3 sm:grid-cols-4 lg:col-span-9 lg:grid-cols-6">
                   {items.map((item) => (
                     <li
                       key={item.id}
-                      className="min-h-[80px] border-b border-r border-line bg-surface md:min-h-[88px]"
+                      className="min-h-[80px] border-b border-line md:min-h-[88px]"
                     >
                       <ToolCell
                         name={item.name}

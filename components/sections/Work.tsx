@@ -14,7 +14,7 @@ export function Work() {
       index="03"
       label={copy.work.label}
       meta={
-        <Link href="/work" className="link-wipe text-ink hover:text-accent lg:mr-8">
+        <Link href="/work" className="link-wipe text-ink hover:text-accent">
           {copy.work.viewAll}
           <span aria-hidden="true">↗</span>
         </Link>

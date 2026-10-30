@@ -58,24 +58,11 @@ export function WorkRail({ projects }: WorkRailProps) {
         onIndex: (next) => setIndex(next),
       });
 
-      // T6's pinHorizontal only runs its callback when a condition matches, so
-      // at <1024 px without reduced motion it never sets the static marker.
-      // Keep the contract attribute here until T6/T9 fixes the utility.
-      const staticState = gsap.matchMedia();
-      staticState.add("(max-width: 1023px)", () => {
-        if (!section.dataset.pinState) section.dataset.pinState = "static";
-        return () => {
-          if (section.dataset.pinState === "static") {
-            delete section.dataset.pinState;
-          }
-        };
-      });
-
+      // pinHorizontal owns the static/pinned contract in both directions now.
       const stacked = gsap_matchMediaStack(track.current);
 
       return () => {
         stacked.revert();
-        staticState.revert();
         mm.revert();
         delete section.dataset.work;
       };
@@ -244,11 +231,19 @@ function WorkCard({ project, image, result, href, isLead }: WorkCardProps) {
           : "lg:w-[34vw] lg:max-w-[560px] xl:w-[31vw]"
       )}
     >
+      <div className="mb-2 flex items-baseline justify-between gap-3">
+        <span className="u-label text-ink-muted">
+          {project.categoryLabel}
+          {image?.generated ? " · Generated visual" : ""}
+        </span>
+        <span className="u-label text-ink">{project.index}</span>
+      </div>
+
       <div
         ref={media}
         data-work-media
         data-case-source
-        className="relative aspect-[16/10] max-h-[50vh] w-full overflow-hidden border border-line bg-surface-elevated"
+        className="relative h-[clamp(220px,30vw,430px)] w-full overflow-hidden border border-line bg-surface-elevated"
       >
         {image ? (
           <Image
@@ -272,13 +267,6 @@ function WorkCard({ project, image, result, href, isLead }: WorkCardProps) {
           </div>
         )}
 
-        <span className="u-label absolute left-0 top-0 bg-surface px-3 py-2 text-ink-muted">
-          {project.categoryLabel}
-          {image?.generated ? " · Generated visual" : ""}
-        </span>
-        <span className="u-label absolute right-0 top-0 bg-surface px-3 py-2 text-ink">
-          {project.index}
-        </span>
 
         {/* Hover/focus preview: the summary and the first stack items, not a
             second invented screenshot. Hidden on touch because there is no
