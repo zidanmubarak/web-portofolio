@@ -22,6 +22,27 @@ export function Shell({ children }: { children: React.ReactNode }) {
         {copy.nav.skipToContent}
       </a>
 
+      <noscript>
+        <nav
+          aria-label={copy.nav.sectionsLabel}
+          className="u-container border-b border-line bg-surface pb-3 pt-[calc(var(--topbar-h)+12px)]"
+        >
+          <ul className="flex flex-wrap gap-x-5 gap-y-2">
+            {copy.nav.items.map((item) => (
+              <li key={item.id}>
+                <a
+                  href={`/${item.href}`}
+                  className="link-wipe u-label text-ink"
+                >
+                  <span className="text-accent">{item.index}</span>{" "}
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </noscript>
+
       <TopBar menuOpen={menuOpen} onOpenMenu={openMenu} />
       <MenuOverlay open={menuOpen} onClose={closeMenu} />
       <ScrollMeter />
