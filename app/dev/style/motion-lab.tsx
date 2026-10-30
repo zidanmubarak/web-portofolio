@@ -382,9 +382,9 @@ export function MotionLab() {
 
       <p className="border-t border-line pt-6 text-small text-ink-muted">
         Signature draw and loader live in T4 (<code>lib/loader</code>); route
-        transition is T8/T9. Both use the same ease/duration tokens above.
-        Marquee is implemented in <code>components/ui/marquee.tsx</code> but is
-        deliberately absent from this page: T2 rejected marquees for RUBRIC.
+        transition is T9 (<code>components/shell/route-sweep.tsx</code>). Both
+        use the same ease/duration tokens above. Marquees are not part of
+        RUBRIC: T2 rejected them at Gate A.
       </p>
     </div>
   );

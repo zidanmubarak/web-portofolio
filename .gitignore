@@ -40,6 +40,9 @@ scripts/**/node_modules
 # generated assets (derived cutouts, crops, signed SVGs stay out of the repo)
 assets/derived/
 
+# original source photographs and signature scans — never committed or published
+assets/source/
+
 # vercel
 .vercel
 

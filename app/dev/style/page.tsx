@@ -6,7 +6,6 @@ import { TextLink } from "@/components/ui/text-link";
 import { Button } from "@/components/ui/button";
 import { Field, TextInput, TextArea } from "@/components/ui/field";
 import { Reveal } from "@/components/ui/reveal";
-import { Marquee } from "@/components/ui/marquee";
 import { MotionLab } from "./motion-lab";
 import { copy } from "@/content/copy.en";
 import { profile } from "@/content/profile";
@@ -481,25 +480,6 @@ export default function StylePage() {
                 by calling the motion utility directly.
               </p>
             </Reveal>
-          </div>
-
-          <div>
-            <h3 className="u-label text-ink-muted">Marquee — reserved</h3>
-            <div className="mt-4 border border-line py-3">
-              <Marquee label="Reserved marquee" speed={32}>
-                <span className="u-label px-6 text-ink-muted">
-                  Reserved primitive · not used in RUBRIC
-                </span>
-                <span aria-hidden="true" className="u-label px-6 text-accent">
-                  /
-                </span>
-              </Marquee>
-            </div>
-            <p className="mt-3 text-small text-ink-muted">
-              T2 rejected marquees for the homepage. The primitive ships for
-              future use only; do not add it to a section without a new design
-              decision.
-            </p>
           </div>
         </div>
       </SpecSection>
