@@ -44,7 +44,9 @@ export function ToolCell({ name, path }: ToolCellProps) {
           <path d={path} />
         </svg>
       </span>
-      <span className="u-label text-center leading-[1.15]">{name}</span>
+      <span className="u-label min-h-[2.3em] text-center leading-[1.15]">
+        {name}
+      </span>
     </div>
   );
 }

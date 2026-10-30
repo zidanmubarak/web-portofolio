@@ -24,7 +24,10 @@ export function Work() {
       bodyClassName="mt-0 pb-8 pt-4 md:mt-0"
       labelledBy="work-heading"
     >
-      <h2 id="work-heading" className="sr-only">
+      <h2
+        id="work-heading"
+        className="u-display max-w-[18ch] text-title leading-[0.94] tracking-[-0.035em] text-ink"
+      >
         {copy.work.heading.join(" ")}
       </h2>
       <WorkRail projects={selectedProjects} />

@@ -104,7 +104,7 @@ export default async function ProjectPage({ params }: PageProps) {
         <div className="mt-8 grid gap-10 lg:grid-cols-12 lg:gap-grid">
           <div className="min-w-0 lg:col-span-8">
             <p className="u-label text-accent">
-              {study ? "Case study" : project.categoryLabel}
+              {study ? copy.work.caseStudyLabel : project.categoryLabel}
             </p>
             <h1 className="u-display mt-4 text-display text-ink">
               {project.title}
@@ -121,7 +121,7 @@ export default async function ProjectPage({ params }: PageProps) {
                     href={link.href}
                     external
                     mark="↗"
-                    className="u-label text-ink"
+                    className="u-label inline-flex min-h-[44px] items-center py-2 text-ink"
                   >
                     {link.label}
                   </TextLink>
@@ -136,9 +136,11 @@ export default async function ProjectPage({ params }: PageProps) {
             <MetaRow term={copy.work.stackLabel} value={project.stack.join(" · ")} />
             <MetaRow
               term={copy.caseStudy.metaReadingTime}
-              value={study?.readingTime ?? "Project note"}
+              value={study?.readingTime ?? copy.caseStudy.projectNote}
             />
-            {project.team ? <MetaRow term="Team" value={project.team} /> : null}
+            {project.team ? (
+              <MetaRow term={copy.caseStudy.teamLabel} value={project.team} />
+            ) : null}
           </dl>
         </div>
       </header>
@@ -194,7 +196,9 @@ export default async function ProjectPage({ params }: PageProps) {
               aria-label="Case study sections"
               className="min-w-0 lg:sticky lg:top-[calc(var(--topbar-h)+32px)]"
             >
-              <p className="u-label text-ink-muted">Contents</p>
+              <p className="u-label text-ink-muted">
+                {copy.caseStudy.contentsLabel}
+              </p>
               <ol className="mt-4 flex gap-4 overflow-x-auto border-y border-line py-3 lg:block lg:overflow-visible lg:border-y-0 lg:py-0">
                 {study.blocks.map((block) => {
                   const { index, label } = blockRailLabel(block);
@@ -222,7 +226,7 @@ export default async function ProjectPage({ params }: PageProps) {
                       href={link.href}
                       external
                       mark="↗"
-                      className="u-label text-ink"
+                      className="u-label inline-flex min-h-[44px] items-center py-2 text-ink"
                     >
                       {link.label}
                     </TextLink>
@@ -267,7 +271,6 @@ export default async function ProjectPage({ params }: PageProps) {
         <div className="u-container mt-16 space-y-14 md:mt-24">
           <DemoFigure project={project} />
           <SourceCrops />
-          {project.slug === "jawi-ocr" ? <CaptureSlot /> : null}
         </div>
       ) : null}
 
@@ -326,9 +329,9 @@ export default async function ProjectPage({ params }: PageProps) {
                     href={source.url}
                     external
                     mark="↗"
-                    className="u-label text-ink"
+                    className="u-label inline-flex min-h-[44px] items-center py-2 text-ink"
                   >
-                    Open
+                    {copy.caseStudy.openLabel}
                   </TextLink>
                 ) : null}
               </li>
@@ -338,7 +341,7 @@ export default async function ProjectPage({ params }: PageProps) {
       ) : null}
 
       <nav
-        aria-label="Other projects"
+        aria-label={copy.caseStudy.otherProjectsLabel}
         className="u-container mt-16 grid border-t border-line md:mt-24 sm:grid-cols-2"
       >
         <Link
@@ -495,45 +498,5 @@ function SourceCrops() {
         </span>
       </figcaption>
     </figure>
-  );
-}
-
-function CaptureSlot() {
-  return (
-    <section aria-labelledby="capture-slot-heading">
-      <div className="relative grid aspect-[16/10] max-h-[36vh] min-h-[220px] w-full place-items-center border border-line bg-surface-elevated">
-        <span
-          aria-hidden="true"
-          className="absolute left-4 top-4 h-3 w-3 border-l border-t border-line-strong"
-        />
-        <span
-          aria-hidden="true"
-          className="absolute right-4 top-4 h-3 w-3 border-r border-t border-line-strong"
-        />
-        <span
-          aria-hidden="true"
-          className="absolute bottom-4 left-4 h-3 w-3 border-b border-l border-line-strong"
-        />
-        <span
-          aria-hidden="true"
-          className="absolute bottom-4 right-4 h-3 w-3 border-b border-r border-line-strong"
-        />
-        <div className="max-w-[40ch] px-6 text-center">
-          <p id="capture-slot-heading" className="u-label text-accent">
-            Capture pending
-          </p>
-          <p className="mt-3 text-small text-ink-muted">
-            The base-model versus fine-tuned comparison on one crop. Owner
-            capture required; no substitute is rendered here.
-          </p>
-        </div>
-      </div>
-      <div className="mt-3 flex flex-col gap-1 border-t border-line pt-3 text-ink-muted sm:flex-row sm:justify-between sm:gap-8">
-        <span className="u-label text-ink">Fig. 04 — Comparison</span>
-        <span className="u-label sm:text-right">
-          Gradio notebook output · not in the public repository
-        </span>
-      </div>
-    </section>
   );
 }

@@ -46,9 +46,9 @@ export function About() {
             {copy.about.statement}
           </h2>
 
-          <div className="mt-10 grid max-w-[62ch] gap-6 text-[1.0625rem] leading-[1.6] md:mt-14 md:grid-cols-2 md:gap-10 md:text-[1.125rem]">
+          <div className="mt-10 max-w-[62ch] gap-6 text-[1.0625rem] leading-[1.6] md:mt-14 md:text-[1.125rem]">
             <p>{copy.about.body[0]}</p>
-            <p className="text-ink-muted">{copy.about.body[1]}</p>
+            <p className="mt-6 text-ink-muted">{copy.about.body[1]}</p>
           </div>
         </div>
 

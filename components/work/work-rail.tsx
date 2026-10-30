@@ -143,7 +143,7 @@ export function WorkRail({ projects }: WorkRailProps) {
             <span className="text-ink-muted"> / {pad(total)}</span>
           </p>
           <span className="u-label hidden text-ink-muted lg:inline">
-            Scroll →
+            {copy.work.scrollHint}
           </span>
         </div>
       </div>
@@ -234,7 +234,7 @@ function WorkCard({ project, image, result, href, isLead }: WorkCardProps) {
       <div className="mb-2 flex items-baseline justify-between gap-3">
         <span className="u-label text-ink-muted">
           {project.categoryLabel}
-          {image?.generated ? " · Generated visual" : ""}
+          {image?.generated ? ` · ${copy.work.generatedVisual}` : ""}
         </span>
         <span className="u-label text-ink">{project.index}</span>
       </div>
@@ -243,7 +243,10 @@ function WorkCard({ project, image, result, href, isLead }: WorkCardProps) {
         ref={media}
         data-work-media
         data-case-source
-        className="relative h-[clamp(220px,30vw,430px)] w-full overflow-hidden border border-line bg-surface-elevated"
+        className={cn(
+          "relative aspect-[16/10] max-h-[430px] w-full overflow-hidden border border-line",
+          project.slug === "jawi-ocr" ? "bg-paper" : "bg-surface-elevated"
+        )}
       >
         {image ? (
           <Image
@@ -263,7 +266,9 @@ function WorkCard({ project, image, result, href, isLead }: WorkCardProps) {
           />
         ) : (
           <div className="flex h-full items-center justify-center">
-            <span className="u-label text-ink-muted">Image pending</span>
+            <span className="u-label text-ink-muted">
+              {copy.work.missingImage}
+            </span>
           </div>
         )}
 
@@ -299,7 +304,7 @@ function WorkCard({ project, image, result, href, isLead }: WorkCardProps) {
       <p className="u-label mt-3 text-ink-muted">{result}</p>
 
       <span className="link-wipe u-label mt-4 inline-flex text-ink group-hover/project:text-accent group-focus-visible/project:text-accent">
-        {project.caseStudy ? copy.work.caseStudyCta : "View project"}
+        {project.caseStudy ? copy.work.caseStudyCta : copy.work.viewProject}
         <span aria-hidden="true">↗</span>
       </span>
     </ProjectLink>

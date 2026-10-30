@@ -51,11 +51,11 @@ export function Tools() {
                   </h3>
                 </div>
 
-                <ul className="col-span-4 grid grid-cols-3 sm:grid-cols-4 lg:col-span-9 lg:grid-cols-6">
+                <ul className="col-span-4 grid grid-cols-3 sm:grid-cols-4 lg:col-span-9 lg:grid-cols-6 xl:grid-cols-7">
                   {items.map((item) => (
                     <li
                       key={item.id}
-                      className="min-h-[80px] border-b border-line md:min-h-[88px]"
+                      className="min-h-[84px] border-b border-line md:min-h-[92px]"
                     >
                       <ToolCell
                         name={item.name}
