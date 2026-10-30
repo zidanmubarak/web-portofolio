@@ -58,7 +58,7 @@ export function TopBar({ menuOpen, onOpenMenu }: TopBarProps) {
             event.preventDefault();
             scrollTo("#top");
           }}
-          className="shrink-0 text-[0.6875rem] leading-none md:text-[0.8125rem]"
+          className="inline-flex min-h-[44px] shrink-0 items-center text-[0.6875rem] leading-none md:text-[0.8125rem]"
           aria-label={`${profile.name} — back to top`}
         >
           <SignatureSlot name={profile.name.toUpperCase()} />
@@ -77,7 +77,7 @@ export function TopBar({ menuOpen, onOpenMenu }: TopBarProps) {
             aria-expanded={menuOpen}
             aria-controls={menuOpen ? "site-menu" : undefined}
             aria-haspopup="dialog"
-            className="link-wipe u-label text-ink"
+            className="link-wipe u-label inline-flex min-h-[44px] items-center text-ink"
           >
             <span>INDEX</span>
             <span aria-hidden="true">/</span>
