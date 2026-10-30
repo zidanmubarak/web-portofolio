@@ -31,6 +31,7 @@ export function ScrollMeter() {
   const railFill = React.useRef<HTMLDivElement>(null);
   const [active, setActive] = React.useState<ActiveSection | null>(null);
   const [total, setTotal] = React.useState(0);
+  const [inFooter, setInFooter] = React.useState(false);
   const lastKey = React.useRef("");
 
   React.useEffect(() => {
@@ -38,6 +39,7 @@ export function ScrollMeter() {
     let observer: IntersectionObserver | null = null;
     let watched: HTMLElement[] = [];
     const visible = new Map<Element, boolean>();
+    let footerHidden = false;
 
     // A new route invalidates the previous section list immediately.
     lastKey.current = "";
@@ -91,6 +93,18 @@ export function ScrollMeter() {
       }
       if (railFill.current) {
         railFill.current.style.transform = `scaleY(${progress})`;
+      }
+
+      // The footer is a colophon, not section 07. Hide the rail once it takes
+      // over the lower half of the viewport; a 1 px probe at the top bar still
+      // reads "Contact" while the signature is already on screen.
+      const footer = document.getElementById("footer");
+      const hideFooter = footer
+        ? footer.getBoundingClientRect().top < window.innerHeight * 0.55
+        : false;
+      if (hideFooter !== footerHidden) {
+        footerHidden = hideFooter;
+        setInFooter(hideFooter);
       }
     };
 
@@ -151,7 +165,7 @@ export function ScrollMeter() {
   }, [pathname]);
 
   const section = active && active.key === pathname ? active : null;
-  const showRail = Boolean(section && !section.hidden);
+  const showRail = Boolean(section && !section.hidden && !inFooter);
   const index = section?.index ?? "00";
   const label = section?.label ?? "Index";
 

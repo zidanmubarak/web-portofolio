@@ -134,7 +134,7 @@ export default function RootLayout({
       className={`${display.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
-      <body>
+      <body id="top">
         <LoaderGate />
         <script
           type="application/ld+json"

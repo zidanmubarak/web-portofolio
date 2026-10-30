@@ -80,7 +80,32 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
 
     Promise.all([fontsReady, pageLoaded])
       .then(() => {
-        if (!cancelled) ScrollTrigger.refresh();
+        if (cancelled) return;
+        // ScrollTrigger inserts pin spacers while refreshing. On a reload in
+        // the middle of the page the browser restores `scrollY` first, then
+        // the spacer grows above the reader and the viewport jumps back by
+        // the pin length (QA-02). Anchor the first visible section and scroll
+        // by the same delta after refresh so the reading position survives.
+        const anchor = () =>
+          Array.from(
+            document.querySelectorAll<HTMLElement>("[data-section], #footer")
+          ).find(
+            (element) => element.getBoundingClientRect().bottom > 1
+          ) ?? null;
+        const startingAnchor = anchor();
+        const beforeTop = startingAnchor?.getBoundingClientRect().top ?? 0;
+        const beforeY = window.scrollY;
+        ScrollTrigger.refresh();
+        const afterTop = startingAnchor?.getBoundingClientRect().top ?? 0;
+        const delta = afterTop - beforeTop;
+        if (startingAnchor && Math.abs(delta) > 1) {
+          const target = Math.max(0, beforeY + delta);
+          if (instance) {
+            instance.scrollTo(target, { immediate: true, force: true });
+          } else {
+            window.scrollTo(0, target);
+          }
+        }
       })
       .catch(() => {});
 
