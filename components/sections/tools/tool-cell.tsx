@@ -26,7 +26,7 @@ export function ToolCell({ name, path }: ToolCellProps) {
   return (
     <div
       onPointerMove={onPointerMove}
-      className="group relative flex h-full w-full flex-col items-center justify-center gap-2 px-2 py-3 text-ink-muted transition-colors duration-200 hover:bg-surface-elevated hover:text-ink"
+      className="group relative flex h-full w-full flex-col items-center justify-center gap-2 px-2 py-3 text-ink-muted transition-colors duration-micro hover:bg-surface-elevated hover:text-ink"
     >
       <span aria-hidden="true" className="relative block h-7 w-7 shrink-0">
         <svg

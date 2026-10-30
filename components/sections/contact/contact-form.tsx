@@ -49,8 +49,10 @@ export function ContactForm() {
 
     const nextErrors = validate(values);
     setErrors(nextErrors);
-    if (Object.keys(nextErrors).length > 0) {
+    const firstError = Object.keys(nextErrors)[0];
+    if (firstError) {
       setStatus("idle");
+      document.getElementById(`contact-${firstError}`)?.focus();
       return;
     }
 

@@ -17,12 +17,14 @@ const certificationIndex = (offset: number) =>
 function MetaList({ items }: { items: readonly string[] }) {
   return (
     <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-1">
-      {items.map((item) => (
+      {items.map((item, index) => (
         <li key={item} className="u-label text-ink-muted">
           {item}
-          <span aria-hidden="true" className="ml-3 text-line-strong">
-            /
-          </span>
+          {index < items.length - 1 ? (
+            <span aria-hidden="true" className="ml-3 text-line-strong">
+              /
+            </span>
+          ) : null}
         </li>
       ))}
     </ul>

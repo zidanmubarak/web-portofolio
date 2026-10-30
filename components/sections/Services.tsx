@@ -166,15 +166,20 @@ export function Services() {
                         {service.description}
                       </p>
                       <ul className="mt-4 flex flex-wrap gap-x-3 gap-y-1">
-                        {service.capabilities.map((capability) => (
+                        {service.capabilities.map((capability, index) => (
                           <li
                             key={capability}
                             className="text-small leading-relaxed text-ink-muted"
                           >
                             {capability}
-                            <span aria-hidden="true" className="ml-3 text-line-strong">
-                              ·
-                            </span>
+                            {index < service.capabilities.length - 1 ? (
+                              <span
+                                aria-hidden="true"
+                                className="ml-3 text-line-strong"
+                              >
+                                ·
+                              </span>
+                            ) : null}
                           </li>
                         ))}
                       </ul>
