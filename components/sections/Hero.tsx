@@ -9,6 +9,7 @@ import { LocalClock } from "@/components/shell/local-clock";
 import { Odometer } from "@/components/ui/odometer";
 import { TextLink } from "@/components/ui/text-link";
 import { profile } from "@/content/profile";
+import { copy } from "@/content/copy.en";
 import {
   DUR,
   EASE,
@@ -32,9 +33,7 @@ export type HeroProps = {
 
 const heroMetrics = profile.metrics.filter((metric) => metric.hero);
 
-const coordinateLabel = `${profile.location.coordinates.lat
-  .toFixed(4)
-  .padStart(7, "0")}° N / ${profile.location.coordinates.lng.toFixed(4)}° E`;
+const coordinateLabel = `${profile.location.coordinates.lat.toFixed(4)}° N / ${profile.location.coordinates.lng.toFixed(4)}° E`;
 
 /**
  * Hero — the masthead, not an indexed chapter (design-direction.md §4.2).
@@ -153,6 +152,11 @@ export function Hero({ introTrigger = "loader" }: HeroProps) {
       if (startImmediately) {
         play();
       } else {
+        // `exit-start` fires when the curtain begins to wipe, so the name is
+        // already revealing underneath it (LCP is not held to the last frame).
+        window.addEventListener("rubric:loader-exit-start", onLoaderExit, {
+          once: true,
+        });
         window.addEventListener("rubric:loader-exit", onLoaderExit, {
           once: true,
         });
@@ -163,6 +167,7 @@ export function Hero({ introTrigger = "loader" }: HeroProps) {
 
       return () => {
         window.clearTimeout(fallback);
+        window.removeEventListener("rubric:loader-exit-start", onLoaderExit);
         window.removeEventListener("rubric:loader-exit", onLoaderExit);
         timeline.kill();
         nameSplit.revert();
@@ -209,12 +214,12 @@ export function Hero({ introTrigger = "loader" }: HeroProps) {
                     poster="/images/portrait/portrait-poster.webp"
                     intro="manual"
                     plate={false}
-                    label="Portrait of Zidan Mubarak, half body, rendered as an RGB subpixel grid"
+                    label={copy.hero.portraitAlt}
                     className=""
                   />
                 </div>
 
-                <span className="u-label absolute left-3 top-3 z-10 text-paper-muted">
+                <span className="u-label absolute left-4 top-5 z-10 text-paper-muted">
                   Fig. 01 — ZM
                 </span>
               </figure>
@@ -240,12 +245,8 @@ export function Hero({ introTrigger = "loader" }: HeroProps) {
                   aria-hidden="true"
                   className="inline-block h-[5px] w-[5px] rounded-full bg-accent"
                 />
-                <span className="md:hidden">
-                  AI/ML engineer · Banda Aceh, ID
-                </span>
-                <span className="hidden md:inline">
-                  AI/ML engineer · Computer vision · Web
-                </span>
+                <span className="md:hidden">{copy.hero.roleLineShort}</span>
+                <span className="hidden md:inline">{copy.hero.roleLine}</span>
               </p>
 
               <h1
@@ -261,8 +262,7 @@ export function Hero({ introTrigger = "loader" }: HeroProps) {
                 data-hero-subline
                 className="mt-4 max-w-[34ch] text-lead text-ink-muted md:mt-8"
               >
-                I fine-tune vision-language models until they can read Jawi
-                handwriting.
+                {copy.hero.subline}
               </p>
 
               <p data-hero-meta className="mt-6 md:mt-8">
@@ -271,7 +271,7 @@ export function Hero({ introTrigger = "loader" }: HeroProps) {
                   mark="↓"
                   className="u-label text-ink hover:text-accent"
                 >
-                  View selected work
+                  {copy.hero.workCta}
                 </TextLink>
               </p>
             </div>
@@ -305,7 +305,7 @@ export function Hero({ introTrigger = "loader" }: HeroProps) {
           className="u-label mt-6 flex items-center justify-between border-t border-line pt-4 text-ink-muted lg:pr-14"
         >
           <span>{profile.location.city}, {profile.location.countryCode}</span>
-          <span aria-hidden="true">Scroll to read</span>
+          <span aria-hidden="true">{copy.hero.scrollCue}</span>
         </div>
       </div>
     </section>

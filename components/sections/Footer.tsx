@@ -3,6 +3,7 @@
 import * as React from "react";
 import { SignatureDraw } from "@/components/signature/SignatureDraw";
 import { LocalClock } from "@/components/shell/local-clock";
+import { copy } from "@/content/copy.en";
 import { links } from "@/content/links";
 import { profile } from "@/content/profile";
 import {
@@ -63,7 +64,7 @@ export function Footer() {
 
         <div className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
           <div className="max-w-[26rem]">
-            <p className="u-label text-ink-muted">Signature</p>
+            <p className="u-label text-ink-muted">{copy.footer.signatureLabel}</p>
             <div data-signature-target="footer" className="mt-4 text-ink">
               <SignatureDraw variant="footer" play="viewport" decorative />
               <span className="sr-only">
@@ -71,12 +72,12 @@ export function Footer() {
               </span>
             </div>
             <p className="mt-8 max-w-[30ch] text-[1.0625rem] leading-relaxed">
-              Made in Banda Aceh, between manuscripts and machines.
+              {copy.footer.tagline}
             </p>
           </div>
 
           <div className="flex flex-col gap-4 md:items-end">
-            <p className="u-label text-ink-muted">Elsewhere</p>
+            <p className="u-label text-ink-muted">{copy.contact.socialHeading}</p>
             <ul className="flex flex-wrap gap-x-6 gap-y-2 md:justify-end">
               {footerLinks.map((link) => (
                 <li key={link.id}>
@@ -128,7 +129,7 @@ export function Footer() {
             © 2026 {profile.name}
           </p>
           <p className="u-label text-ink-muted">
-            Set in Banda Aceh. Updated October 2026.
+            {copy.footer.colophon}
           </p>
           <a
             href="#top"
@@ -138,7 +139,7 @@ export function Footer() {
             }}
             className="link-wipe u-label text-ink"
           >
-            Back to top <span aria-hidden="true">↑</span>
+            {copy.footer.backToTop} <span aria-hidden="true">↑</span>
           </a>
         </div>
       </div>

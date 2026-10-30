@@ -1,5 +1,6 @@
 import { Section } from "@/components/ui/section";
 import { LocalClock } from "@/components/shell/local-clock";
+import { copy } from "@/content/copy.en";
 import { links } from "@/content/links";
 import { profile } from "@/content/profile";
 import { ContactForm } from "./contact/contact-form";
@@ -19,7 +20,7 @@ export function Contact() {
     <Section
       id="contact"
       index="06"
-      label="Contact"
+      label={copy.contact.label}
       meta={
         <span className="flex items-center justify-end gap-3">
           <span className="hidden sm:inline">
@@ -30,7 +31,6 @@ export function Contact() {
       }
       surface="paper"
       labelledBy="contact-heading"
-      bodyClassName="lg:pr-14"
     >
       <ContactReveal>
         <div className="u-grid items-end gap-y-8">
@@ -38,16 +38,15 @@ export function Contact() {
             id="contact-heading"
             className="u-display col-span-4 text-[clamp(3.5rem,8.4vw,8.5rem)] leading-[0.86] tracking-[-0.04em] lg:col-span-8"
           >
-            Let&apos;s make
-            <br />
-            something
-            <br />
-            legible.
+            {copy.contact.heading.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
           </h2>
 
           <p className="col-span-4 max-w-[34ch] text-small leading-relaxed text-paper-muted lg:col-span-4 lg:col-start-9 lg:justify-self-end lg:text-right">
-            Tell me what you&apos;re building. A sentence about the role, the
-            project, or the problem is enough.
+            {copy.contact.body}
           </p>
         </div>
 
@@ -67,7 +66,7 @@ export function Contact() {
           </div>
 
           <div className="col-span-4 lg:col-span-4 lg:col-start-9">
-            <p className="u-label text-paper-muted">Elsewhere</p>
+            <p className="u-label text-paper-muted">{copy.contact.socialHeading}</p>
             <ul className="mt-4 border-t border-paper-muted">
               {elsewhere.map((link) => (
                 <li key={link.id} className="border-b border-paper-muted py-4">
@@ -91,7 +90,7 @@ export function Contact() {
             </ul>
 
             <p className="mt-6 max-w-[30ch] text-small leading-relaxed text-paper-muted">
-              The form replies from this address. Nothing is added to a list.
+              {copy.contact.responseNote}
             </p>
           </div>
         </div>

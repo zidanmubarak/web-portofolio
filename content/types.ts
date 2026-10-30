@@ -522,6 +522,13 @@ export interface SiteCopy {
     readonly scrollCue: string;
     readonly portraitAlt: string;
     readonly statsLabel: string;
+    /** Role line above the name; the short variant is used under 768 px. */
+    readonly roleLine: string;
+    readonly roleLineShort: string;
+    /** Sub-line under the name. */
+    readonly subline: string;
+    /** Link under the sub-line. */
+    readonly workCta: string;
   };
   readonly about: {
     readonly label: string;
@@ -529,6 +536,13 @@ export interface SiteCopy {
     readonly closing: string;
     readonly nowLabel: string;
     readonly now: readonly string[];
+    /** Scrubbed statement. */
+    readonly statement: string;
+    /** Two paragraphs under the statement. */
+    readonly body: readonly [string, string];
+    /** Rail facts: Based / Focus / Now. */
+    readonly facts: readonly { readonly term: string; readonly value: string }[];
+    readonly cvLabel: string;
   };
   readonly services: {
     readonly label: string;

@@ -3,7 +3,10 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Field, TextArea, TextInput } from "@/components/ui/field";
+import { copy } from "@/content/copy.en";
 import { profile } from "@/content/profile";
+
+const labels = copy.contact.form;
 
 type FieldName = "name" | "email" | "subject" | "message";
 type FieldErrors = Partial<Record<FieldName, string>>;
@@ -99,11 +102,11 @@ export function ContactForm() {
       aria-busy={status === "sending"}
       className="flex flex-col gap-8"
     >
-      <p className="u-label text-paper-muted">Or write here</p>
+      <p className="u-label text-paper-muted">{labels.heading}</p>
 
       <div className="grid gap-8 md:grid-cols-2">
         <Field
-          label="Name"
+          label={labels.name}
           htmlFor="contact-name"
           required
           error={errors.name}
@@ -113,7 +116,7 @@ export function ContactForm() {
             name="name"
             type="text"
             autoComplete="name"
-            placeholder="Who is writing"
+            placeholder={labels.namePlaceholder}
             required
             aria-invalid={Boolean(errors.name)}
             aria-describedby={errors.name ? "contact-name-error" : undefined}
@@ -121,7 +124,7 @@ export function ContactForm() {
         </Field>
 
         <Field
-          label="Email"
+          label={labels.email}
           htmlFor="contact-email"
           required
           error={errors.email}
@@ -132,7 +135,7 @@ export function ContactForm() {
             type="email"
             autoComplete="email"
             inputMode="email"
-            placeholder="you@company.com"
+            placeholder={labels.emailPlaceholder}
             required
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? "contact-email-error" : undefined}
@@ -141,7 +144,7 @@ export function ContactForm() {
       </div>
 
       <Field
-        label="Subject"
+        label={labels.subject}
         htmlFor="contact-subject"
         required
         error={errors.subject}
@@ -150,7 +153,7 @@ export function ContactForm() {
           id="contact-subject"
           name="subject"
           type="text"
-          placeholder="Role, project, or question"
+          placeholder={labels.subjectPlaceholder}
           required
           aria-invalid={Boolean(errors.subject)}
           aria-describedby={
@@ -160,17 +163,17 @@ export function ContactForm() {
       </Field>
 
       <Field
-        label="Message"
+        label={labels.message}
         htmlFor="contact-message"
         required
         error={errors.message}
-        hint="Your address is only used to reply. No list, no tracking."
+        hint={labels.privacy}
       >
         <TextArea
           id="contact-message"
           name="message"
           rows={5}
-          placeholder="What are you working on?"
+          placeholder={labels.messagePlaceholder}
           required
           aria-invalid={Boolean(errors.message)}
           aria-describedby={
@@ -205,13 +208,13 @@ export function ContactForm() {
           disabled={status === "sending"}
           className="w-full md:w-auto"
         >
-          {status === "sending" ? "Sending…" : "Send →"}
+          {status === "sending" ? labels.submitting + "…" : labels.submit + " →"}
         </Button>
 
         <p role="status" aria-live="polite" className="text-small">
           {status === "success" ? (
             <span className="text-paper-ink">
-              Message sent. I&apos;ll reply from Banda Aceh.
+              {labels.success}
             </span>
           ) : null}
         </p>
@@ -219,7 +222,7 @@ export function ContactForm() {
 
       {status === "error" ? (
         <p role="alert" className="text-small text-paper-ink">
-          That didn&apos;t send. Try email instead:{" "}
+          {labels.error}{" "}
           <a href={`mailto:${profile.email}`} className="link-wipe">
             {profile.email}
           </a>
