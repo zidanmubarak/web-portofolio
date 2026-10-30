@@ -511,6 +511,10 @@ export interface SiteCopy {
     readonly items: readonly NavItem[];
     readonly menuOpen: string;
     readonly menuClose: string;
+    /** Visible label on the menu button (kept uppercase for the mono rail). */
+    readonly indexLabel: string;
+    /** Accessible name for the no-JS section links. */
+    readonly sectionsLabel: string;
     readonly skipToContent: string;
     readonly externalLink: string;
   };
@@ -529,6 +533,8 @@ export interface SiteCopy {
     readonly subline: string;
     /** Link under the sub-line. */
     readonly workCta: string;
+    /** Figure label on the paper plate. */
+    readonly figureLabel: string;
   };
   readonly about: {
     readonly label: string;
@@ -581,6 +587,11 @@ export interface SiteCopy {
     readonly paperLabel: string;
     readonly caseStudyLabel: string;
     readonly comingSoon: string;
+    /** Rail hints and fallbacks that are visible UI, not content records. */
+    readonly scrollHint: string;
+    readonly viewProject: string;
+    readonly generatedVisual: string;
+    readonly missingImage: string;
   };
   readonly caseStudy: {
     readonly backLabel: string;
@@ -591,6 +602,11 @@ export interface SiteCopy {
     readonly limitationsLabel: string;
     readonly sourcesLabel: string;
     readonly headlineLabel: string;
+    readonly contentsLabel: string;
+    readonly projectNote: string;
+    readonly openLabel: string;
+    readonly otherProjectsLabel: string;
+    readonly teamLabel: string;
   };
   readonly experience: {
     readonly label: string;
@@ -618,8 +634,10 @@ export interface SiteCopy {
     readonly loading: string;
     readonly error: string;
     readonly notFoundTitle: string;
+    readonly notFoundLabel: string;
     readonly notFoundBody: string;
     readonly notFoundCta: string;
+    readonly notFoundIndex: string;
   };
   readonly status: "draft" | "final";
 }

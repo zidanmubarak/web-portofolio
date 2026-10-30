@@ -8,8 +8,8 @@ import { useSmoothScroll } from "@/lib/motion/smooth-scroll";
 import { DUR, EASE, STAGGER, prefersReducedMotion } from "@/lib/motion/tokens";
 import { profile } from "@/content/profile";
 import { links } from "@/content/links";
-import { cn } from "@/lib/utils";
-import { MENU_ITEMS } from "./navigation";
+import { copy } from "@/content/copy.en";
+import { cn } from "@/lib/utils";import { MENU_ITEMS } from "./navigation";
 import { LocalClock } from "./local-clock";
 
 const MENU_LINKS = links.filter((link) =>
@@ -219,7 +219,7 @@ export function MenuOverlay({
           className="flex items-center justify-between border-b border-line pb-4"
         >
           <p id="site-menu-title" className="u-label text-ink-muted">
-            Index
+            {copy.nav.indexLabel}
           </p>
           <button
             ref={closeRef}
@@ -227,7 +227,7 @@ export function MenuOverlay({
             onClick={onClose}
             className="link-wipe u-label text-ink"
           >
-            <span>CLOSE</span>
+            <span>{copy.nav.menuClose}</span>
             <span aria-hidden="true">×</span>
           </button>
         </div>

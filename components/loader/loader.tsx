@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { EASE, gsap, prefersReducedMotion } from "@/lib/motion";
 import { SignatureDraw } from "@/components/signature/SignatureDraw";
 import { getAppProgress, markReady, registerReadyTask } from "@/lib/loader/ready";
+import { profile } from "@/content/profile";
+import { copy } from "@/content/copy.en";
 import { LOADER_STORAGE_KEY } from "./loader-gate";
 
 export type LoaderExitDetail = {
@@ -341,8 +343,10 @@ export function Loader({
           aria-hidden="true"
         />
         <div data-loader-chrome className="relative z-10 flex items-start justify-between">
-          <span className="u-label text-ink">ZIDAN MUBARAK</span>
-          <span className="u-label text-ink-muted">BANDA ACEH, ID</span>
+          <span className="u-label text-ink">{profile.name.toUpperCase()}</span>
+          <span className="u-label text-ink-muted">
+            {profile.location.city.toUpperCase()}, {profile.location.countryCode}
+          </span>
         </div>
         <div data-loader-chrome className="relative z-10 flex flex-1 items-center justify-center">
           <span className="sr-only" role="status">
@@ -351,7 +355,9 @@ export function Loader({
         </div>
         <div data-loader-chrome className="relative z-10 flex items-end justify-between gap-6">
           <div className="flex items-center gap-4">
-            <span className="u-label text-ink-muted">LOADING</span>
+            <span className="u-label text-ink-muted">
+              {copy.common.loading}
+            </span>
             <span
               ref={counterRef}
               aria-hidden="true"

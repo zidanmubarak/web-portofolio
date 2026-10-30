@@ -191,7 +191,7 @@ export function Hero({ introTrigger = "loader" }: HeroProps) {
         <div className="u-grid items-start gap-y-6 lg:flex-1">
           {/* Paper plate — first on mobile so the name never covers the face. */}
           <div className="order-1 col-span-4 lg:order-none lg:col-span-4 lg:col-start-9 lg:row-start-1 lg:flex lg:h-full lg:justify-end">
-            <div className="w-full md:mx-auto md:max-w-[30rem] lg:mx-0 lg:ml-auto lg:mr-8 lg:max-w-none">
+            <div className="w-full md:ml-auto md:mr-0 md:max-w-[30rem] lg:mx-0 lg:ml-auto lg:mr-8 lg:max-w-none">
               <figure
                 data-hero-plate
                 className="relative h-[44svh] w-full overflow-hidden bg-paper lg:h-[74svh]"
@@ -220,7 +220,7 @@ export function Hero({ introTrigger = "loader" }: HeroProps) {
                 </div>
 
                 <span className="u-label absolute left-4 top-5 z-10 text-paper-muted">
-                  Fig. 01 — ZM
+                  {copy.hero.figureLabel}
                 </span>
               </figure>
 

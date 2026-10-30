@@ -36,7 +36,9 @@ export const copy: SiteCopy = {
       { id: "contact", label: "Contact", href: "#contact", index: "06" },
     ],
     menuOpen: "Open menu",
-    menuClose: "Close menu",
+    menuClose: "Close",
+    indexLabel: "INDEX",
+    sectionsLabel: "Sections",
     skipToContent: "Skip to content",
     externalLink: "opens in a new tab",
   },
@@ -56,6 +58,7 @@ export const copy: SiteCopy = {
     subline:
       "I fine-tune vision-language models until they can read Jawi handwriting.",
     workCta: "View selected work",
+    figureLabel: "Fig. 01 — ZM",
   },
 
   about: {
@@ -74,7 +77,7 @@ export const copy: SiteCopy = {
       "The unglamorous half of machine learning is the part worth keeping: data provenance, honest evaluation, and an interface someone can use without reading a README. Python for the models, TypeScript when the result needs to live in a browser, layouts designed by hand.",
     ],
     facts: [
-      { term: "Based", value: "Banda Aceh, ID" },
+      { term: "Timezone", value: "UTC+7 (WIB)" },
       { term: "Focus", value: "Vision-language · OCR" },
       { term: "Now", value: "Open to AI/ML roles" },
     ],
@@ -123,7 +126,11 @@ export const copy: SiteCopy = {
     docsLabel: "Docs",
     paperLabel: "Paper",
     caseStudyLabel: "Case study",
-    comingSoon: "Screenshot pending",
+    comingSoon: "No capture yet",
+    scrollHint: "Scroll →",
+    viewProject: "View project",
+    generatedVisual: "Generated visual",
+    missingImage: "No capture yet",
   },
 
   caseStudy: {
@@ -135,6 +142,11 @@ export const copy: SiteCopy = {
     limitationsLabel: "Where it still fails",
     sourcesLabel: "Sources",
     headlineLabel: "Result",
+    contentsLabel: "Contents",
+    projectNote: "Project note",
+    openLabel: "Open",
+    otherProjectsLabel: "Other projects",
+    teamLabel: "Team",
   },
 
   experience: {
@@ -194,7 +206,9 @@ export const copy: SiteCopy = {
     loading: "Loading",
     error: "Something broke. Try again, or email me.",
     notFoundTitle: "404",
+    notFoundLabel: "Not found",
     notFoundBody: "This page is not here. The work still is.",
     notFoundCta: "Back to the work",
+    notFoundIndex: "Index",
   },
 };

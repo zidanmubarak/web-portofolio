@@ -3,6 +3,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { profile } from "@/content/profile";
+import { copy } from "@/content/copy.en";
 import { useSmoothScroll } from "@/lib/motion/smooth-scroll";
 import { LocalClock } from "./local-clock";
 import { SignatureSlot } from "./signature-slot";
@@ -79,7 +80,7 @@ export function TopBar({ menuOpen, onOpenMenu }: TopBarProps) {
             aria-haspopup="dialog"
             className="link-wipe u-label inline-flex min-h-[44px] items-center text-ink"
           >
-            <span>INDEX</span>
+            <span>{copy.nav.indexLabel}</span>
             <span aria-hidden="true">/</span>
           </button>
         </div>

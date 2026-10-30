@@ -79,7 +79,7 @@ export const profile: Profile = {
     {
       id: "public-repos",
       value: 17,
-      label: "public repositories",
+      label: "public repositories · Oct 2026",
       context: "On GitHub, October 2026",
       hero: true,
       sourceIds: ["github-profile"],
