@@ -1,10 +1,16 @@
 /**
  * SubpixelPortrait — GLSL ES 3.00 sources (WebGL2).
  *
- * The portrait is never blitted as a photo. Every fragment resolves to one cell
- * of an LED-like matrix: three rounded vertical subpixel strips (R, G, B) whose
- * intensity is read from an area-averaged (mip filtered) sample of the cutout,
- * with per-channel horizontal offsets for realistic chromatic fringing.
+ * The portrait is a photograph first and a screen second. The full-resolution
+ * cutout is the image; a fine RGB matrix is laid over it as material (a screen
+ * door you notice up close, not a mosaic that hides the face), and the
+ * chromatic misregistration of a three-pass print lives only on the silhouette
+ * edge (design-direction §1.1: "efek RGB subpixel hanya di tepi portrait").
+ *
+ * During the intro the matrix starts coarse and the photo resolves into it:
+ * cell-average colour -> full detail. The loupe is an optical loupe with a
+ * small magnification (1.2x) that *clears* the matrix inside its radius, so
+ * hovering makes the face sharper instead of blockier.
  *
  * Coordinate space: gl_FragCoord in device pixels, origin bottom-left.
  * Cells live in "cell units": 1 unit = one cell; the grid is uGrid cells wide/tall.
@@ -27,14 +33,17 @@ uniform sampler2D uTex;
 uniform vec2  uRes;          // drawing buffer size, device px
 uniform vec2  uGrid;         // number of cells (x, y)
 uniform float uGap;          // black matrix, fraction of a cell (0..0.4)
-uniform float uFringe;       // 0..1.5 channel offset strength
-uniform float uGlow;         // bloom / bloom-spill amount
-uniform float uEmit;         // subpixel emission gain (strips only cover ~1/3 of a cell)
+uniform float uMatrix;       // RGB strip texture strength over the photo (0..1)
+uniform float uPhoto;        // 0 = cell-average mosaic, 1 = full-resolution photo
+uniform float uFringe;       // edge misregistration offset, device px
+uniform float uEdge;         // edge misregistration strength (0..1)
+uniform float uGlow;         // highlight bloom
 uniform float uLift;         // shadow lift inside the mask (black suit)
-uniform float uRim;          // rim light from the mask edge
-uniform float uSat;          // saturation after the filmic shoulder
-uniform float uScan;         // scanline shimmer, capped at 2%
-uniform float uLens;         // loupe magnification (0 = off)
+uniform float uRim;          // paper bounce on the silhouette edge
+uniform float uSat;          // saturation
+uniform float uScan;         // scanline shimmer, hard-capped at +-1.5%
+uniform float uLens;         // loupe magnification minus one, already ramped
+uniform float uLensAmount;   // 0..1, how "on" the loupe is
 uniform float uLensRadius;   // device px
 uniform vec2  uLensPos;      // device px, origin bottom-left
 uniform float uIntroLit;     // 0..1 diagonal sweep
@@ -48,9 +57,6 @@ out vec4 fragColor;
 
 const vec3 LUMA = vec3(0.2126, 0.7152, 0.0722);
 
-vec3 toLinear(vec3 c) { return pow(max(c, 0.0), vec3(2.2)); }
-vec3 toSrgb(vec3 c) { return pow(max(c, 0.0), vec3(1.0 / 2.2)); }
-
 float sdRoundRect(vec2 p, vec2 b, float r) {
   vec2 q = abs(p) - b + r;
   return min(max(q.x, q.y), 0.0) + length(max(q, 0.0)) - r;
@@ -60,30 +66,22 @@ float hash(vec2 p) {
   return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
 }
 
-// Filmic shoulder: an emissive subpixel matrix needs headroom, otherwise skin
-// clips to white the moment the strips get enough gain to read as lit.
-vec3 aces(vec3 x) {
-  const float a = 2.51;
-  const float b = 0.03;
-  const float c = 2.43;
-  const float d = 0.59;
-  const float e = 0.14;
-  return clamp((x * (a * x + b)) / (x * (c * x + d) + e), 0.0, 1.0);
-}
-
 void main() {
   vec2 uv = gl_FragCoord.xy / uRes;
 
   // ---------------------------------------------------------------- loupe
+  // A real loupe, not a zoom crop: small magnification, and the matrix fades
+  // out inside it so the photograph underneath comes back.
   vec2 lensUV = uLensPos / uRes;
   float lensDist = distance(gl_FragCoord.xy, uLensPos);
-  float lensInfl = 1.0 - smoothstep(uLensRadius * 0.18, uLensRadius, lensDist);
-  float mag = 1.0 + uLens * lensInfl;
+  float lensFill = 1.0 - smoothstep(uLensRadius * 0.55, uLensRadius, lensDist);
+  float mag = 1.0 + uLens * lensFill;
   vec2 uvM = lensUV + (uv - lensUV) / mag;
+  float reveal = smoothstep(0.05, 0.7, lensFill) * uLensAmount;
 
   // ---------------------------------------------------------------- scroll
-  // The image drifts up a touch while the cells grow, so the hero "unweaves".
-  uvM.y += uScroll * 0.045;
+  // A gentle upward drift while the plate leaves the viewport.
+  uvM.y += uScroll * 0.032;
 
   // Early out: most of the frame is the paper plate (or nothing). One cheap
   // low-mip alpha read skips the whole cell/shading path for those pixels.
@@ -94,113 +92,122 @@ void main() {
 
   // ---------------------------------------------------------------- grid
   vec2 g = uvM * uGrid;
-  vec2 cellIdx = floor(g);
-  float rowShift = uDelta * mod(cellIdx.y, 2.0) * 0.5;
+  float rowShift = uDelta * mod(floor(g.y), 2.0) * 0.5;
   g.x += rowShift;
-  cellIdx = floor(g);
+  vec2 cellIdx = floor(g);
   vec2 local = fract(g);
-
-  // Diagonal sweep: cells light up from the top-left corner outwards.
-  float order = (cellIdx.x / max(uGrid.x, 1.0) + (1.0 - cellIdx.y / max(uGrid.y, 1.0))) * 0.5;
-  float lit = smoothstep(order - 0.004, order + 0.018, uIntroLit);
-
   vec2 cellUV = (cellIdx + 0.5) / uGrid;
-  // Analytic derivatives -> the GPU picks the mip level that covers one cell,
-  // i.e. a true area average instead of a nearest neighbour poke.
-  vec2 ddx = vec2(1.0 / (uGrid.x * mag), 0.0);
-  vec2 ddy = vec2(0.0, 1.0 / (uGrid.y * mag));
 
   // ---------------------------------------------------------------- sampling
-  float ox = uFringe * (1.0 / uGrid.x) * 0.3333;
-  vec4 sR = textureGrad(uTex, cellUV - vec2(ox, 0.0), ddx, ddy);
-  vec4 sG = textureGrad(uTex, cellUV, ddx, ddy);
-  vec4 sB = textureGrad(uTex, cellUV + vec2(ox, 0.0), ddx, ddy);
+  // One screen pixel in uv space; the loupe scales it so LOD follows the lens.
+  vec2 px = 1.0 / (uRes * mag);
+  vec2 ddx = vec2(px.x, 0.0);
+  vec2 ddy = vec2(0.0, px.y);
 
-  vec3 srgbCell = vec3(sR.r, sG.g, sB.b);
-  float alpha = max(sG.a, max(sR.a, sB.a) * 0.85);
+  // Analytic cell derivatives -> the GPU picks the mip that covers one cell,
+  // i.e. a true area average for the mosaic stage of the intro.
+  vec4 fine = textureGrad(uTex, uvM, ddx, ddy);
 
-  // Partial cells at the silhouette edge; nothing at all outside the subject.
-  // A crisp threshold keeps the cutout from smearing into a one-cell grey ring:
-  // a cell only lights up once it is really covered by the subject.
-  float cover = smoothstep(0.42, 0.56, alpha);
+  // R/B passes shifted by the fringe offset (straight alpha, colour-bled
+  // cutout: the RGB outside the mask is still subject colour).
+  vec2 off = vec2(uFringe / (uRes.x * mag), 0.0);
+  vec4 passR = textureGrad(uTex, uvM - off, ddx, ddy);
+  vec4 passB = textureGrad(uTex, uvM + off, ddx, ddy);
+
+  // Silhouette edge, measured on the alpha of the shifted passes. This is the
+  // only place the portrait gets loud colour: a print-registration fringe.
+  float edge = clamp((abs(passR.a - fine.a) + abs(passB.a - fine.a)) * 2.6, 0.0, 1.0);
+
+  float cover = smoothstep(0.38, 0.62, fine.a);
   if (cover <= 0.002) {
     fragColor = uPlate > 0.5 ? vec4(uPaper, 1.0) : vec4(0.0);
     return;
   }
 
-  vec3 lin = toLinear(srgbCell);
+  // ---------------------------------------------------------------- image
+  // Mosaic (cell average) -> photograph, driven by the intro and the loupe.
+  float detail = clamp(uPhoto + reveal * 0.65, 0.0, 1.0);
+  vec3 base = fine.rgb;
+  // The area average is only needed while the intro is still a mosaic. uPhoto
+  // is a uniform, so this is a uniform branch: no divergence, one fetch saved.
+  if (uPhoto < 0.999) {
+    vec2 cellStep = vec2(1.0 / (uGrid.x * mag), 1.0 / (uGrid.y * mag));
+    vec4 cell = textureGrad(uTex, cellUV, vec2(cellStep.x, 0.0), vec2(0.0, cellStep.y));
+    base = mix(cell.rgb, fine.rgb, detail);
+  }
 
-  // Shadow lift: a black suit on a dark stage otherwise collapses into the
-  // background. Lift only the deep values, keep the midtones intact.
-  float lum = dot(lin, LUMA);
-  vec3 lifted = lin + uLift * (1.0 - smoothstep(0.0, 0.34, lum)) * vec3(0.0085, 0.0075, 0.0068);
-
-  // ---------------------------------------------------------------- strips
+  // ---------------------------------------------------------------- matrix
+  // Three subpixel strips per cell. They redistribute colour; they never eat
+  // luminance (the old 1/3-area model is what forced the emit gain that blew
+  // out the highlights).
   float pad = uGap * 0.5;
   float inner = 1.0 - uGap;
   float slot = inner / 3.0;
-  float aa = 1.25 * uGrid.x / (uRes.x * mag);   // ~1 device px in cell units
+  float aa = 1.0 * uGrid.x / (uRes.x * mag);   // ~1 device px in cell units
   vec2 p = local - 0.5;
 
   float s0 = 0.0, s1 = 0.0, s2 = 0.0;
   for (int i = 0; i < 3; i++) {
     float cx = pad + slot * (float(i) + 0.5) - 0.5;
-    float d = sdRoundRect(vec2(p.x - cx, p.y), vec2(slot * 0.5 - 0.015, inner * 0.5), slot * 0.45);
+    float d = sdRoundRect(vec2(p.x - cx, p.y), vec2(slot * 0.5 - 0.02, inner * 0.5), slot * 0.42);
     float s = 1.0 - smoothstep(-aa, aa, d);
     if (i == 0) s0 = s;
     else if (i == 1) s1 = s;
     else s2 = s;
   }
 
-  vec3 emission = vec3(lifted.r * s0, lifted.g * s1, lifted.b * s2);
-  float stripCover = max(s0, max(s1, s2));
+  float coverage = clamp(s0 + s1 + s2, 0.0, 1.0);
+  vec3 chan = vec3(s0, s1, s2) - coverage / 3.0;
+  float matrixAmt = uMatrix * (1.0 - 0.85 * reveal) * (0.45 + 0.55 * uPhoto);
 
-  // Black matrix never goes fully black: a whisper of the cell colour keeps the
-  // matrix from reading as holes punched in the silhouette.
-  emission += lifted * 0.045 * (1.0 - stripCover);
+  base *= 1.0 + chan * matrixAmt * 0.55;
+  // Black matrix: a whisper of shading in the gaps, never a punched hole.
+  base *= mix(1.0, 0.80, (1.0 - coverage) * matrixAmt);
 
   // ---------------------------------------------------------------- bloom
-  // The bloom mip is capped: during the macro intro the cells are huge and an
-  // uncapped low mip turns the whole figure into one soft grey smear.
+  // Only highlights spill, and only a little; a broad bloom is what made the
+  // old version read as a smear instead of a screen.
   if (uGlow > 0.001) {
-    float lod = min(log2(max(1.0, uRes.x / uGrid.x)) + 2.4, 5.5);
+    float lod = min(log2(max(1.0, uRes.x / uGrid.x)) + 2.2, 5.0);
     vec4 blur = textureLod(uTex, uvM, lod);
-    vec3 bloom = toLinear(blur.rgb) * smoothstep(0.35, 0.8, blur.a);
-    emission += bloom * uGlow * 0.30 * mix(0.18, 1.0, uIntroLit) * (0.35 + 0.65 * (1.0 - stripCover));
+    float hi = smoothstep(0.58, 0.96, dot(blur.rgb, LUMA)) * blur.a;
+    base += hi * uGlow * 0.35 * vec3(1.0, 0.97, 0.93);
   }
 
-  // ---------------------------------------------------------------- rim light
-  // Reuses the fringe samples' alpha: no extra texture fetches for the edge.
-  float edge = clamp(max(abs(sR.a - sG.a), abs(sB.a - sG.a)) * 3.2, 0.0, 1.0);
-  // Rim stays *inside* the silhouette: solid cells only, never on the boundary AA.
-  emission += toLinear(uPaper) * edge * uRim * smoothstep(0.55, 0.92, alpha) * (0.35 + 0.65 * stripCover);
+  // ---------------------------------------------------------------- edge
+  // Paper bounce keeps the black suit off the black surface; the misregistered
+  // channels then tint that same edge instead of drawing a ring.
+  float rim = edge * uRim * cover;
+  base = mix(base, uPaper, rim * 0.85);
+
+  // Misregistration hairline: the R pass misses the silhouette on one side and
+  // the B pass on the other, so the edge splits warm/cool like a three-pass
+  // print. Only the boundary gets this; the face never does.
+  float warmEdge = clamp((fine.a - passR.a) * 1.8, 0.0, 1.0);
+  float coolEdge = clamp((fine.a - passB.a) * 1.8, 0.0, 1.0);
+  base += (vec3(1.0, 0.30, 0.16) * warmEdge + vec3(0.16, 0.40, 1.0) * coolEdge)
+        * uEdge * smoothstep(0.12, 0.5, fine.a) * 1.6;
 
   // ---------------------------------------------------------------- grade
-  emission *= cover * lit;
+  float lum = dot(base, LUMA);
+  base += uLift * (1.0 - smoothstep(0.0, 0.28, lum)) * 0.045;
+  base = mix(vec3(lum), base, uSat);
 
-  // Emissive gain: three strips cover roughly a third of each cell, so the
-  // strips themselves have to be brighter than the averaged colour to read.
-  emission *= uEmit;
-  emission *= 1.0 + 0.10 * lensInfl * step(0.01, uLens);
+  // Diagonal sweep: cells light up from the top-left corner outwards.
+  float order = (cellIdx.x / max(uGrid.x, 1.0) + (1.0 - cellIdx.y / max(uGrid.y, 1.0))) * 0.5;
+  float lit = smoothstep(order - 0.004, order + 0.02, uIntroLit);
+  float a = cover * lit;
 
-  // Filmic shoulder + a touch of contrast so the face keeps its form.
-  emission = aces(emission);
-  emission = mix(emission, smoothstep(0.0, 1.0, emission), 0.18);
-  // The shoulder desaturates skin; pull a little colour back.
-  emission = clamp(mix(vec3(dot(emission, LUMA)), emission, uSat), 0.0, 1.0);
+  // Scanline shimmer, at most +-1.5%.
+  base *= 1.0 + 0.015 * uScan * sin(gl_FragCoord.y * 0.8 - uTime * 1.6);
 
-  // Scanline shimmer, at most +-2%.
-  emission *= 1.0 + 0.02 * uScan * sin(gl_FragCoord.y * 0.55 - uTime * 1.7);
-
-  vec3 outCol = toSrgb(emission);
-  outCol += (hash(gl_FragCoord.xy + fract(uTime)) - 0.5) / 255.0;
+  base += (hash(gl_FragCoord.xy + fract(uTime)) - 0.5) / 255.0;
 
   if (uPlate > 0.5) {
-    fragColor = vec4(mix(uPaper, outCol, cover * lit), 1.0);
+    fragColor = vec4(mix(uPaper, base, a), 1.0);
   } else {
     // Premultiplied alpha: no fringe of light bleeding outside the cutout.
-    float a = cover * lit;
-    fragColor = vec4(outCol * a, a);
+    fragColor = vec4(base * a, a);
   }
 }
 `;

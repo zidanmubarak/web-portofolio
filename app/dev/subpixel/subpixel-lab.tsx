@@ -41,9 +41,9 @@ const NUMERIC_KEYS = [
   "cellSize",
   "introCellSize",
   "gap",
+  "matrix",
   "fringe",
   "glow",
-  "emit",
   "lift",
   "rim",
   "sat",
@@ -199,23 +199,25 @@ export function SubpixelLab() {
       }) as unknown as TpPane;
 
       const grid = created.addFolder({ title: "grid" });
-      grid.addBinding(cfg, "cellSize", { min: 2, max: 10, step: 0.5, label: "cell px" });
-      grid.addBinding(cfg, "introCellSize", { min: 12, max: 48, step: 1, label: "intro px" });
+      grid.addBinding(cfg, "cellSize", { min: 1.5, max: 8, step: 0.1, label: "cell px" });
+      grid.addBinding(cfg, "introCellSize", { min: 10, max: 40, step: 1, label: "intro px" });
       grid.addBinding(cfg, "gap", { min: 0, max: 0.4, step: 0.01, label: "matrix" });
       grid.addBinding(cfg, "layout", { options: { stripe: "stripe", delta: "delta" } });
 
+      const screen = created.addFolder({ title: "screen" });
+      screen.addBinding(cfg, "matrix", { min: 0, max: 1, step: 0.01, label: "rgb strips" });
+      screen.addBinding(cfg, "fringe", { min: 0, max: 3, step: 0.05, label: "edge fringe" });
+      screen.addBinding(cfg, "scan", { min: 0, max: 1, step: 1, label: "scanline" });
+
       const light = created.addFolder({ title: "light" });
-      light.addBinding(cfg, "fringe", { min: 0, max: 1.5, step: 0.01 });
-      light.addBinding(cfg, "glow", { min: 0, max: 1.5, step: 0.01 });
-      light.addBinding(cfg, "emit", { min: 0.5, max: 5, step: 0.05, label: "emit" });
+      light.addBinding(cfg, "glow", { min: 0, max: 1, step: 0.01 });
       light.addBinding(cfg, "lift", { min: 0, max: 2, step: 0.01, label: "shadow lift" });
       light.addBinding(cfg, "rim", { min: 0, max: 1.5, step: 0.01 });
       light.addBinding(cfg, "sat", { min: 0.4, max: 2, step: 0.01 });
-      light.addBinding(cfg, "scan", { min: 0, max: 1, step: 1, label: "scanline" });
 
       const loupe = created.addFolder({ title: "loupe" });
-      loupe.addBinding(cfg, "lensRadius", { min: 40, max: 260, step: 2, label: "radius px" });
-      loupe.addBinding(cfg, "lensMag", { min: 1, max: 5, step: 0.05, label: "mag" });
+      loupe.addBinding(cfg, "lensRadius", { min: 40, max: 200, step: 2, label: "radius px" });
+      loupe.addBinding(cfg, "lensMag", { min: 1, max: 2.5, step: 0.01, label: "mag" });
       loupe.addBinding(cfg, "paper", { label: "paper" });
 
       created.on("change", () => sync());

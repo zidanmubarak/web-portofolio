@@ -1,34 +1,37 @@
 /**
  * Tuning knobs for <SubpixelPortrait>. `FINAL_PRESET` is the approved set from
  * the /dev/subpixel sweep; see vault `subpixel-notes.md` for what was rejected.
+ *
+ * v2 ("photo first"): the photograph is the image, the RGB matrix is a fine
+ * material over it, and the chromatic fringe lives on the silhouette edge only.
  */
 
 export type SubpixelLayout = "stripe" | "delta";
 
 export type SubpixelParams = {
-  /** Resolved cell size in CSS px (4–6 keeps the matrix legible without moiré). */
+  /** Cell size in CSS px at rest. 2–3 keeps the face sharp; the matrix reads up close. */
   cellSize: number;
   /** Macro cell size the intro starts from, in CSS px. */
   introCellSize: number;
   /** Black matrix between cells, as a fraction of one cell. */
   gap: number;
-  /** Horizontal R/B channel offset in thirds of a cell (chromatic fringing). */
+  /** RGB strip texture over the photo (0 = clean photo, 1 = strong screen door). */
+  matrix: number;
+  /** Horizontal R/B misregistration offset on the silhouette edge, in CSS px. */
   fringe: number;
-  /** Bloom around the lit subpixels. */
+  /** Highlight bloom around bright areas. */
   glow: number;
-  /** Emission gain for the strips (they only cover ~1/3 of a cell). */
-  emit: number;
   /** Lifts deep blacks inside the mask so the black suit keeps a silhouette. */
   lift: number;
-  /** Rim light picked up from the alpha edge. */
+  /** Paper bounce picked up from the alpha edge. */
   rim: number;
-  /** Saturation after the filmic shoulder. */
+  /** Saturation. */
   sat: number;
   /** Loupe radius in CSS px. */
   lensRadius: number;
-  /** Loupe magnification (1 = off). */
+  /** Loupe magnification (1 = off). Small on purpose: a loupe, not a crop. */
   lensMag: number;
-  /** Scanline shimmer, 0 or 1 (hard-capped at +-2% inside the shader). */
+  /** Scanline shimmer, 0 or 1 (hard-capped at +-1.5% inside the shader). */
   scan: number;
   /** Square cells or PenTile-style half-cell staggered rows. */
   layout: SubpixelLayout;
@@ -37,29 +40,29 @@ export type SubpixelParams = {
 };
 
 export const FINAL_PRESET: SubpixelParams = {
-  cellSize: 4.5,
-  introCellSize: 28,
-  gap: 0.24,
-  fringe: 0.6,
-  glow: 0.32,
-  emit: 2.1,
-  lift: 1,
-  rim: 0.3,
-  sat: 1.12,
-  lensRadius: 140,
-  lensMag: 1.9,
-  scan: 1,
+  cellSize: 2.6,
+  introCellSize: 16,
+  gap: 0.16,
+  matrix: 0.3,
+  fringe: 0.9,
+  glow: 0.18,
+  lift: 0.7,
+  rim: 0.24,
+  sat: 1.04,
+  lensRadius: 96,
+  lensMag: 1.24,
+  scan: 0.4,
   layout: "stripe",
   paper: "#E7E1D5",
 };
 
-export const PRESET_LABEL = "rubric-subpixel-v1";
+export const PRESET_LABEL = "rubric-subpixel-v2";
 
 /** Variants worth keeping next to the final preset. */
 export const PRESET_VARIANTS = {
   stripe: FINAL_PRESET,
   delta: { ...FINAL_PRESET, layout: "delta" as SubpixelLayout },
-  "crt-soft": { ...FINAL_PRESET, glow: 0.95, fringe: 1.15, gap: 0.24, scan: 1 },
+  print: { ...FINAL_PRESET, fringe: 1.6, matrix: 0.42 },
 } satisfies Record<string, SubpixelParams>;
 
 export function mergeParams(base: SubpixelParams, patch?: Partial<SubpixelParams>): SubpixelParams {

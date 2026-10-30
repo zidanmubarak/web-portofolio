@@ -52,6 +52,10 @@ export const READY_TASK = "hero-portrait";
 
 const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+const smoothstep = (edge0: number, edge1: number, x: number) => {
+  const t = clamp((x - edge0) / (edge1 - edge0), 0, 1);
+  return t * t * (3 - 2 * t);
+};
 const easeInOutCubic = (t: number) =>
   t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
@@ -91,14 +95,17 @@ const UNIFORM_NAMES = [
   "uRes",
   "uGrid",
   "uGap",
+  "uMatrix",
+  "uPhoto",
   "uFringe",
+  "uEdge",
   "uGlow",
-  "uEmit",
   "uLift",
   "uRim",
   "uSat",
   "uScan",
   "uLens",
+  "uLensAmount",
   "uLensRadius",
   "uLensPos",
   "uIntroLit",
@@ -342,12 +349,17 @@ const SubpixelPortrait = forwardRef<SubpixelPortraitHandle, SubpixelPortraitProp
 
         // ----- grid, snapped to whole device pixels (no moiré)
         const baseCell = lerp(cfg.introCellSize, cfg.cellSize, easeInOutCubic(state.introProgress));
-        const scrollGrowth = 1 + 0.85 * state.scroll;
+        // The grid loosens a little as the plate leaves, so the exit reads as
+        // "unweaving" without turning the face back into a mosaic.
+        const scrollGrowth = 1 + 0.5 * state.scroll;
         const cellCss = baseCell * scrollGrowth * (state.quality === 2 ? 1.25 : 1);
-        const targetDev = Math.max(2, Math.round(cellCss * state.dpr));
+        const targetDev = Math.max(3, Math.round(cellCss * state.dpr));
         const cols = Math.max(4, Math.round(state.width / targetDev));
         const cellDev = state.width / cols;
         const rows = Math.max(4, Math.round(state.height / cellDev));
+        // Photo <-> mosaic: the intro resolves into the photograph in its
+        // second half; scrolling out hands it back to the matrix.
+        const photo = smoothstep(0.42, 1, easeInOutCubic(state.introProgress)) * (1 - 0.55 * state.scroll);
 
         const t = (time - state.started) / 1000;
         gl.viewport(0, 0, state.width, state.height);
@@ -357,14 +369,20 @@ const SubpixelPortrait = forwardRef<SubpixelPortraitHandle, SubpixelPortraitProp
         gl.uniform2f(uniforms.uRes ?? null, state.width, state.height);
         gl.uniform2f(uniforms.uGrid ?? null, cols, rows);
         gl.uniform1f(uniforms.uGap ?? null, cfg.gap);
-        gl.uniform1f(uniforms.uFringe ?? null, cfg.fringe);
+        gl.uniform1f(uniforms.uMatrix ?? null, cfg.matrix);
+        gl.uniform1f(uniforms.uPhoto ?? null, photo);
+        // Fringe is authored in CSS px; the shader wants device px for the
+        // channel offset and a 0..1 strength for the edge hairline.
+        gl.uniform1f(uniforms.uFringe ?? null, Math.max(0.5, cfg.fringe * state.dpr));
+        gl.uniform1f(uniforms.uEdge ?? null, clamp(cfg.fringe / 1.5, 0, 1));
         gl.uniform1f(uniforms.uGlow ?? null, cfg.glow * (state.quality === 0 ? 1 : 0.7));
-        gl.uniform1f(uniforms.uEmit ?? null, cfg.emit);
         gl.uniform1f(uniforms.uLift ?? null, cfg.lift);
         gl.uniform1f(uniforms.uRim ?? null, cfg.rim);
         gl.uniform1f(uniforms.uSat ?? null, cfg.sat);
         gl.uniform1f(uniforms.uScan ?? null, cfg.scan);
-        gl.uniform1f(uniforms.uLens ?? null, cfg.lensMag > 1.02 ? state.lens * (cfg.lensMag - 1) : 0);
+        const loupeOn = cfg.lensMag > 1.01;
+        gl.uniform1f(uniforms.uLens ?? null, loupeOn ? state.lens * (cfg.lensMag - 1) : 0);
+        gl.uniform1f(uniforms.uLensAmount ?? null, loupeOn ? state.lens : 0);
         gl.uniform1f(
           uniforms.uLensRadius ?? null,
           Math.max(8, Math.min(cfg.lensRadius * state.dpr, Math.min(state.width, state.height) * 0.32)),
@@ -627,10 +645,10 @@ const SubpixelPortrait = forwardRef<SubpixelPortraitHandle, SubpixelPortraitProp
             mixBlendMode: "multiply",
             backgroundImage:
               "repeating-linear-gradient(90deg," +
-              " rgba(255,64,48,0.20) 0 1px," +
-              " rgba(48,255,120,0.18) 1px 2px," +
-              " rgba(64,112,255,0.20) 2px 3px)," +
-              "repeating-linear-gradient(0deg, rgba(0,0,0,0.16) 0 1px, rgba(0,0,0,0) 1px 4px)",
+              " rgba(255,64,48,0.13) 0 1px," +
+              " rgba(48,255,120,0.11) 1px 2px," +
+              " rgba(64,112,255,0.13) 2px 3px)," +
+              "repeating-linear-gradient(0deg, rgba(0,0,0,0.10) 0 1px, rgba(0,0,0,0) 1px 3px)",
             maskImage: `url(${poster ?? src})`,
             maskSize: "contain",
             maskPosition: "bottom center",
