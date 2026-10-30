@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { gsap } from "@/lib/motion/gsap";
 import { useSmoothScroll } from "@/lib/motion/smooth-scroll";
 import { DUR, EASE, STAGGER, prefersReducedMotion } from "@/lib/motion/tokens";
@@ -42,7 +43,8 @@ export function MenuOverlay({
   const panelRef = React.useRef<HTMLDivElement>(null);
   const closeRef = React.useRef<HTMLButtonElement>(null);
   const returnFocusRef = React.useRef<HTMLElement | null>(null);
-  const router = useRouter();
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
   const scroll = useSmoothScroll();
   const scrollRef = React.useRef(scroll);
@@ -238,17 +240,20 @@ export function MenuOverlay({
           <ul>
             {MENU_ITEMS.map((item) => (
               <li key={item.href} className="border-t border-line last:border-b">
-                <a
+                <Link
                   data-menu-item
-                  href={item.href}
+                  href={isHome ? item.href : `/${item.href}`}
                   onClick={(event) => {
+                    // From another route the Link navigates home and the
+                    // browser/Next resolves the hash; the overlay only closes.
+                    if (!isHome) {
+                      onClose();
+                      return;
+                    }
                     event.preventDefault();
                     onClose();
                     const target = document.querySelector(item.href);
-                    if (!target) {
-                      router.push(`/${item.href}`);
-                      return;
-                    }
+                    if (!target) return;
                     const offset =
                       -1 *
                       (parseFloat(
@@ -279,7 +284,7 @@ export function MenuOverlay({
                   <span className="u-display menu-title">
                     {item.label}
                   </span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

@@ -4,6 +4,8 @@ import * as React from "react";
 import { TopBar } from "./top-bar";
 import { MenuOverlay } from "./menu-overlay";
 import { ScrollMeter } from "./scroll-meter";
+import { RouteSweep } from "./route-sweep";
+import { copy } from "@/content/copy.en";
 
 /**
  * Client shell: fixed top bar, INDEX overlay, scroll meter, skip link.
@@ -17,12 +19,13 @@ export function Shell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <a href="#main" className="skip-link">
-        Skip to content
+        {copy.nav.skipToContent}
       </a>
 
       <TopBar menuOpen={menuOpen} onOpenMenu={openMenu} />
       <MenuOverlay open={menuOpen} onClose={closeMenu} />
       <ScrollMeter />
+      <RouteSweep />
 
       <main id="main" tabIndex={-1} className="relative focus:outline-none">
         {children}

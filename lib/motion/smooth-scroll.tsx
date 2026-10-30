@@ -66,15 +66,26 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setLenis(instance);
 
-    // Fonts and images change trigger positions; refresh once they settle.
-    const refresh = () => ScrollTrigger.refresh();
-    if (document.fonts?.ready) {
-      document.fonts.ready.then(refresh).catch(() => {});
-    }
-    window.addEventListener("load", refresh, { once: true });
+    // Fonts and images change trigger positions. Wait for both signals and
+    // refresh once: every refresh forces a full synchronous layout of a very
+    // tall page, and doing it twice is measurable on a throttled phone.
+    let cancelled = false;
+    const fontsReady = document.fonts?.ready ?? Promise.resolve();
+    const pageLoaded =
+      document.readyState === "complete"
+        ? Promise.resolve()
+        : new Promise<void>((resolve) => {
+            window.addEventListener("load", () => resolve(), { once: true });
+          });
+
+    Promise.all([fontsReady, pageLoaded])
+      .then(() => {
+        if (!cancelled) ScrollTrigger.refresh();
+      })
+      .catch(() => {});
 
     return () => {
-      window.removeEventListener("load", refresh);
+      cancelled = true;
       gsap.ticker.remove(raf);
       instance.off("scroll", onScroll);
       instance.destroy();

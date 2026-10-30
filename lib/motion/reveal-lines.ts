@@ -45,6 +45,9 @@ export function revealLines(
     type: "lines",
     mask: "lines",
     linesClass: "motion-line",
+    // Auto-aria would put `aria-label` on the wrapper; when the wrapper is a
+    // <div> that attribute is prohibited. The text stays in the lines.
+    aria: "none",
   });
 
   const triggerElement =

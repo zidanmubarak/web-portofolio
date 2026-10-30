@@ -15,6 +15,10 @@ export type OdometerOptions = {
  * rolls each column in from 0 when the odometer enters the viewport. The
  * component also carries an `aria-label` with the final value, so assistive
  * technology never hears a stream of digits.
+ *
+ * One timeline and therefore one ScrollTrigger per odometer root, not one per
+ * digit: the hero strip alone would otherwise spend eight triggers of the
+ * twelve-trigger budget in motion-map.md §5.
  */
 export function animateOdometer(
   root: HTMLElement,
@@ -30,33 +34,43 @@ export function animateOdometer(
     root.querySelectorAll<HTMLElement>("[data-odometer-digit]")
   );
 
-  const tweens = digits
-    .map((digit) => {
+  const strips = digits
+    .map((digit, position) => {
       const strip = digit.querySelector<HTMLElement>(".odometer__strip");
       if (!strip) return null;
-      const value = Number(digit.dataset.value ?? "0");
-      return gsap.fromTo(
+      return {
         strip,
-        // The server renders the final digit as an inline translateY so no-JS
-        // users see the number. Zero the parsed y before rolling, otherwise
-        // GSAP keeps that offset and adds yPercent on top of it.
-        { yPercent: 0, y: 0 },
-        {
-          yPercent: -10 * value,
-          y: 0,
-          duration: DUR.odometer,
-          ease: EASE.expo,
-          delay: Number(digit.dataset.index ?? "0") * stagger,
-          scrollTrigger: { trigger: root, start, once },
-        }
-      );
+        value: Number(digit.dataset.value ?? "0"),
+        index: Number(digit.dataset.index ?? position),
+      };
     })
-    .filter((tween): tween is gsap.core.Tween => tween !== null);
+    .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
+
+  if (strips.length === 0) return () => {};
+
+  const timeline = gsap.timeline({
+    scrollTrigger: { trigger: root, start, once },
+  });
+
+  strips.forEach(({ strip, value, index }) => {
+    timeline.fromTo(
+      strip,
+      // The server renders the final digit as an inline translateY so no-JS
+      // users see the number. Zero the parsed y before rolling, otherwise
+      // GSAP keeps that offset and adds yPercent on top of it.
+      { yPercent: 0, y: 0 },
+      {
+        yPercent: -10 * value,
+        y: 0,
+        duration: DUR.odometer,
+        ease: EASE.expo,
+      },
+      index * stagger
+    );
+  });
 
   return () => {
-    tweens.forEach((tween) => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
-    });
+    timeline.scrollTrigger?.kill();
+    timeline.kill();
   };
 }

@@ -531,6 +531,25 @@ html[data-menu="open"] body {
   overflow: hidden;
 }
 
+/* Scroll meter over the paper Contact surface: accent text and ink both fail
+   contrast on #E7E1D5, so the rail switches to paper ink. The 1 px lines stay
+   accent — they are decoration, not text. */
+.meter-rail[data-meter-surface="paper"] .u-label {
+  color: var(--paper-ink);
+}
+
+.meter-rail[data-meter-surface="paper"] .text-accent {
+  color: var(--paper-ink);
+}
+
+.meter-rail[data-meter-surface="paper"] .text-ink-muted {
+  color: var(--paper-muted);
+}
+
+.meter-rail[data-meter-surface="paper"] .bg-line {
+  background-color: rgb(17 17 16 / 0.28);
+}
+
 /* ==========================================================================
    Motion fallbacks
    ========================================================================== */
