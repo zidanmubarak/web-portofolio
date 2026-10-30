@@ -59,6 +59,12 @@ export function LoaderGate() {
     <>
       <script dangerouslySetInnerHTML={{ __html: BOOT }} />
       <style dangerouslySetInnerHTML={{ __html: STYLE }} />
+      {/* Without JS the gate must never hide the page. */}
+      <noscript
+        dangerouslySetInnerHTML={{
+          __html: `<style>html[data-loader] #main,html[data-loader] [data-shell="topbar"]{opacity:1!important}html[data-loader] body{overflow:auto!important}html[data-loader] [data-loader-root]{display:none!important}</style>`,
+        }}
+      />
     </>
   );
 }

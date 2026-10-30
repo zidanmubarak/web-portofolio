@@ -19,7 +19,7 @@ export function SignatureSlot({
     <span
       data-signature-target="topbar"
       className={cn(
-        "signature-slot relative inline-flex items-center",
+        "signature-slot relative inline-flex min-h-[24px] items-center md:min-h-[28px]",
         className
       )}
     >

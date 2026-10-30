@@ -31,6 +31,8 @@ export type LoaderProps = {
 };
 
 const EVENT = "rubric:loader-exit";
+/** Fired when the exit wipe starts; the hero reveals underneath it. */
+const EVENT_START = "rubric:loader-exit-start";
 
 function pad2(value: number): string {
   return Math.max(0, Math.min(999, Math.round(value)))
@@ -194,7 +196,16 @@ export function Loader({
       if (capped > shown) writeCounter(capped);
 
       if (!exiting) {
-        const ready = drawDone && actual >= 100;
+        // Soft deadline: heavy readiness tasks (shader compile on a software
+        // GPU, a slow texture) may not finish inside the design budget. The
+        // poster is already painted, so the exit proceeds after a short grace
+        // period instead of holding the whole page for the hard cap.
+        const softDeadline = Math.max(
+          minDuration,
+          drawDuration + 0.45
+        );
+        const ready =
+          drawDone && (actual >= 100 || elapsed >= softDeadline);
         if (ready && elapsed >= minDuration) {
           writeCounter(100);
           startExit("ready");
@@ -213,6 +224,12 @@ export function Loader({
       if (raf) window.cancelAnimationFrame(raf);
       raf = 0;
       root.dataset.loader = "exiting";
+      // The page is already visible behind the wipe (the gate only hides it
+      // while `pending`), so the hero can start its reveal under the curtain
+      // instead of waiting for the overlay to unmount.
+      window.dispatchEvent(new CustomEvent<LoaderExitDetail>(EVENT_START, {
+        detail: { skipped: false, reason },
+      }));
 
       const overlay = overlayRef.current;
       const surface = surfaceRef.current;
@@ -256,7 +273,7 @@ export function Loader({
         exitTimeline.to(
           surface,
           {
-            clipPath: "inset(0 0 100% 0)",
+            clipPath: "inset(100% 0% 0% 0%)",
             duration: 0.55,
             ease: EASE.expo,
           },
@@ -264,6 +281,14 @@ export function Loader({
         );
       }
       if (overlay) {
+        const chrome = overlay.querySelectorAll<HTMLElement>("[data-loader-chrome]");
+        if (chrome.length) {
+          exitTimeline.to(
+            chrome,
+            { opacity: 0, duration: 0.15, ease: "power1.out" },
+            0
+          );
+        }
         exitTimeline.to(overlay, { opacity: 0, duration: 0.22 }, 0.48);
       }
     };
@@ -306,7 +331,7 @@ export function Loader({
         data-loader-root
         ref={overlayRef}
         className={cn(
-          "fixed inset-0 z-[calc(var(--z-loader)+1)] flex flex-col justify-between bg-surface p-page text-ink",
+          "fixed inset-0 z-[calc(var(--z-loader)+1)] flex flex-col justify-between p-page text-ink",
           className
         )}
       >
@@ -315,16 +340,16 @@ export function Loader({
           className="pointer-events-none absolute inset-0 z-0 bg-surface"
           aria-hidden="true"
         />
-        <div className="relative z-10 flex items-start justify-between">
+        <div data-loader-chrome className="relative z-10 flex items-start justify-between">
           <span className="u-label text-ink">ZIDAN MUBARAK</span>
           <span className="u-label text-ink-muted">BANDA ACEH, ID</span>
         </div>
-        <div className="relative z-10 flex flex-1 items-center justify-center">
+        <div data-loader-chrome className="relative z-10 flex flex-1 items-center justify-center">
           <span className="sr-only" role="status">
             Loading portfolio
           </span>
         </div>
-        <div className="relative z-10 flex items-end justify-between gap-6">
+        <div data-loader-chrome className="relative z-10 flex items-end justify-between gap-6">
           <div className="flex items-center gap-4">
             <span className="u-label text-ink-muted">LOADING</span>
             <span

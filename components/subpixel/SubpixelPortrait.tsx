@@ -415,11 +415,21 @@ const SubpixelPortrait = forwardRef<SubpixelPortraitHandle, SubpixelPortraitProp
         setMode("webgl");
         onReadyRef.current?.();
 
+        // If the GPU took long enough that the curtain is already gone, skip
+        // the macro flourish and show the resolved grid: assembling from an
+        // empty plate after the page is visible reads as a glitch.
+        const lateStart =
+          state.introPending && performance.now() - state.started > 1800;
         if (intro === "auto" || state.introPending) {
           state.introPending = false;
-          state.introProgress = 0;
-          state.sweep = 0;
-          state.introRunning = true;
+          if (lateStart) {
+            state.introProgress = 1;
+            state.sweep = 1;
+          } else {
+            state.introProgress = 0;
+            state.sweep = 0;
+            state.introRunning = true;
+          }
         }
         if (!raf) raf = requestAnimationFrame(tick);
       };
@@ -604,7 +614,9 @@ const SubpixelPortrait = forwardRef<SubpixelPortraitHandle, SubpixelPortraitProp
           }}
         />
 
-        {/* Static fallback overlay: three-colour subpixel stripes + black matrix. */}
+        {/* Static fallback overlay: three-colour subpixel stripes + black matrix.
+            Masked by the cutout's own alpha so the stripes sit on the subject,
+            not on a visible rectangle of paper. */}
         <div
           aria-hidden="true"
           style={{
@@ -619,6 +631,14 @@ const SubpixelPortrait = forwardRef<SubpixelPortraitHandle, SubpixelPortraitProp
               " rgba(48,255,120,0.18) 1px 2px," +
               " rgba(64,112,255,0.20) 2px 3px)," +
               "repeating-linear-gradient(0deg, rgba(0,0,0,0.16) 0 1px, rgba(0,0,0,0) 1px 4px)",
+            maskImage: `url(${poster ?? src})`,
+            maskSize: "contain",
+            maskPosition: "bottom center",
+            maskRepeat: "no-repeat",
+            WebkitMaskImage: `url(${poster ?? src})`,
+            WebkitMaskSize: "contain",
+            WebkitMaskPosition: "bottom center",
+            WebkitMaskRepeat: "no-repeat",
           }}
         />
 
