@@ -4,16 +4,18 @@ import { WorkIndex } from "@/components/work/work-index";
 import { TextLink } from "@/components/ui/text-link";
 import { copy, profile, selectedProjects } from "@/content";
 
-const title = copy.meta.titleTemplate.replace("%s", copy.work.indexHeading.join(" "));
+const title = copy.work.indexHeading.join(" ");
+const fullTitle = copy.meta.titleTemplate.replace("%s", title);
 
 export const metadata: Metadata = {
   title,
   description: copy.work.indexIntro,
   alternates: { canonical: "/work" },
   openGraph: {
-    title,
+    title: fullTitle,
     description: copy.work.indexIntro,
     type: "website",
+    url: "/work",
   },
 };
 
@@ -25,7 +27,7 @@ export default function WorkIndexPage() {
   return (
     <article className="pb-24 md:pb-32">
       <header className="u-container pt-[calc(var(--topbar-h)+40px)] md:pt-[calc(var(--topbar-h)+64px)]">
-        <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-line pb-3 lg:pr-10">
+        <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-line pb-3">
           <p className="u-label text-ink-muted">
             <span className="text-accent">03</span>
             <span aria-hidden="true"> / </span>

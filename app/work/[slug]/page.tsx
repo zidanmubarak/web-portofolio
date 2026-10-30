@@ -39,7 +39,8 @@ export async function generateMetadata({
 
   const study = project.caseStudy ? getCaseStudy(project.caseStudy) : undefined;
   const image = getWorkImage(project);
-  const title = copy.meta.titleTemplate.replace("%s", project.title);
+  const title = project.title;
+  const fullTitle = copy.meta.titleTemplate.replace("%s", project.title);
   const description = study?.summary ?? project.summary;
 
   return {
@@ -47,9 +48,10 @@ export async function generateMetadata({
     description,
     alternates: { canonical: `/work/${project.slug}` },
     openGraph: {
-      title,
+      title: fullTitle,
       description,
       type: "article",
+      url: `/work/${project.slug}`,
       ...(image
         ? {
             images: [
@@ -87,7 +89,7 @@ export default async function ProjectPage({ params }: PageProps) {
         data-case-header
         className="u-container pt-[calc(var(--topbar-h)+32px)] md:pt-[calc(var(--topbar-h)+56px)]"
       >
-        <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-line pb-3 lg:pr-10">
+        <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-line pb-3">
           <Link
             href="/work"
             className="link-wipe u-label text-ink hover:text-accent"
@@ -142,7 +144,7 @@ export default async function ProjectPage({ params }: PageProps) {
       </header>
 
       {image ? (
-        <div className="u-container mt-10 md:mt-14 lg:pr-24">
+        <div className="u-container mt-10 md:mt-14">
           <CaseFigure
             slug={project.slug}
             src={image.src}
@@ -159,7 +161,7 @@ export default async function ProjectPage({ params }: PageProps) {
       {study ? (
         <section
           aria-labelledby="headline-metric"
-          className="u-container mt-14 border-y border-line py-8 md:mt-20 md:py-10 lg:pr-24"
+          className="u-container mt-14 border-y border-line py-8 md:mt-20 md:py-10"
         >
           <div className="grid items-end gap-8 lg:grid-cols-12">
             <div className="lg:col-span-7">
@@ -185,7 +187,7 @@ export default async function ProjectPage({ params }: PageProps) {
         </section>
       ) : null}
 
-      <div className="u-container mt-14 grid gap-12 md:mt-20 lg:grid-cols-12 lg:gap-grid lg:pr-24">
+      <div className="u-container mt-14 grid gap-12 md:mt-20 lg:grid-cols-12 lg:gap-grid">
         {study ? (
           <aside className="min-w-0 lg:col-span-3">
             <nav
@@ -262,7 +264,7 @@ export default async function ProjectPage({ params }: PageProps) {
       </div>
 
       {study ? (
-        <div className="u-container mt-16 space-y-14 md:mt-24 lg:pr-24">
+        <div className="u-container mt-16 space-y-14 md:mt-24">
           <DemoFigure project={project} />
           <SourceCrops />
           {project.slug === "jawi-ocr" ? <CaptureSlot /> : null}
@@ -270,7 +272,7 @@ export default async function ProjectPage({ params }: PageProps) {
       ) : null}
 
       {study ? (
-        <section className="u-container mt-16 grid gap-10 md:mt-24 lg:grid-cols-2 lg:gap-grid lg:pr-24">
+        <section className="u-container mt-16 grid gap-10 md:mt-24 lg:grid-cols-2 lg:gap-grid">
           <div>
             <p className="u-label text-accent">{copy.caseStudy.lessonsLabel}</p>
             <ol className="mt-4 border-t border-line">
@@ -306,7 +308,7 @@ export default async function ProjectPage({ params }: PageProps) {
       ) : null}
 
       {references.length > 0 ? (
-        <section className="u-container mt-14 md:mt-20 lg:pr-24">
+        <section className="u-container mt-14 md:mt-20">
           <p className="u-label text-ink-muted">
             {copy.caseStudy.sourcesLabel}
           </p>
@@ -337,7 +339,7 @@ export default async function ProjectPage({ params }: PageProps) {
 
       <nav
         aria-label="Other projects"
-        className="u-container mt-16 grid border-t border-line md:mt-24 sm:grid-cols-2 lg:pr-24"
+        className="u-container mt-16 grid border-t border-line md:mt-24 sm:grid-cols-2"
       >
         <Link
           href={`/work/${previous.slug}`}
