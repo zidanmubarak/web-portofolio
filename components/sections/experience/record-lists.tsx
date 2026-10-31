@@ -116,7 +116,19 @@ export function RecordLists({
               key={entry.id}
               id={`exp-${entry.id}`}
               index={entry.index}
-              title={entry.role}
+              title={
+                <span className="flex flex-col gap-1">
+                  <span>{entry.role}</span>
+                  <span className="text-small font-normal text-ink-muted">
+                    {entry.organisation}
+                  </span>
+                  {entry.organisationNote ? (
+                    <span className="u-label text-ink-muted">
+                      {entry.organisationNote}
+                    </span>
+                  ) : null}
+                </span>
+              }
               meta={entry.period.label}
             >
               <p>{entry.summary}</p>
