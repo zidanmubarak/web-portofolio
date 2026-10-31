@@ -31,11 +31,11 @@ test.describe("contact form UI", () => {
   test("copy button writes the address and announces the change", async ({
     page,
   }) => {
-    // The accessible name changes Copy -> Copied, so the locator must be
+    // The accessible name changes Copy address -> Copied, so the locator must be
     // structural; a name-based locator would stop resolving mid-assertion.
     const copy = page.locator('#contact button[type="button"]');
     await expect(copy).toBeVisible();
-    await expect(copy).toHaveText(/^copy$/i);
+    await expect(copy).toHaveText(/^copy address$/i);
     await copy.scrollIntoViewIfNeeded();
     // Lenis keeps moving for a moment after the programmatic scroll; take the
     // box only once the page is still and the button is on screen.
@@ -51,9 +51,9 @@ test.describe("contact form UI", () => {
     expect(clipboard).toContain("zidanmubarak");
 
     await expect(page.locator('[role="status"][aria-live="polite"]').first()).toBeAttached();
-    // The label returns to COPY after the confirmation window.
+    // The label returns to COPY ADDRESS after the confirmation window.
     await page.waitForTimeout(1_900);
-    await expect(copy).toHaveText(/^copy$/i);
+    await expect(copy).toHaveText(/^copy address$/i);
   });
 
   test("empty submit marks every field and focuses the first error", async ({
@@ -90,7 +90,7 @@ test.describe("contact form UI", () => {
       route.fulfill({
         status: 422,
         contentType: "application/json",
-        body: JSON.stringify({ ok: false, errors: { email: "Use a real address." } }),
+        body: JSON.stringify({ ok: false, errors: { email: "Use an address like you@company.com." } }),
       })
     );
 
@@ -100,7 +100,9 @@ test.describe("contact form UI", () => {
     await page.fill("#contact-message", "A long enough message.");
     await page.getByRole("button", { name: /send message/i }).click();
 
-    await expect(page.locator("#contact-email-error")).toContainText("Use a real address.");
+    await expect(page.locator("#contact-email-error")).toContainText(
+      "Use an address like you@company.com."
+    );
   });
 
   test("success resets the form and shows the approved sentence", async ({ page }) => {
