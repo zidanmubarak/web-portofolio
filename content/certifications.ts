@@ -14,6 +14,11 @@ export const certifications: readonly Credential[] = [
     issuer: "Asah led by Dicoding",
     date: "2026-01",
     displayDate: "Jan 2026",
+    image: {
+      src: "/certificates/asah-best-capstone.webp",
+      width: 1024,
+      height: 723,
+    },
     summary:
       "Awarded for Pacu Pintar, the AI learning-analytics platform built by a two-person ML team inside a larger web team.",
     sources: ["cv", "owner-answers"],
@@ -31,6 +36,11 @@ export const certifications: readonly Credential[] = [
     issuer: "Dicoding Indonesia",
     date: "2025-11-25",
     displayDate: "25 Nov 2025",
+    image: {
+      src: "/certificates/dicoding-membangun-sistem-ml.webp",
+      width: 1024,
+      height: 724,
+    },
     level: "Advanced",
     validUntil: "2028-11-25",
     credentialId: "2VX35EDOJPYQ",
@@ -69,6 +79,11 @@ export const certifications: readonly Credential[] = [
     issuer: "Dicoding Indonesia",
     date: "2025-05-27",
     displayDate: "27 May 2025",
+    image: {
+      src: "/certificates/dicoding-ml-terapan.webp",
+      width: 1024,
+      height: 724,
+    },
     level: "Advanced",
     validUntil: "2028-05-27",
     credentialId: "1RXYEGQ3KZVM",
@@ -87,6 +102,11 @@ export const certifications: readonly Credential[] = [
     issuer: "Dicoding Indonesia",
     date: "2025-05-04",
     displayDate: "4 May 2025",
+    image: {
+      src: "/certificates/dicoding-pemrosesan-data.webp",
+      width: 1024,
+      height: 724,
+    },
     level: "Intermediate",
     validUntil: "2028-05-04",
     credentialId: "JLX1964EGP72",

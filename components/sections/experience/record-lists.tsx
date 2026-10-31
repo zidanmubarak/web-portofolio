@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { TextLink } from "@/components/ui/text-link";
+import { CertificatePreview } from "./certificate-preview";
 import type {
   Credential,
   EducationEntry,
@@ -208,36 +209,51 @@ export function RecordLists({
         />
 
         <Accordion label={copy.groupCredentialsLong} className="mt-1">
-          {certifications.map((entry, index) => (
-            <AccordionItem
-              key={entry.id}
-              id={`cert-${entry.id}`}
-              index={certificationIndex(index)}
-              title={entry.title}
-              meta={entry.displayDate}
-            >
-              <p>
-                {entry.issuer}
-                {entry.level ? ` · ${entry.level}` : ""}
-              </p>
-              {entry.summary ? <p className="mt-3">{entry.summary}</p> : null}
-              {entry.skills?.length ? (
-                <MetaList items={entry.skills} />
-              ) : null}
-              {entry.url ? (
-                <p className="mt-4">
-                  <TextLink
-                    href={entry.url}
-                    external
-                    externalLabel={externalLink}
-                    mark="↗"
-                  >
-                    {copy.credentialLink}
-                  </TextLink>
+          {certifications.map((entry, index) => {
+            const item = (
+              <AccordionItem
+                id={`cert-${entry.id}`}
+                index={certificationIndex(index)}
+                title={entry.title}
+                meta={entry.displayDate}
+              >
+                <p>
+                  {entry.issuer}
+                  {entry.level ? ` · ${entry.level}` : ""}
                 </p>
-              ) : null}
-            </AccordionItem>
-          ))}
+                {entry.summary ? <p className="mt-3">{entry.summary}</p> : null}
+                {entry.skills?.length ? (
+                  <MetaList items={entry.skills} />
+                ) : null}
+                {entry.url ? (
+                  <p className="mt-4">
+                    <TextLink
+                      href={entry.url}
+                      external
+                      externalLabel={externalLink}
+                      mark="↗"
+                    >
+                      {copy.credentialLink}
+                    </TextLink>
+                  </p>
+                ) : null}
+              </AccordionItem>
+            );
+
+            if (!entry.image) {
+              return <React.Fragment key={entry.id}>{item}</React.Fragment>;
+            }
+
+            return (
+              <CertificatePreview
+                key={entry.id}
+                image={entry.image}
+                caption={`${entry.issuer} · ${entry.displayDate}`}
+              >
+                {item}
+              </CertificatePreview>
+            );
+          })}
         </Accordion>
       </div>
     </div>

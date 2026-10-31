@@ -432,6 +432,12 @@ export interface Credential {
   readonly validUntil?: string;
   readonly credentialId?: string;
   readonly url?: string;
+  /** Certificate scan shown as a hover preview in the Record list. */
+  readonly image?: {
+    readonly src: string;
+    readonly width: number;
+    readonly height: number;
+  };
   readonly summary?: string;
   readonly skills?: readonly string[];
   readonly sources: readonly SourceId[];
