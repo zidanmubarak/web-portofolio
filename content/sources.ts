@@ -8,7 +8,7 @@ import type { SourceRef } from "./types";
 export const sources = {
   cv: {
     id: "cv",
-    label: "CV — Zidan Mubarak (Google Docs export, updated 29 Oct 2026)",
+    label: "CV - Zidan Mubarak (Google Docs export, updated 29 Oct 2026)",
     kind: "cv",
     url: "https://docs.google.com/document/d/1B3Lv2ZyZuLOva0zn8Y4hWBECGRSaAdYBpVMW1La75Xs/edit",
     retrievedAt: "2026-10-29",
@@ -16,29 +16,29 @@ export const sources = {
   },
   linkedin: {
     id: "linkedin",
-    label: "LinkedIn — linkedin.com/in/zidan-mubarak",
+    label: "LinkedIn - linkedin.com/in/zidan-mubarak",
     kind: "linkedin",
     url: "https://www.linkedin.com/in/zidan-mubarak",
     retrievedAt: "2026-10-29",
     note: "Not readable: LinkedIn returned HTTP 999 to every automated request. No fact in this folder relies on it.",
   },
-  ownerBrief: {
-    id: "owner-brief",
-    label: "Owner brief — 00-aturan-bersama.md, section 1",
-    kind: "owner-brief",
-    retrievedAt: "2026-10-29",
-    note: "Owner's own statement of the work areas (AI/ML, web development, design) and the project's framing.",
-  },
-  ownerAnswers: {
-    id: "owner-answers",
-    label: "Owner answers to open-questions T5",
-    kind: "owner-brief",
-    retrievedAt: "2026-10-29",
-    note: "Resolves Q1–Q13: printed Jawi thesis title, 26k synthetic / 7,902 authentic / 790 test, award date Jan 2026, MLOps credential URL, capstone team repos, no screenshots, generated visuals permitted.",
-  },
+  // ownerBrief: {
+  //   id: "owner-brief",
+  //   label: "Owner brief - 00-aturan-bersama.md, section 1",
+  //   kind: "owner-brief",
+  //   retrievedAt: "2026-10-29",
+  //   note: "Owner's own statement of the work areas (AI/ML, web development, design) and the project's framing.",
+  // },
+  // ownerAnswers: {
+  //   id: "owner-answers",
+  //   label: "Owner answers to open-questions T5",
+  //   kind: "owner-brief",
+  //   retrievedAt: "2026-10-29",
+  //   note: "Resolves Q1–Q13: printed Jawi thesis title, 26k synthetic / 7,902 authentic / 790 test, award date Jan 2026, MLOps credential URL, capstone team repos, no screenshots, generated visuals permitted.",
+  // },
   githubProfile: {
     id: "github-profile",
-    label: "GitHub profile — github.com/zidanmubarak",
+    label: "GitHub profile - github.com/zidanmubarak",
     kind: "github",
     url: "https://github.com/zidanmubarak",
     retrievedAt: "2026-10-29",
@@ -46,15 +46,15 @@ export const sources = {
   },
   githubRepos: {
     id: "github-repos",
-    label: "GitHub REST API — /users/zidanmubarak/repos",
+    label: "GitHub - /users/zidanmubarak/repos",
     kind: "github",
-    url: "https://api.github.com/users/zidanmubarak/repos",
+    url: "https://github.com/zidanmubarak?tab=repositories",
     retrievedAt: "2026-10-29",
     note: "Repository names, languages, creation dates and push dates used for project years.",
   },
   githubMemoryVault: {
     id: "github-memory-vault",
-    label: "Memory Vault AI — repository README",
+    label: "Memory Vault AI - repository README",
     kind: "github",
     url: "https://github.com/zidanmubarak/Memory-Vault-AI",
     retrievedAt: "2026-10-29",
@@ -62,7 +62,7 @@ export const sources = {
   },
   githubNusantara: {
     id: "github-nusantara",
-    label: "NusantaraGo-ML — organisation repository and contributors",
+    label: "NusantaraGo-ML - organisation repository and contributors",
     kind: "github",
     url: "https://github.com/NusantaraGo/NusantaraGo-ML",
     retrievedAt: "2026-10-29",
@@ -70,7 +70,7 @@ export const sources = {
   },
   githubGuestBook: {
     id: "github-guest-book",
-    label: "Guest Book System — repository README",
+    label: "Guest Book System - repository README",
     kind: "github",
     url: "https://github.com/zidanmubarak/guest-book-system",
     retrievedAt: "2026-10-29",
@@ -78,7 +78,7 @@ export const sources = {
   },
   githubClimate: {
     id: "github-climate",
-    label: "climate-agriculture-ml-analysis — repository README",
+    label: "climate-agriculture-ml-analysis - repository README",
     kind: "github",
     url: "https://github.com/zidanmubarak/climate-agriculture-ml-analysis",
     retrievedAt: "2026-10-29",
@@ -86,14 +86,14 @@ export const sources = {
   },
   githubPortfolio: {
     id: "github-portfolio",
-    label: "web-portofolio — repository (this site)",
+    label: "web-portofolio - repository (this site)",
     kind: "github",
     url: "https://github.com/zidanmubarak/web-portofolio",
     retrievedAt: "2026-10-29",
   },
   githubEksperimen: {
     id: "github-eksperimen",
-    label: "Eksperimen_SML_Zidan-Mubarak — preprocessing and CI repository",
+    label: "Eksperimen_SML_Zidan-Mubarak - preprocessing and CI repository",
     kind: "github",
     url: "https://github.com/zidanmubarak/Eksperimen_SML_Zidan-Mubarak",
     retrievedAt: "2026-10-29",
@@ -101,7 +101,7 @@ export const sources = {
   },
   githubCapstone: {
     id: "github-capstone",
-    label: "Capstone Project Team DC-08 — Pacu Pintar organisation",
+    label: "Capstone Project Team DC-08 - Pacu Pintar organisation",
     kind: "github",
     url: "https://github.com/Capstone-Project-Team-DC-08",
     retrievedAt: "2026-10-29",
@@ -109,7 +109,7 @@ export const sources = {
   },
   pypiMemoryVault: {
     id: "pypi-memory-vault",
-    label: "PyPI — memory-vault",
+    label: "PyPI - memory-vault",
     kind: "package",
     url: "https://pypi.org/project/memory-vault/",
     retrievedAt: "2026-10-29",
@@ -117,7 +117,7 @@ export const sources = {
   },
   hfModelCard: {
     id: "hf-model-card",
-    label: "Hugging Face model card — zidanmubarak/jawi-qwen25-vl-qlora",
+    label: "Hugging Face model card - zidanmubarak/jawi-qwen25-vl-qlora",
     kind: "huggingface",
     url: "https://huggingface.co/zidanmubarak/jawi-qwen25-vl-qlora",
     retrievedAt: "2026-10-29",
@@ -125,7 +125,7 @@ export const sources = {
   },
   hfModelFiles: {
     id: "hf-model-files",
-    label: "Hugging Face model files — adapter and showcase chart",
+    label: "Hugging Face model files - adapter and showcase chart",
     kind: "huggingface",
     url: "https://huggingface.co/zidanmubarak/jawi-qwen25-vl-qlora/tree/main",
     retrievedAt: "2026-10-29",
@@ -133,7 +133,7 @@ export const sources = {
   },
   hfSpace: {
     id: "hf-space",
-    label: "Hugging Face Space — jawi-transliterasi-demo (Gradio)",
+    label: "Hugging Face Space - jawi-transliterasi-demo (Gradio)",
     kind: "huggingface",
     url: "https://huggingface.co/spaces/zidanmubarak/jawi-transliterasi-demo",
     retrievedAt: "2026-10-29",
@@ -141,7 +141,7 @@ export const sources = {
   },
   journalHebb: {
     id: "journal-hebb",
-    label: "Academic Journal of Computer Science Research — Vol 7 No 2 (2025)",
+    label: "Academic Journal of Computer Science Research - Vol 7 No 2 (2025)",
     kind: "journal",
     url: "https://journal.global.ac.id/index.php/AJCSR/article/view/15770",
     retrievedAt: "2026-10-29",
@@ -149,7 +149,7 @@ export const sources = {
   },
   dicodingMlops: {
     id: "dicoding-mlops",
-    label: "Dicoding credential 2VX35EDOJPYQ — Membangun Sistem Machine Learning",
+    label: "Dicoding credential 2VX35EDOJPYQ - Membangun Sistem Machine Learning",
     kind: "credential",
     url: "https://www.dicoding.com/certificates/2VX35EDOJPYQ",
     retrievedAt: "2026-10-29",
@@ -157,7 +157,7 @@ export const sources = {
   },
   dicodingMlt: {
     id: "dicoding-mlt",
-    label: "Dicoding credential 1RXYEGQ3KZVM — Machine Learning Terapan",
+    label: "Dicoding credential 1RXYEGQ3KZVM - Machine Learning Terapan",
     kind: "credential",
     url: "https://www.dicoding.com/certificates/1RXYEGQ3KZVM",
     retrievedAt: "2026-10-29",
@@ -165,7 +165,7 @@ export const sources = {
   },
   dicodingBfpd: {
     id: "dicoding-bfpd",
-    label: "Dicoding credential JLX1964EGP72 — Belajar Fundamental Pemrosesan Data",
+    label: "Dicoding credential JLX1964EGP72 - Belajar Fundamental Pemrosesan Data",
     kind: "credential",
     url: "https://www.dicoding.com/certificates/JLX1964EGP72",
     retrievedAt: "2026-10-29",
@@ -173,7 +173,7 @@ export const sources = {
   },
   oldSite: {
     id: "old-site",
-    label: "Previous portfolio — live site and source in this repository",
+    label: "Previous portfolio - live site and source in this repository",
     kind: "live-site",
     url: "https://zidanmubarak.vercel.app",
     retrievedAt: "2026-10-29",

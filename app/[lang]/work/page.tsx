@@ -2,28 +2,49 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { WorkIndex } from "@/components/work/work-index";
 import { TextLink } from "@/components/ui/text-link";
-import { copy, profile, selectedProjects } from "@/content";
+import { selectedProjects } from "@/content";
+import { contentFor, getSiteContent } from "@/content/server";
 
-const title = copy.work.indexHeading.join(" ");
-const fullTitle = copy.meta.titleTemplate.replace("%s", title);
+import { isLocale, localizedHref } from "@/lib/i18n";
 
-export const metadata: Metadata = {
-  title,
-  description: copy.work.indexIntro,
-  alternates: { canonical: "/work" },
-  openGraph: {
-    title: fullTitle,
-    description: copy.work.indexIntro,
-    type: "website",
-    url: "/work",
-  },
+type PageProps = {
+  params: Promise<{ lang: string }>;
 };
 
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { lang } = await params;
+  if (!isLocale(lang)) return {};
+  const { copy } = contentFor(lang);
+  const title = copy.work.indexHeading.join(" ");
+  const fullTitle = copy.meta.titleTemplate.replace("%s", title);
+
+  return {
+    title,
+    description: copy.work.indexIntro,
+    alternates: {
+      canonical: localizedHref(lang, "/work"),
+      languages: { id: "/work", en: "/en/work", "x-default": "/work" },
+    },
+    openGraph: {
+      title: fullTitle,
+      description: copy.work.indexIntro,
+      type: "website",
+      url: localizedHref(lang, "/work"),
+      locale: lang === "id" ? "id_ID" : "en_US",
+    },
+  };
+}
+
 /**
- * /work — the numbered index. Kept server-rendered; only the hover preview and
+ * /work - the numbered index. Kept server-rendered; only the hover preview and
  * the row links are client.
  */
-export default function WorkIndexPage() {
+export default async function WorkIndexPage() {
+  const { locale, copy, profile, projects } = await getSiteContent();
+  const work = selectedProjects(projects);
+
   return (
     <article className="pb-24 md:pb-32">
       <header className="u-container pt-[calc(var(--topbar-h)+40px)] md:pt-[calc(var(--topbar-h)+64px)]">
@@ -34,7 +55,7 @@ export default function WorkIndexPage() {
             {copy.work.label}
           </p>
           <p className="u-label text-ink-muted">
-            {selectedProjects.length} projects · 2026
+            {work.length} {copy.work.projectsLabel} · 2026
           </p>
         </div>
 
@@ -53,10 +74,12 @@ export default function WorkIndexPage() {
               {profile.name} · {profile.location.city}, ID
             </p>
             <p className="mt-3 text-small text-ink-muted">
-              Every row opens a page. The first one is the full thesis case
-              study; the others are shorter project notes.
+              {copy.work.indexNote}
             </p>
-            <TextLink href="/#work" className="mt-6 text-small text-ink">
+            <TextLink
+              href={localizedHref(locale, "/#work")}
+              className="mt-6 text-small text-ink"
+            >
               {copy.work.backToWork}
             </TextLink>
           </div>
@@ -67,7 +90,7 @@ export default function WorkIndexPage() {
         aria-label={copy.work.label}
         className="u-container mt-14 md:mt-20"
       >
-        <WorkIndex projects={selectedProjects} />
+        <WorkIndex projects={work} />
       </section>
 
       <footer className="u-container mt-16 flex flex-wrap items-baseline justify-between gap-4 border-t border-line pt-4 lg:pr-12">
@@ -75,10 +98,11 @@ export default function WorkIndexPage() {
           {copy.work.label} · {profile.name}
         </p>
         <Link
-          href="/#contact"
+          href={localizedHref(locale, "/#contact")}
           className="link-wipe u-label text-ink hover:text-accent"
         >
           {copy.nav.items.find((item) => item.id === "contact")?.label ??
+            copy.nav.items[0]?.label ??
             "Contact"}
           <span aria-hidden="true">↗</span>
         </Link>

@@ -3,10 +3,7 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Field, TextArea, TextInput } from "@/components/ui/field";
-import { copy } from "@/content/copy.en";
-import { profile } from "@/content/profile";
-
-const labels = copy.contact.form;
+import { useI18n } from "@/components/i18n/provider";
 
 type FieldName = "name" | "email" | "subject" | "message";
 type FieldErrors = Partial<Record<FieldName, string>>;
@@ -14,25 +11,29 @@ type Status = "idle" | "sending" | "success" | "error";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-function validate(values: Record<FieldName, string>): FieldErrors {
+function validate(
+  values: Record<FieldName, string>,
+  messages: FieldErrors
+): FieldErrors {
   const errors: FieldErrors = {};
-  if (values.name.trim().length < 2) errors.name = "Add your name.";
-  if (!EMAIL.test(values.email.trim()))
-    errors.email = "Use an address like you@company.com.";
-  if (values.subject.trim().length < 3) errors.subject = "Add a subject.";
+  if (values.name.trim().length < 2) errors.name = messages.name;
+  if (!EMAIL.test(values.email.trim())) errors.email = messages.email;
+  if (values.subject.trim().length < 3) errors.subject = messages.subject;
   if (values.message.trim().length < 10)
-    errors.message = "A little more detail, please (10 characters or more).";
+    errors.message = messages.message;
   return errors;
 }
 
 /**
- * Contact form — the one interactive form on the site.
+ * Contact form - the one interactive form on the site.
  *
  * The server is authoritative (`app/api/contact`); this only shortens the
  * round trip. Errors stay next to the field, the status line is polite, and
  * a failure never prints configuration or transport details.
  */
 export function ContactForm() {
+  const { copy, profile } = useI18n();
+  const labels = copy.contact.form;
   const [errors, setErrors] = React.useState<FieldErrors>({});
   const [status, setStatus] = React.useState<Status>("idle");
   const formRef = React.useRef<HTMLFormElement>(null);
@@ -50,7 +51,7 @@ export function ContactForm() {
       message: String(data.get("message") ?? ""),
     };
 
-    const nextErrors = validate(values);
+    const nextErrors = validate(values, labels.errors);
     setErrors(nextErrors);
     const firstError = Object.keys(nextErrors)[0];
     if (firstError) {
@@ -83,7 +84,11 @@ export function ContactForm() {
         | null;
 
       if (response.status === 422 && payload?.errors) {
-        setErrors(payload.errors);
+        const localized: FieldErrors = {};
+        for (const key of Object.keys(payload.errors) as FieldName[]) {
+          localized[key] = labels.errors[key];
+        }
+        setErrors(localized);
         setStatus("idle");
         return;
       }

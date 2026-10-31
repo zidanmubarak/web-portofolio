@@ -22,7 +22,7 @@ export type SignatureDrawProps = {
   variant?: SignatureVariant;
   /**
    * When to start: on mount, when scrolled into view (footer), or never
-   * (manual — call `play()` through the ref, used by the dev scrubber).
+   * (manual - call `play()` through the ref, used by the dev scrubber).
    */
   play?: "mount" | "viewport" | "manual";
   /** Playback rate relative to the measured 1x timing. */
@@ -48,7 +48,7 @@ const VARIANT_CLASS: Record<SignatureVariant, string> = {
 };
 
 /**
- * SignatureDraw — the filled silhouette is revealed through a mask made of the
+ * SignatureDraw - the filled silhouette is revealed through a mask made of the
  * pen's centre lines (one per stroke, normalised with pathLength=1). This keeps
  * the calligraphic width variation while the draw itself is a simple
  * stroke-dashoffset animation on the mask.

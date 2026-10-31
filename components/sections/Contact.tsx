@@ -1,21 +1,20 @@
 import { Section } from "@/components/ui/section";
 import { LocalClock } from "@/components/shell/local-clock";
-import { copy } from "@/content/copy.en";
-import { links } from "@/content/links";
-import { profile } from "@/content/profile";
+import { getSiteContent } from "@/content/server";
 import { ContactForm } from "./contact/contact-form";
 import { ContactReveal } from "./contact/contact-reveal";
 import { CopyEmail } from "./contact/copy-email";
 
-const elsewhere = links.filter((link) => link.primary && link.id !== "email");
-
 /**
- * Contact — 06 (design-direction.md §4.8).
+ * Contact - 06 (design-direction.md §4.8).
  *
  * The only paper surface besides the hero plate: reading turns into writing.
  * The email address is the primary action; the form is the alternative route.
  */
-export function Contact() {
+export async function Contact() {
+  const { copy, links, profile } = await getSiteContent();
+  const elsewhere = links.filter((link) => link.primary && link.id !== "email");
+
   return (
     <Section
       id="contact"
@@ -57,7 +56,12 @@ export function Contact() {
           >
             {profile.email}
           </a>
-          <CopyEmail email={profile.email} />
+          <CopyEmail
+            email={profile.email}
+            copyLabel={copy.contact.copyLabel}
+            copiedLabel={copy.contact.copiedLabel}
+            copiedAnnouncement={copy.contact.copiedAnnouncement}
+          />
         </div>
 
         <div className="u-grid mt-12 gap-y-12 md:mt-16">
@@ -82,7 +86,7 @@ export function Contact() {
                       <span aria-hidden="true" className="ml-2">
                         ↗
                       </span>
-                      <span className="sr-only"> (opens in a new tab)</span>
+                      <span className="sr-only"> ({copy.contact.externalLink})</span>
                     </span>
                   </a>
                 </li>

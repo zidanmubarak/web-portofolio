@@ -12,7 +12,8 @@ import {
   useSmoothScroll,
 } from "@/lib/motion";
 import type { Project } from "@/content";
-import { copy } from "@/content";
+import { useI18n } from "@/components/i18n/provider";
+import { localizedHref } from "@/lib/i18n";
 import { ProjectLink } from "./project-link";
 import { getResultLine, getWorkImage } from "./work-data";
 
@@ -25,13 +26,14 @@ const pad = (value: number) => String(value).padStart(2, "0");
 /**
  * Pinned horizontal rail (motion-map pattern #4).
  *
- * Desktop ≥1024 px pins the section and moves the track on x. Below that — and
- * under prefers-reduced-motion — `pinHorizontal` sets `data-pin-state="static"`
+ * Desktop ≥1024 px pins the section and moves the track on x. Below that - and
+ * under prefers-reduced-motion - `pinHorizontal` sets `data-pin-state="static"`
  * and the global stylesheet turns the rail into a normal vertical stack. The
  * counter follows scroll in both modes: ScrollTrigger while pinned, an
  * IntersectionObserver at the viewport centre while stacked.
  */
 export function WorkRail({ projects }: WorkRailProps) {
+  const { locale, copy } = useI18n();
   const root = React.useRef<HTMLDivElement>(null);
   const track = React.useRef<HTMLDivElement>(null);
   const progress = React.useRef<HTMLDivElement>(null);
@@ -160,7 +162,7 @@ export function WorkRail({ projects }: WorkRailProps) {
         {projects.map((project, position) => {
           const image = getWorkImage(project);
           const result = getResultLine(project);
-          const href = `/work/${project.slug}`;
+          const href = localizedHref(locale, `/work/${project.slug}`);
           const isLead = position === 0;
 
           return (
@@ -215,6 +217,7 @@ type WorkCardProps = {
 };
 
 function WorkCard({ project, image, result, href, isLead }: WorkCardProps) {
+  const { copy } = useI18n();
   const media = React.useRef<HTMLDivElement>(null);
 
   return (

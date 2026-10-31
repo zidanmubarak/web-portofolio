@@ -12,9 +12,9 @@ export type RevealVariant = "lines" | "clip" | "rise";
 export type RevealProps = {
   children: React.ReactNode;
   /**
-   * - `lines` — masked line reveal for headings and statements.
-   * - `clip` — clip-path reveal for figures, plates, cards.
-   * - `rise` — 12px + opacity for metadata only; never for section bodies.
+   * - `lines` - masked line reveal for headings and statements.
+   * - `clip` - clip-path reveal for figures, plates, cards.
+   * - `rise` - 12px + opacity for metadata only; never for section bodies.
    */
   variant?: RevealVariant;
   as?: "div" | "p" | "figure" | "span" | "li";

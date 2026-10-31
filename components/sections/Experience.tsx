@@ -1,39 +1,46 @@
 import { Section } from "@/components/ui/section";
-import { certifications } from "@/content/certifications";
-import { education } from "@/content/education";
-import { experience } from "@/content/experience";
+import { getSiteContent } from "@/content/server";
 import { RecordLists } from "./experience/record-lists";
 
-const total =
-  experience.length + education.length + certifications.length;
-
 /**
- * Record — 04 (design-direction.md §4.6).
+ * Record - 04 (design-direction.md §4.6).
  *
  * The anchor stays `#record`; the file stays `Experience.tsx` per the ownership
  * map. The rail counts are derived, never hand-written.
  */
-export function Experience() {
+export async function Experience() {
+  const { copy, experience, education, certifications } = await getSiteContent();
+  const total = experience.length + education.length + certifications.length;
+
   return (
     <Section
       id="record"
       index="04"
-      label="Record"
-      meta={`${String(total).padStart(2, "0")} Entries`}
+      label={copy.experience.label}
+      meta={`${String(total).padStart(2, "0")} ${copy.experience.metaEntries}`}
       labelledBy="record-heading"
       bodyClassName="lg:pr-14"
     >
       <h2 id="record-heading" className="sr-only">
-        Record — experience, education and certifications
+        {copy.experience.recordHeading}
       </h2>
 
       <div className="u-grid gap-y-10 md:gap-y-12">
         <div className="col-span-4 lg:col-span-3">
           <dl className="border-t border-line">
             {[
-              { term: "Experience", count: experience.length },
-              { term: "Education", count: education.length },
-              { term: "Credentials", count: certifications.length },
+              {
+                term: copy.experience.groupExperience,
+                count: experience.length,
+              },
+              {
+                term: copy.experience.groupEducation,
+                count: education.length,
+              },
+              {
+                term: copy.experience.groupCredentials,
+                count: certifications.length,
+              },
             ].map((group) => (
               <div
                 key={group.term}
@@ -48,13 +55,18 @@ export function Experience() {
           </dl>
 
           <p className="mt-6 max-w-[26ch] text-small leading-relaxed text-ink-muted">
-            Entries and dates trace back to the CV and the public credential
-            pages. Newest first; one open at a time.
+            {copy.experience.groupNote}
           </p>
         </div>
 
         <div className="col-span-4 lg:col-span-9">
-          <RecordLists />
+          <RecordLists
+            experience={experience}
+            education={education}
+            certifications={certifications}
+            copy={copy.experience}
+            externalLink={copy.nav.externalLink}
+          />
         </div>
       </div>
     </Section>

@@ -3,17 +3,17 @@
 import * as React from "react";
 import { Section } from "@/components/ui/section";
 import { TextLink } from "@/components/ui/text-link";
-import { copy } from "@/content/copy.en";
-import { sources } from "@/content/sources";
+import { useI18n } from "@/components/i18n/provider";
 import { scrubWords, useGSAP } from "@/lib/motion";
 
 /**
- * About — 01 (design-direction.md §4.3).
+ * About - 01 (design-direction.md §4.3).
  *
  * Motion-map #3: the statement's word opacity is scrubbed by scroll, so the
  * reading pace follows the page instead of a one-shot fade. Prose stays still.
  */
 export function About() {
+  const { copy, sources } = useI18n();
   const root = React.useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -33,7 +33,7 @@ export function About() {
       id="about"
       index="01"
       label={copy.about.label}
-      meta="Banda Aceh, ID"
+      meta={copy.about.meta}
       labelledBy="about-heading"
     >
       <div ref={root} className="u-grid gap-y-12">
@@ -70,6 +70,7 @@ export function About() {
               <TextLink
                 href={sources.cv.url}
                 external
+                externalLabel={copy.nav.externalLink}
                 mark="↗"
                 className="u-label text-ink-muted hover:text-ink"
               >

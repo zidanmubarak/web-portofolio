@@ -1,5 +1,5 @@
 /**
- * SubpixelPortrait — GLSL ES 3.00 sources (WebGL2).
+ * SubpixelPortrait - GLSL ES 3.00 sources (WebGL2).
  *
  * The portrait is a photograph first and a screen second. The full-resolution
  * cutout is the image; a fine RGB matrix is laid over it as material (a screen

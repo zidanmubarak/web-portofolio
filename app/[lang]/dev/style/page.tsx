@@ -11,7 +11,7 @@ import { copy } from "@/content/copy.en";
 import { profile } from "@/content/profile";
 
 export const metadata: Metadata = {
-  title: "RUBRIC — design system specimen",
+  title: "RUBRIC - design system specimen",
   robots: { index: false, follow: false },
 };
 
@@ -208,7 +208,7 @@ export default function StylePage() {
         </h1>
         <div className="mt-8 grid gap-4 border-t border-line pt-4 md:grid-cols-12">
           <p className="u-label text-ink-muted md:col-span-5">
-            Design system specimen — T6, Gerbang B
+            Design system specimen - T6, Gerbang B
           </p>
           <p className="u-label text-ink-muted md:col-span-4">
             Archivo · Martian Mono · one accent

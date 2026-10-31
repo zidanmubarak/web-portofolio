@@ -2,7 +2,7 @@
  * Single GSAP registration point.
  *
  * Import `gsap`, `ScrollTrigger`, `SplitText`, `Flip`, `DrawSVG` and `useGSAP`
- * from here — never from the package directly — so a plugin is registered once
+ * from here - never from the package directly - so a plugin is registered once
  * and the ticker is configured consistently across sections.
  */
 import { gsap } from "gsap";

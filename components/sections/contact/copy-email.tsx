@@ -7,7 +7,17 @@ import * as React from "react";
  * `aria-live="polite"` announces the change once; the visible label returns
  * to COPY after 1.6 s (design-direction.md §4.8).
  */
-export function CopyEmail({ email }: { email: string }) {
+export function CopyEmail({
+  email,
+  copyLabel,
+  copiedLabel,
+  copiedAnnouncement,
+}: {
+  email: string;
+  copyLabel: string;
+  copiedLabel: string;
+  copiedAnnouncement: string;
+}) {
   const [copied, setCopied] = React.useState(false);
   const timer = React.useRef(0);
 
@@ -49,10 +59,10 @@ export function CopyEmail({ email }: { email: string }) {
         onClick={copy}
         className="u-label border border-paper-ink px-3 py-2 text-paper-ink transition-colors duration-micro hover:bg-paper-ink hover:text-paper"
       >
-        {copied ? "Copied" : "Copy"}
+        {copied ? copiedLabel : copyLabel}
       </button>
       <span role="status" aria-live="polite" className="sr-only">
-        {copied ? "Email address copied to the clipboard." : ""}
+        {copied ? copiedAnnouncement : ""}
       </span>
     </span>
   );

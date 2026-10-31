@@ -15,7 +15,7 @@ export type PinHorizontalConfig = {
 };
 
 /**
- * Pinned horizontal rail — motion-map pattern #4, desktop only (≥1024 px).
+ * Pinned horizontal rail - motion-map pattern #4, desktop only (≥1024 px).
  *
  * Returns the `gsap.matchMedia()` instance. The caller must call `.revert()`
  * in its `useGSAP` cleanup so media changes and unmount both tear down.

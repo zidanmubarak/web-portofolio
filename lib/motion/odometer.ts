@@ -9,7 +9,7 @@ export type OdometerOptions = {
 };
 
 /**
- * Digit roll — motion-map pattern #7.
+ * Digit roll - motion-map pattern #7.
  *
  * The markup renders the final digit position server-side (no-JS safe). GSAP
  * rolls each column in from 0 when the odometer enters the viewport. The

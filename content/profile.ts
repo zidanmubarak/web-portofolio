@@ -15,10 +15,10 @@ export const profile: Profile = {
   headline: ["Zidan", "Mubarak"],
 
   oneLiner:
-    "I train vision-language models on Jawi — an Arabic-script Malay writing system that the base model read at 82.5% character error — then build the interface that puts the result in someone's hands.",
+    "I train vision-language models on Jawi, an Arabic-script Malay writing system that the base model read at 82.5% character error, then build the interface that puts the result in someone's hands.",
 
   about: [
-    "I finished a degree in Information Technology at UIN Ar-Raniry, Banda Aceh, with a thesis on teaching a vision-language model to read Jawi — the Arab-Malay script the base model read at 82.5% character error. Getting that down to 17.4% took three data scenarios, a failed epoch 4, and one decision to stop at epoch 3.",
+    "I finished a degree in Information Technology at UIN Ar-Raniry, Banda Aceh, with a thesis on teaching a vision-language model to read Jawi, the Arab-Malay script the base model read at 82.5% character error. Getting that down to 17.4% took three data scenarios, a failed epoch 4, and one decision to stop at epoch 3.",
     "Before that I worked on two scholarship cohorts: a tourism recommender with a four-person team, and Pacu Pintar, an AI learning-analytics platform where a two-person ML team built the models and the FastAPI service that served them. Between projects I assisted the algorithms and programming lab, which is where I learned that explaining a for-loop is harder than writing one.",
     "I care about the unglamorous half of machine learning: data provenance, honest evaluation, and an interface someone can use without reading a README. I work in Python for the models, TypeScript when the result needs to live in a browser, and I design the layouts myself.",
   ],

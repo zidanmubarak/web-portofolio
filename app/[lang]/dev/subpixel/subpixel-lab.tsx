@@ -147,7 +147,7 @@ const STYLES = `
 `;
 
 /**
- * /dev/subpixel — tuning bench for the RGB subpixel portrait.
+ * /dev/subpixel - tuning bench for the RGB subpixel portrait.
  * Only reachable outside production builds (see page.tsx).
  */
 export function SubpixelLab() {
@@ -249,7 +249,7 @@ export function SubpixelLab() {
         <header className="t3-lab__head">
           <b>T3 / SUBPIXEL PORTRAIT</b>
           <span>
-            {mode} · {fps || "—"} fps · {PRESET_LABEL}
+            {mode} · {fps || "-"} fps · {PRESET_LABEL}
           </span>
         </header>
 

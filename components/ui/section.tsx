@@ -27,7 +27,7 @@ export type SectionProps = {
 };
 
 /**
- * Section shell — the editorial rail plus the page container.
+ * Section shell - the editorial rail plus the page container.
  *
  * Owns: anchor id, `data-section` for the scroll indicator, the mono index
  * rail, the top hairline, and the paper surface switch. T7/T8 own everything

@@ -10,7 +10,7 @@ export type ScrubWordsOptions = {
 };
 
 /**
- * Scrubbed word opacity — motion-map pattern #3.
+ * Scrubbed word opacity - motion-map pattern #3.
  *
  * Used for the About statement and Work intro only. Words keep their position;
  * no `y` offset, so the paragraph stays calm while the reading pace follows the

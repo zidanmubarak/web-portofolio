@@ -3,7 +3,7 @@
  *
  * Always call these inside `useGSAP(() => { ... }, { scope })` so tweens and
  * ScrollTriggers are reverted with the component. `pinHorizontal` returns a
- * `matchMedia` instance — return `() => mm.revert()` from the same effect.
+ * `matchMedia` instance - return `() => mm.revert()` from the same effect.
  */
 export { gsap, ScrollTrigger, SplitText, Flip, DrawSVGPlugin, useGSAP } from "./gsap";
 

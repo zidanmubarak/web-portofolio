@@ -4,6 +4,8 @@ import * as React from "react";
 import Image from "next/image";
 import { gsap, prefersReducedMotion, useGSAP } from "@/lib/motion";
 import type { Project } from "@/content";
+import { useI18n } from "@/components/i18n/provider";
+import { localizedHref } from "@/lib/i18n";
 import { ProjectLink } from "./project-link";
 import { getResultLine, getWorkImage } from "./work-data";
 
@@ -12,13 +14,14 @@ type WorkIndexProps = {
 };
 
 /**
- * `/work` index — numbered rows with a cursor-following preview on hover.
+ * `/work` index - numbered rows with a cursor-following preview on hover.
  *
  * The preview is decorative (`aria-hidden`) and only appears on fine pointers;
  * touch layouts get an inline thumbnail inside each row instead. The row link
  * stages the same shared-figure handoff as the homepage rail.
  */
 export function WorkIndex({ projects }: WorkIndexProps) {
+  const { locale } = useI18n();
   const root = React.useRef<HTMLDivElement>(null);
   const preview = React.useRef<HTMLDivElement>(null);
   const [activeSlug, setActiveSlug] = React.useState<string | null>(null);
@@ -130,7 +133,7 @@ export function WorkIndex({ projects }: WorkIndexProps) {
               onPointerEnter={(event) => showPreview(project.slug, event)}
             >
               <ProjectLink
-                href={`/work/${project.slug}`}
+                href={localizedHref(locale, `/work/${project.slug}`)}
                 slug={project.slug}
                 image={activeSlug === project.slug ? image : null}
                 mediaRef={preview}

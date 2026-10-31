@@ -1,4 +1,4 @@
-# `content/` — typed, verified portfolio content
+# `content/` - typed, verified portfolio content
 
 Owned by T5. Read `content-source.md` in the vault for provenance and
 `open-questions/T5.md` for the facts still waiting on the owner.
@@ -18,8 +18,12 @@ Owned by T5. Read `content-source.md` in the vault for provenance and
 | `education.ts` | Degrees, reverse chronological. |
 | `certifications.ts` | Certificates, award, and the journal paper. |
 | `stack.ts` | Tools with `simple-icons` slugs and evidence. |
-| `copy.en.ts` | UI copy, marked `draft` until T7 sets the final tone. |
-| `index.ts` | Barrel export. |
+| `copy.en.ts` | English UI copy. |
+| `copy.id.ts` | Indonesian UI copy. |
+| `id/` | Indonesian mirror of every data file above. |
+| `locales/en.ts`, `locales/id.ts` | Full `SiteContent` bundles per language. |
+| `server.ts` | `getSiteContent()` for server components via `next/root-params`. |
+| `index.ts` | Types and pure helpers only; no locale data. |
 
 ## Rules
 
@@ -34,6 +38,8 @@ Owned by T5. Read `content-source.md` in the vault for provenance and
    authorised an abstract generated visual (never a fake screenshot);
    `missing` means the asset does not exist yet. Stock photos and AI
    mockups of real interfaces are never acceptable.
-4. **English first.** Translatable prose lives here; a future `content/id/`
-   folder re-declares the same shapes. Nothing in this folder imports
-   from `app/`, `components/`, `lib/` or `next/*`.
+4. **Indonesian first, English second.** Indonesian is the primary language
+   and its mirror lives in `content/id/`; English stays in the root files.
+   Both re-declare the same shapes and are assembled in `content/locales/`.
+   `content/server.ts` is the only file allowed to touch `next/*`
+   (`next/root-params`); everything else stays framework-free.

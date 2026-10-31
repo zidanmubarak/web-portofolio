@@ -22,7 +22,7 @@ export type ClipRevealOptions = {
 };
 
 /**
- * clip-path reveal — motion-map patterns #1 (plate), #4 (mobile cards),
+ * clip-path reveal - motion-map patterns #1 (plate), #4 (mobile cards),
  * #8 (contact paper). Never animate width/height to fake this.
  */
 export function clipReveal(
@@ -78,7 +78,7 @@ export type ImageParallaxOptions = {
 
 /**
  * Inner-image parallax for cards. Only runs when the card is inside a pinned
- * horizontal rail or otherwise already in the viewport — callers decide.
+ * horizontal rail or otherwise already in the viewport - callers decide.
  */
 export function imageParallax(
   image: Element,

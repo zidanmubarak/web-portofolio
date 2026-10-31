@@ -27,7 +27,7 @@ function formatValue(value: number, decimals: number, grouping: boolean) {
 }
 
 /**
- * Odometer — motion-map pattern #7.
+ * Odometer - motion-map pattern #7.
  *
  * Server output is already the final number (the strip is translated to the
  * target digit), so no-JS and reduced-motion users see the result. With

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { profile } from "@/content/profile";
+import { useI18n } from "@/components/i18n/provider";
 
 /**
  * Banda Aceh local time, updated every 30 s.
@@ -20,10 +20,11 @@ export function LocalClock({
   withDot?: boolean;
   label?: string;
 }) {
+  const { locale, profile } = useI18n();
   const [time, setTime] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    const formatter = new Intl.DateTimeFormat("en-GB", {
+    const formatter = new Intl.DateTimeFormat(locale === "id" ? "id-ID" : "en-GB", {
       timeZone: profile.location.timezone,
       hour: "2-digit",
       minute: "2-digit",
@@ -35,7 +36,7 @@ export function LocalClock({
     const interval = window.setInterval(update, 30_000);
 
     return () => window.clearInterval(interval);
-  }, []);
+  }, [locale, profile.location.timezone]);
 
   return (
     <span

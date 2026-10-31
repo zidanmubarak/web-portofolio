@@ -8,8 +8,7 @@ import {
 import { LocalClock } from "@/components/shell/local-clock";
 import { Odometer } from "@/components/ui/odometer";
 import { TextLink } from "@/components/ui/text-link";
-import { profile } from "@/content/profile";
-import { copy } from "@/content/copy.en";
+import { useI18n } from "@/components/i18n/provider";
 import {
   DUR,
   EASE,
@@ -31,18 +30,17 @@ export type HeroProps = {
   introTrigger?: "loader" | "mount";
 };
 
-const heroMetrics = profile.metrics.filter((metric) => metric.hero);
-
-const coordinateLabel = `${profile.location.coordinates.lat.toFixed(4)}° N / ${profile.location.coordinates.lng.toFixed(4)}° E`;
-
 /**
- * Hero — the masthead, not an indexed chapter (design-direction.md §4.2).
+ * Hero - the masthead, not an indexed chapter (design-direction.md §4.2).
  *
  * Motion-map #1: masked line reveal for the name, clip reveal for the paper
  * plate, opacity for the metadata. Scroll then hands the portrait a 0–1
  * progress so the RGB grid unravelles as the plate leaves the viewport.
  */
 export function Hero({ introTrigger = "loader" }: HeroProps) {
+  const { copy, profile } = useI18n();
+  const heroMetrics = profile.metrics.filter((metric) => metric.hero);
+  const coordinateLabel = `${profile.location.coordinates.lat.toFixed(4)}° N / ${profile.location.coordinates.lng.toFixed(4)}° E`;
   const root = React.useRef<HTMLElement>(null);
   const portrait = React.useRef<SubpixelPortraitHandle>(null);
 
@@ -189,7 +187,7 @@ export function Hero({ introTrigger = "loader" }: HeroProps) {
     >
       <div className="u-container flex flex-1 flex-col pb-4 pt-4 md:pb-8 md:pt-10">
         <div className="u-grid items-start gap-y-6 lg:flex-1">
-          {/* Paper plate — first on mobile so the name never covers the face. */}
+          {/* Paper plate - first on mobile so the name never covers the face. */}
           <div className="order-1 col-span-4 lg:order-none lg:col-span-4 lg:col-start-9 lg:row-start-1 lg:flex lg:h-full lg:justify-end">
             <div className="w-full md:ml-auto md:mr-0 md:max-w-[30rem] lg:mx-0 lg:ml-auto lg:mr-8 lg:max-w-none">
               <figure

@@ -1,25 +1,40 @@
 /**
- * Single entry point for the content layer.
+ * Content types and pure helpers.
  *
- * `import { profile, projects, copy } from "@/content"` works, or import
- * the module directly when a page only needs one slice. A future
- * `content/id/` folder mirrors the same named exports.
+ * Locale-aware data lives in `content/locales/*`; server components read the
+ * active locale through `content/server.ts`. Keeping the dictionaries out of
+ * this module means a client component can import a type without pulling both
+ * languages into its bundle.
  */
 export * from "./types";
-export { sources, sourceList } from "./sources";
-export type { SourceKey } from "./sources";
-export { profile } from "./profile";
-export { links, primaryLinks } from "./links";
-export { services } from "./services";
-export {
-  projects,
-  selectedProjects,
-  featuredProjects,
-  getProject,
-} from "./projects";
-export { experience, getExperience } from "./experience";
-export { education } from "./education";
-export { certifications, certificationsOnly } from "./certifications";
-export { stack, primaryStack, stackCategories, stackByCategory } from "./stack";
-export { caseStudies, getCaseStudy } from "./case-studies";
-export { copy } from "./copy.en";
+
+import type { CaseStudy, ExperienceEntry, Project } from "./types";
+
+export function selectedProjects(projects: readonly Project[]): readonly Project[] {
+  return projects.filter((project) => project.selected);
+}
+
+export function featuredProjects(projects: readonly Project[]): readonly Project[] {
+  return projects.filter((project) => project.featured);
+}
+
+export function findProject(
+  projects: readonly Project[],
+  slug: string
+): Project | undefined {
+  return projects.find((project) => project.slug === slug);
+}
+
+export function findCaseStudy(
+  caseStudies: readonly CaseStudy[],
+  slug: string
+): CaseStudy | undefined {
+  return caseStudies.find((study) => study.slug === slug);
+}
+
+export function findExperience(
+  experience: readonly ExperienceEntry[],
+  id: string
+): ExperienceEntry | undefined {
+  return experience.find((entry) => entry.id === id);
+}

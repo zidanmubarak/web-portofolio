@@ -1,4 +1,4 @@
-# Zidan Mubarak — portfolio v2
+# Zidan Mubarak · portfolio v2
 
 Personal portfolio of **Zidan Mubarak** (AI/ML engineer, Banda Aceh). Rebuilt from
 scratch as an editorial, dark-first site: a signature loader, a portrait rendered
@@ -6,9 +6,9 @@ as an RGB subpixel grid on paper, a pinned horizontal work rail, and six project
 pages. Next.js App Router, TypeScript, Tailwind 3, GSAP + Lenis.
 
 - **Live:** https://zidanmubarak.vercel.app
-- **Design language:** “RUBRIC” — `#0B0B0A` ground, `#E7E1D5` paper plate, one
+- **Design language:** “RUBRIC” - `#0B0B0A` ground, `#E7E1D5` paper plate, one
   rubric-red accent (`#FF4A2E`), Archivo + Martian Mono.
-- **Content language:** English. All editorial copy lives in `content/`.
+- **Content languages:** Indonesian (primary, `/`) and English (`/en`). All editorial copy lives in `content/`, with the Indonesian mirror in `content/id/` and the language switch in the top bar and INDEX overlay.
 
 ## Quick start
 
@@ -39,16 +39,18 @@ $env:NEXT_DIST_DIR=".next-a"; npx next dev -p 3101
 
 ```
 app/
-  layout.tsx            fonts, metadata, JSON-LD, loader gate, shell
-  page.tsx              Hero → About → Services → Work → Record → Tools → Contact → Footer
+  [lang]/               locale segment: `id` (rewritten to clean URLs) and `en`
+  [lang]/layout.tsx     fonts, metadata, JSON-LD, loader gate, shell, i18n provider
+  [lang]/page.tsx       Hero → About → Services → Work → Record → Tools → Contact → Footer
   globals.css           RUBRIC tokens + utilities (Tailwind layer)
-  opengraph-image.tsx   share card rendered with next/og (Archivo + Martian Mono)
-  twitter-image.tsx     re-export of the same card
+  [lang]/opengraph-image.tsx  share card per language (next/og)
+  [lang]/twitter-image.tsx    re-export of the same card
   icon.svg, apple-icon.png
   sitemap.ts, robots.ts
-  work/                 /work index and /work/[slug] case study (6 static slugs)
+  [lang]/work/          /work index and /work/[slug] case study (6 static slugs)
   api/contact/route.ts  contact form endpoint (validation, rate limit, honeypot)
-  dev/                  component benches; every route calls notFound() in production
+  [lang]/dev/           component benches; every route calls notFound() in production
+proxy.ts                `/` → `/id` rewrite, `/id` → clean redirect, `/en` passthrough
 components/
   loader/               signature loader + pre-paint gate
   signature/            vector signature and draw timeline
@@ -120,10 +122,10 @@ All three call `notFound()` when `NODE_ENV === "production"`; verified to return
 Each folder under `scripts/` owns its manifest and ignores its own
 `venv`/`node_modules`:
 
-- `scripts/photo/` — cutout and half-body crop (rembg) for the subpixel portrait.
-- `scripts/signature/` — skeletonisation and Bézier fitting for the signature.
-- `scripts/og/` — how the static TTF instances in `assets/fonts/` were generated.
-- `scripts/ref/` — reference-site capture used during design research.
+- `scripts/photo/` - cutout and half-body crop (rembg) for the subpixel portrait.
+- `scripts/signature/` - skeletonisation and Bézier fitting for the signature.
+- `scripts/og/` - how the static TTF instances in `assets/fonts/` were generated.
+- `scripts/ref/` - reference-site capture used during design research.
 
 Source photographs and the original signature are **not** in `public/` or the
 build; only derived, EXIF-free assets are published.

@@ -9,6 +9,8 @@ export type TextLinkProps = {
   className?: string;
   /** Visible trailing mark, e.g. "↗" or "↓". Decorative. */
   mark?: string;
+  /** Localized accessible suffix for external links. */
+  externalLabel?: string;
 };
 
 /**
@@ -21,6 +23,7 @@ export function TextLink({
   external = false,
   className,
   mark,
+  externalLabel = "opens in a new tab",
 }: TextLinkProps) {
   return (
     <a
@@ -33,7 +36,7 @@ export function TextLink({
       <span>{children}</span>
       {mark ? <span aria-hidden="true">{mark}</span> : null}
       {external ? (
-        <span className="sr-only"> (opens in a new tab)</span>
+        <span className="sr-only"> ({externalLabel})</span>
       ) : null}
     </a>
   );

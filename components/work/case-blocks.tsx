@@ -2,6 +2,7 @@ import type {
   CaseStudyBlock,
   CaseStudyDataset,
   CaseStudyMetric,
+  SiteCopy,
 } from "@/content";
 import { Reveal } from "@/components/ui/reveal";
 import { Odometer } from "@/components/ui/odometer";
@@ -13,16 +14,22 @@ export function blockAnchor(block: CaseStudyBlock) {
   return `case-${block.id}`;
 }
 
-/** Rail label: `01 — Context` becomes `01` and `Context`. */
+/** Rail label: `01 · Context` becomes `01` and `Context`. */
 export function blockRailLabel(block: CaseStudyBlock) {
   const label = block.label ?? block.id;
-  const [rawIndex, ...rest] = label.split("—");
+  const [rawIndex, ...rest] = label.split(/\s*[·-]\s*/);
   const index = rawIndex.trim();
-  const short = rest.join("—").trim() || label;
+  const short = rest.join(" ").trim() || label;
   return { index, label: short };
 }
 
-export function CaseBlock({ block }: { block: CaseStudyBlock }) {
+export function CaseBlock({
+  block,
+  copy,
+}: {
+  block: CaseStudyBlock;
+  copy: SiteCopy;
+}) {
   const headingId = `${blockAnchor(block)}-heading`;
 
   return (
@@ -50,7 +57,7 @@ export function CaseBlock({ block }: { block: CaseStudyBlock }) {
       {block.kind === "facts" ? <FactsBlock block={block} /> : null}
       {block.kind === "datasets" ? <DatasetsBlock block={block} /> : null}
       {block.kind === "steps" ? <StepsBlock block={block} /> : null}
-      {block.kind === "metrics" ? <MetricsBlock block={block} /> : null}
+      {block.kind === "metrics" ? <MetricsBlock block={block} copy={copy} /> : null}
       {block.kind === "list" ? <ListBlock block={block} /> : null}
     </section>
   );
@@ -136,7 +143,7 @@ function DatasetRow({ dataset }: { dataset: CaseStudyDataset }) {
             className="tabular-nums"
           />
         ) : (
-          <span className="u-label text-ink-muted">—</span>
+          <span className="u-label text-ink-muted">·</span>
         )}
       </p>
     </div>
@@ -172,8 +179,10 @@ function StepsBlock({
 
 function MetricsBlock({
   block,
+  copy,
 }: {
   block: Extract<CaseStudyBlock, { kind: "metrics" }>;
+  copy: SiteCopy;
 }) {
   return (
     <div className="mt-6">
@@ -182,12 +191,10 @@ function MetricsBlock({
       ) : null}
       <div className="mt-6 border-t border-line">
         {block.metrics.map((metric) => (
-          <MetricRow key={metric.id} metric={metric} />
+          <MetricRow key={metric.id} metric={metric} copy={copy} />
         ))}
       </div>
-      <p className="u-label mt-3 text-ink-muted">
-        Accent bar = error remaining after fine-tuning, relative to the baseline.
-      </p>
+      <p className="u-label mt-3 text-ink-muted">{copy.caseStudy.metricNote}</p>
     </div>
   );
 }
@@ -196,7 +203,13 @@ function formatMetric(value: number, metric: CaseStudyMetric) {
   return `${value.toFixed(metric.decimals)}${metric.unit}`;
 }
 
-function MetricRow({ metric }: { metric: CaseStudyMetric }) {
+function MetricRow({
+  metric,
+  copy,
+}: {
+  metric: CaseStudyMetric;
+  copy: SiteCopy;
+}) {
   const baseline = Math.max(metric.before, 0.0001);
   const remaining = Math.min(100, Math.max(0, (metric.after / baseline) * 100));
 
@@ -205,7 +218,7 @@ function MetricRow({ metric }: { metric: CaseStudyMetric }) {
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <p className="u-label text-ink">{metric.label}</p>
         <p className="u-label text-accent">
-          −{metric.deltaPercent}% error
+          −{metric.deltaPercent}% {copy.caseStudy.errorLabel}
         </p>
       </div>
       <p className="mt-2 max-w-[58ch] text-small text-ink-muted">
@@ -227,7 +240,7 @@ function MetricRow({ metric }: { metric: CaseStudyMetric }) {
       <div
         className="mt-5 h-[2px] w-full bg-line"
         role="img"
-        aria-label={`${metric.label}: ${formatMetric(metric.before, metric)} before, ${formatMetric(metric.after, metric)} after`}
+        aria-label={`${metric.label}: ${formatMetric(metric.before, metric)} ${copy.caseStudy.beforeLabel}, ${formatMetric(metric.after, metric)} ${copy.caseStudy.afterLabel}`}
       >
         <div className="h-[2px]" style={{ width: `${remaining}%` }}>
           <Reveal

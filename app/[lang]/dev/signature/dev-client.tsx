@@ -198,7 +198,7 @@ export function SignatureDev() {
           )}
           <p className="mt-4 max-w-[62ch] text-small text-ink-muted">
             Reduced motion is honoured from the boot script: set the OS
-            preference to “reduce” and reload — the page renders without the
+            preference to “reduce” and reload - the page renders without the
             overlay. Readiness tasks come from{" "}
             <code className="u-mono">lib/loader/ready.ts</code>.
           </p>

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   RUBRIC — design tokens
+   RUBRIC - design tokens
    Source of truth: vault `design-direction.md` §2. Names are frozen for T7/T8.
    ========================================================================== */
 
@@ -240,7 +240,7 @@
   }
 }
 
-/* Scrollbar (WebKit) — themed from the palette, not the browser default. */
+/* Scrollbar (WebKit) - themed from the palette, not the browser default. */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -380,7 +380,7 @@
    Primitives shared by components/ui
    ========================================================================== */
 
-/* TextLink — underline wipes from the left, never a static decoration. */
+/* TextLink - underline wipes from the left, never a static decoration. */
 .link-wipe {
   position: relative;
   display: inline-flex;
@@ -413,7 +413,7 @@
   }
 }
 
-/* Button — magnetic pull is applied by JS only on fine pointers. */
+/* Button - magnetic pull is applied by JS only on fine pointers. */
 .btn-magnet {
   transform: translate3d(var(--magnet-x, 0px), var(--magnet-y, 0px), 0);
   transition: transform var(--dur-ui) var(--ease-out-expo),
@@ -421,7 +421,7 @@
     border-color var(--dur-micro) linear;
 }
 
-/* Odometer — one overflow window per digit, strip rendered server-side. */
+/* Odometer - one overflow window per digit, strip rendered server-side. */
 .odometer {
   display: inline-flex;
   align-items: baseline;
@@ -450,7 +450,7 @@
   line-height: 1;
 }
 
-/* Accordion — the panel height snaps once; only transform/clip-path animate. */
+/* Accordion - the panel height snaps once; only transform/clip-path animate. */
 .accordion-row {
   position: relative;
   border-top: var(--border);
@@ -482,7 +482,7 @@
   display: none;
 }
 
-/* Tools-style icon swap — two stacked layers, circle wipe from the centre.
+/* Tools-style icon swap - two stacked layers, circle wipe from the centre.
    Sections may set --swap-x/--swap-y from the pointer; the default is centre. */
 .icon-swap-layer {
   clip-path: circle(0% at var(--swap-x, 50%) var(--swap-y, 50%));
@@ -531,7 +531,7 @@ html[data-menu="open"] body {
 
 /* Scroll meter over the paper Contact surface: accent text and ink both fail
    contrast on #E7E1D5, so the rail switches to paper ink. The 1 px lines stay
-   accent — they are decoration, not text. */
+   accent - they are decoration, not text. */
 .meter-rail[data-meter-surface="paper"] .u-label {
   color: var(--paper-ink);
 }

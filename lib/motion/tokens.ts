@@ -1,5 +1,5 @@
 /**
- * Motion tokens — mirrors `design-direction.md` §2.5 and motion-map.md §1.
+ * Motion tokens - mirrors `design-direction.md` §2.5 and motion-map.md §1.
  * Never inline a duration or ease in a section; import from here.
  */
 
@@ -8,7 +8,7 @@ export const EASE = {
   expo: "expo.out",
   /** UI micro-interactions. */
   ui: "power3.out",
-  /** Scrub and horizontal rails — scroll position is the timing function. */
+  /** Scrub and horizontal rails - scroll position is the timing function. */
   linear: "none",
   /** Line drawing (signature, rules). */
   draw: "power1.inOut",

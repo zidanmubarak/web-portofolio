@@ -4,7 +4,7 @@ import * as React from "react";
 import { clipReveal, gsap, useGSAP } from "@/lib/motion";
 
 /**
- * Tools reveal — motion-map #6 / design-direction §4.7.
+ * Tools reveal - motion-map #6 / design-direction §4.7.
  *
  * Each category is wiped in from the left as it enters the viewport. The
  * inventory rows are not faded up; the wipe reads like a page being uncovered.

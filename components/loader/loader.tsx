@@ -5,8 +5,7 @@ import { cn } from "@/lib/utils";
 import { EASE, gsap, prefersReducedMotion } from "@/lib/motion";
 import { SignatureDraw } from "@/components/signature/SignatureDraw";
 import { getAppProgress, markReady, registerReadyTask } from "@/lib/loader/ready";
-import { profile } from "@/content/profile";
-import { copy } from "@/content/copy.en";
+import { useI18n } from "@/components/i18n/provider";
 import { LOADER_STORAGE_KEY } from "./loader-gate";
 
 export type LoaderExitDetail = {
@@ -68,6 +67,7 @@ export function Loader({
   onExit,
   className,
 }: LoaderProps) {
+  const { copy, profile } = useI18n();
   const overlayRef = React.useRef<HTMLDivElement>(null);
   const surfaceRef = React.useRef<HTMLDivElement>(null);
   const signatureRef = React.useRef<HTMLDivElement>(null);
@@ -350,7 +350,7 @@ export function Loader({
         </div>
         <div data-loader-chrome className="relative z-10 flex flex-1 items-center justify-center">
           <span className="sr-only" role="status">
-            Loading portfolio
+            {copy.common.loadingPortfolio}
           </span>
         </div>
         <div data-loader-chrome className="relative z-10 flex items-end justify-between gap-6">

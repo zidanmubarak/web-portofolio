@@ -16,7 +16,7 @@ export type RevealLinesOptions = {
 };
 
 /**
- * Masked line reveal — motion-map pattern #2.
+ * Masked line reveal - motion-map pattern #2.
  *
  * Each visual line sits inside an overflow-hidden mask and travels up from
  * below. Never use this on metadata, buttons, or every paragraph: it belongs

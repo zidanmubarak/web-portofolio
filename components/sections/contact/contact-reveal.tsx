@@ -4,7 +4,7 @@ import * as React from "react";
 import { clipReveal, useGSAP } from "@/lib/motion";
 
 /**
- * Contact reveal — motion-map #8: the paper plate uncovers itself with
+ * Contact reveal - motion-map #8: the paper plate uncovers itself with
  * clip-path as it enters, the one surface change on the page.
  */
 export function ContactReveal({ children }: { children: React.ReactNode }) {

@@ -3,9 +3,7 @@
 import * as React from "react";
 import { SignatureDraw } from "@/components/signature/SignatureDraw";
 import { LocalClock } from "@/components/shell/local-clock";
-import { copy } from "@/content/copy.en";
-import { links } from "@/content/links";
-import { profile } from "@/content/profile";
+import { useI18n } from "@/components/i18n/provider";
 import {
   EASE,
   gsap,
@@ -14,15 +12,15 @@ import {
   useSmoothScroll,
 } from "@/lib/motion";
 
-const footerLinks = links.filter((link) => link.primary);
-
 /**
- * Footer — the closing plate (design-direction.md §4.9).
+ * Footer - the closing plate (design-direction.md §4.9).
  *
  * Motion-map #9: the signature draws itself when the footer enters, then the
  * outline name is uncovered from below. Both are one-shot and static-ready.
  */
 export function Footer() {
+  const { copy, links, profile } = useI18n();
+  const footerLinks = links.filter((link) => link.primary);
   const root = React.useRef<HTMLElement>(null);
   const { scrollTo } = useSmoothScroll();
 
@@ -60,16 +58,14 @@ export function Footer() {
       className="relative overflow-hidden border-t border-line bg-surface-sunken pb-8 pt-16 md:pt-24"
     >
       <div className="u-container">
-        <h2 className="sr-only">Footer</h2>
+        <h2 className="sr-only">{copy.footer.ariaLabel}</h2>
 
         <div className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
           <div className="max-w-[26rem]">
             <p className="u-label text-ink-muted">{copy.footer.signatureLabel}</p>
             <div data-signature-target="footer" className="mt-4 text-ink">
               <SignatureDraw variant="footer" play="viewport" decorative />
-              <span className="sr-only">
-                Hand-drawn signature of Zidan Mubarak.
-              </span>
+              <span className="sr-only">{copy.footer.signatureSr}</span>
             </div>
             <p className="mt-8 max-w-[30ch] text-[1.0625rem] leading-relaxed">
               {copy.footer.tagline}
@@ -94,7 +90,7 @@ export function Footer() {
                         <span aria-hidden="true">↗</span>
                         <span className="sr-only">
                           {" "}
-                          (opens in a new tab)
+                          ({copy.nav.externalLink})
                         </span>
                       </>
                     )}

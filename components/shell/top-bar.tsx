@@ -2,10 +2,10 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { profile } from "@/content/profile";
-import { copy } from "@/content/copy.en";
+import { useI18n } from "@/components/i18n/provider";
 import { useSmoothScroll } from "@/lib/motion/smooth-scroll";
 import { LocalClock } from "./local-clock";
+import { LanguageSwitch } from "./language-switch";
 import { SignatureSlot } from "./signature-slot";
 
 export type TopBarProps = {
@@ -14,12 +14,13 @@ export type TopBarProps = {
 };
 
 /**
- * Fixed top bar — design-direction.md §4.1.
+ * Fixed top bar - design-direction.md §4.1.
  *
  * Four zones: signature/name, location, live WIB clock, INDEX. It becomes a
  * solid surface with a hairline after 32 px of scroll; no blur, no shadow.
  */
 export function TopBar({ menuOpen, onOpenMenu }: TopBarProps) {
+  const { copy, profile } = useI18n();
   const { scrollTo } = useSmoothScroll();
   const [scrolled, setScrolled] = React.useState(false);
 
@@ -60,7 +61,7 @@ export function TopBar({ menuOpen, onOpenMenu }: TopBarProps) {
             scrollTo("#top");
           }}
           className="inline-flex min-h-[44px] shrink-0 items-center text-[0.6875rem] leading-none md:text-[0.8125rem]"
-          aria-label={`${profile.name} — back to top`}
+          aria-label={`${profile.name} · ${copy.nav.backToTop}`}
         >
           <SignatureSlot name={profile.name.toUpperCase()} />
         </a>
@@ -69,8 +70,9 @@ export function TopBar({ menuOpen, onOpenMenu }: TopBarProps) {
           {profile.location.city.toUpperCase()}, {profile.location.countryCode}
         </p>
 
-        <div className="ml-auto flex items-center gap-4 md:gap-8">
-          <LocalClock className="text-ink-muted" withDot />
+        <div className="ml-auto flex items-center gap-3 md:gap-6">
+          <LanguageSwitch />
+          <LocalClock className="hidden text-ink-muted sm:inline-flex" withDot />
 
           <button
             type="button"

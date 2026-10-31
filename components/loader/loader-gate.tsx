@@ -1,7 +1,7 @@
 import * as React from "react";
 
 /**
- * LoaderGate — the pre-paint half of the loader.
+ * LoaderGate - the pre-paint half of the loader.
  *
  * Place `<LoaderGate />` once in the root layout (inside `<head>` is ideal; the
  * top of `<body>` also works because the inline script is parser-blocking).

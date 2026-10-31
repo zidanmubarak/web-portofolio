@@ -1,7 +1,7 @@
 import type { SiteCopy } from "./types";
 
 /**
- * UI copy — final.
+ * UI copy, final.
  *
  * Facts come from verified sources only; the voice is the one approved in
  * `design-direction.md` §6 and implemented by T7/T8. `status: "final"` means
@@ -11,8 +11,8 @@ export const copy: SiteCopy = {
   status: "final",
 
   meta: {
-    title: "Zidan Mubarak — AI/ML Engineer",
-    titleTemplate: "%s — Zidan Mubarak",
+    title: "Zidan Mubarak · AI/ML Engineer",
+    titleTemplate: "%s · Zidan Mubarak",
     description:
       "AI/ML engineer in Banda Aceh. Fine-tunes vision-language models, builds the interfaces around them, and publishes the evaluation.",
     keywords: [
@@ -41,6 +41,16 @@ export const copy: SiteCopy = {
     sectionsLabel: "Sections",
     skipToContent: "Skip to content",
     externalLink: "opens in a new tab",
+    menuLabel: "Index",
+    backToTop: "Back to top",
+  },
+
+  language: {
+    label: "Language",
+    options: [
+      { code: "id", label: "ID", ariaLabel: "Bahasa Indonesia" },
+      { code: "en", label: "EN", ariaLabel: "English" },
+    ],
   },
 
   hero: {
@@ -58,11 +68,12 @@ export const copy: SiteCopy = {
     subline:
       "I fine-tune vision-language models until they can read Jawi handwriting.",
     workCta: "View selected work",
-    figureLabel: "Fig. 01 — ZM",
+    figureLabel: "Fig. 01 · ZM",
   },
 
   about: {
     label: "About",
+    meta: "Banda Aceh, ID",
     heading: ["The short", "version"],
     closing:
       "If you only read one thing here, read the Jawi case study. It is the clearest example of how I work.",
@@ -73,7 +84,7 @@ export const copy: SiteCopy = {
     ],
     statement: "I work where language models meet handwriting.",
     body: [
-      "A degree in Information Technology at UIN Ar-Raniry, Banda Aceh, ended with a thesis on teaching a vision-language model to read Jawi — the Arab-Malay script the base model read at 82.5% character error. Getting that down to 17.4% took three data scenarios, a failed epoch 4, and one decision to stop at epoch 3.",
+      "A degree in Information Technology at UIN Ar-Raniry, Banda Aceh, ended with a thesis on teaching a vision-language model to read Jawi, the Arab-Malay script the base model read at 82.5% character error. Getting that down to 17.4% took three data scenarios, a failed epoch 4, and one decision to stop at epoch 3.",
       "The unglamorous half of machine learning is the part worth keeping: data provenance, honest evaluation, and an interface someone can use without reading a README. Python for the models, TypeScript when the result needs to live in a browser, layouts designed by hand.",
     ],
     facts: [
@@ -86,6 +97,7 @@ export const copy: SiteCopy = {
 
   services: {
     label: "Services",
+    meta: "04 Disciplines",
     heading: ["Four ways", "I can help"],
     intro:
       "Not a menu of everything I have touched. The four areas where there is work below to prove it.",
@@ -98,6 +110,8 @@ export const copy: SiteCopy = {
     intro:
       "Tools that show up across these projects and the work behind them.",
     footnote: "Icons from simple-icons.",
+    itemsLabel: "Items",
+    categoriesLabel: "Categories",
   },
 
   work: {
@@ -131,6 +145,14 @@ export const copy: SiteCopy = {
     viewProject: "View project",
     generatedVisual: "Generated visual",
     missingImage: "No capture yet",
+    projectsLabel: "projects",
+    indexNote:
+      "Every row opens a page. The first one is the full thesis case study; the others are shorter project notes.",
+    overviewLabel: "01 · Overview",
+    overviewHeading: "What it is",
+    highlightsLabel: "02 · Highlights",
+    highlightsHeading: "Highlights",
+    stackHeading: "Stack",
   },
 
   caseStudy: {
@@ -147,6 +169,27 @@ export const copy: SiteCopy = {
     openLabel: "Open",
     otherProjectsLabel: "Other projects",
     teamLabel: "Team",
+    contentsAria: "Case study sections",
+    metricNote:
+      "Accent bar = error remaining after fine-tuning, relative to the baseline.",
+    errorLabel: "error",
+    beforeLabel: "before",
+    afterLabel: "after",
+    demo: {
+      alt: "The Jawi transliteration Gradio Space with an image upload area, extraction and Rumi panels, and two example crops.",
+      caption:
+        "The Gradio demo that ships with the adapter. The two example crops are the ones in the Space repository.",
+      label: "Fig. 02 · Demo",
+    },
+    sourceCrops: {
+      altOne:
+        "A one-line printed Jawi crop used as an example in the demo.",
+      altTwo:
+        "A two-line printed Jawi crop used as an example in the demo.",
+      label: "Fig. 03 · Demo inputs",
+      caption:
+        "The two example crops shipped with the Space, one line and two lines.",
+    },
   },
 
   experience: {
@@ -161,6 +204,18 @@ export const copy: SiteCopy = {
     verifiedLabel: "Verified",
     unverifiedLabel: "Unverified",
     thesisLabel: "Thesis",
+    recordHeading: "Record: experience, education and certifications",
+    metaEntries: "Entries",
+    groupExperience: "Experience",
+    groupEducation: "Education",
+    groupCredentials: "Certifications, award, paper",
+    groupCredentialsLong: "Certifications, award and paper",
+    groupNote:
+      "Entries and dates trace back to the CV and the public credential pages. Newest first; one open at a time.",
+    entriesLabel: "entries",
+    entryLabel: "entry",
+    credentialLink: "Credential",
+    gpaLabel: "GPA",
   },
 
   contact: {
@@ -171,6 +226,8 @@ export const copy: SiteCopy = {
     emailLabel: "Email",
     copyLabel: "Copy address",
     copiedLabel: "Copied",
+    copiedAnnouncement: "Email address copied to the clipboard.",
+    externalLink: "opens in a new tab",
     responseNote: "The form replies from this address. Nothing is added to a list.",
     socialHeading: "Elsewhere",
     form: {
@@ -190,12 +247,20 @@ export const copy: SiteCopy = {
       fallback: "If the form fails, email directly:",
       requiredHint: "All fields are required.",
       privacy: "Your address is only used to reply. No list, no tracking.",
+      errors: {
+        name: "Add your name.",
+        email: "Use an address like you@company.com.",
+        subject: "Add a subject.",
+        message: "A little more detail, please (10 characters or more).",
+      },
     },
   },
 
   footer: {
     tagline: "Made in Banda Aceh, between manuscripts and machines.",
     signatureLabel: "Signature",
+    signatureSr: "Hand-drawn signature of Zidan Mubarak.",
+    ariaLabel: "Footer",
     backToTop: "Back to top",
     builtNote: "Designed and built by Zidan Mubarak.",
     rights: "All rights reserved.",
@@ -204,6 +269,8 @@ export const copy: SiteCopy = {
 
   common: {
     loading: "Loading",
+    loadingPortfolio: "Loading portfolio",
+    indexFallback: "Index",
     error: "Something broke. Try again, or email me.",
     notFoundTitle: "404",
     notFoundLabel: "Not found",

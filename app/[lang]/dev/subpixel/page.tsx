@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { SubpixelLab } from "./subpixel-lab";
 
 export const metadata = {
-  title: "dev / subpixel — T3",
+  title: "dev / subpixel - T3",
   robots: { index: false, follow: false },
 };
 

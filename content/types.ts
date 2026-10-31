@@ -6,17 +6,18 @@
  * 1. Every fact that reaches the UI must be traceable to an entry in
  *    `sources.ts`. If a fact cannot be verified, it is either dropped or
  *    marked `verified: false` and listed in `open-questions/T5.md`.
- * 2. English is the default language. Translatable prose lives in
- *    `copy.en.ts` and in the prose fields of the data files. A future
- *    `content/id/` folder must re-declare the same shapes, e.g.
- *    `export const copy: SiteCopy = { ... }`, so the UI can switch by
- *    importing from `content/id` instead of `content`.
+ * 2. Indonesian is the primary language and lives in `content/id/`; English
+ *    lives in the root files and `copy.en.ts`. Both re-declare the same
+ *    shapes and are assembled into `SiteContent` in `content/locales/`.
  * 3. Numbers are stored as numbers when they are rendered by the odometer
  *    or by a table, with a separate display string only where the source
  *    gives a rounded value.
- * 4. No UI code in this folder. No imports from `components/`, `app/`,
- *    `lib/` or `next/*`.
+ * 4. No UI code in this folder. No imports from `components/`, `app/` or
+ *    `lib/`. `content/server.ts` is the only exception: it reads the locale
+ *    through `next/root-params`.
  */
+
+export type LocaleCode = "id" | "en";
 
 export type SourceId = string;
 
@@ -56,7 +57,7 @@ export interface Period {
   /** `null` when the period is ongoing. */
   readonly end: string | null;
   readonly current: boolean;
-  /** Display form used by the design, e.g. `May 2026 — Jul 2026`. */
+  /** Display form used by the design, e.g. `May 2026 - Jul 2026`. */
   readonly label: string;
 }
 
@@ -227,11 +228,18 @@ export interface Project {
   readonly team?: string;
   /** One sentence. Used in the gallery card. */
   readonly summary: string;
+  /** Short measured result shown under a card title. */
+  readonly resultLine: string;
   /** Optional second paragraph for `/work`. */
   readonly description?: string;
   readonly stack: readonly string[];
   readonly links: ProjectLinks;
   readonly image: ProjectImage;
+  /** Caption and plate label for the lead image on the project page. */
+  readonly figure?: {
+    readonly caption: string;
+    readonly label: string;
+  };
   /** Additional real assets needed by the work and case-study layouts. */
   readonly assets?: readonly ProjectAsset[];
   /** Shown in Selected Work on the homepage. */
@@ -471,6 +479,19 @@ export interface NavItem {
   readonly index: string;
 }
 
+export interface LanguageOption {
+  readonly code: LocaleCode;
+  readonly label: string;
+  readonly ariaLabel: string;
+}
+
+export interface FormErrorCopy {
+  readonly name: string;
+  readonly email: string;
+  readonly subject: string;
+  readonly message: string;
+}
+
 export interface ContactCopy {
   readonly label: string;
   readonly heading: readonly string[];
@@ -478,6 +499,8 @@ export interface ContactCopy {
   readonly emailLabel: string;
   readonly copyLabel: string;
   readonly copiedLabel: string;
+  readonly copiedAnnouncement: string;
+  readonly externalLink: string;
   readonly responseNote: string;
   readonly socialHeading: string;
   readonly form: {
@@ -497,7 +520,25 @@ export interface ContactCopy {
     readonly fallback: string;
     readonly requiredHint: string;
     readonly privacy: string;
+    readonly errors: FormErrorCopy;
   };
+}
+
+export interface SiteContent {
+  readonly locale: LocaleCode;
+  readonly copy: SiteCopy;
+  readonly profile: Profile;
+  readonly links: readonly ExternalLink[];
+  readonly services: readonly Service[];
+  readonly projects: readonly Project[];
+  readonly experience: readonly ExperienceEntry[];
+  readonly education: readonly EducationEntry[];
+  readonly certifications: readonly Credential[];
+  readonly stack: readonly StackItem[];
+  readonly stackCategories: readonly StackCategoryMeta[];
+  readonly caseStudies: readonly CaseStudy[];
+  readonly sources: Readonly<Record<SourceId, SourceRef>>;
+  readonly sourceList: readonly SourceRef[];
 }
 
 export interface SiteCopy {
@@ -517,6 +558,12 @@ export interface SiteCopy {
     readonly sectionsLabel: string;
     readonly skipToContent: string;
     readonly externalLink: string;
+    readonly menuLabel: string;
+    readonly backToTop: string;
+  };
+  readonly language: {
+    readonly label: string;
+    readonly options: readonly LanguageOption[];
   };
   readonly hero: {
     readonly eyebrow: string;
@@ -538,6 +585,7 @@ export interface SiteCopy {
   };
   readonly about: {
     readonly label: string;
+    readonly meta: string;
     readonly heading: readonly string[];
     readonly closing: string;
     readonly nowLabel: string;
@@ -552,6 +600,7 @@ export interface SiteCopy {
   };
   readonly services: {
     readonly label: string;
+    readonly meta: string;
     readonly heading: readonly string[];
     readonly intro: string;
     readonly proofLabel: string;
@@ -561,6 +610,8 @@ export interface SiteCopy {
     readonly heading: readonly string[];
     readonly intro: string;
     readonly footnote: string;
+    readonly itemsLabel: string;
+    readonly categoriesLabel: string;
   };
   readonly work: {
     readonly label: string;
@@ -592,6 +643,13 @@ export interface SiteCopy {
     readonly viewProject: string;
     readonly generatedVisual: string;
     readonly missingImage: string;
+    readonly projectsLabel: string;
+    readonly indexNote: string;
+    readonly overviewLabel: string;
+    readonly overviewHeading: string;
+    readonly highlightsLabel: string;
+    readonly highlightsHeading: string;
+    readonly stackHeading: string;
   };
   readonly caseStudy: {
     readonly backLabel: string;
@@ -607,6 +665,22 @@ export interface SiteCopy {
     readonly openLabel: string;
     readonly otherProjectsLabel: string;
     readonly teamLabel: string;
+    readonly contentsAria: string;
+    readonly metricNote: string;
+    readonly errorLabel: string;
+    readonly beforeLabel: string;
+    readonly afterLabel: string;
+    readonly demo: {
+      readonly alt: string;
+      readonly caption: string;
+      readonly label: string;
+    };
+    readonly sourceCrops: {
+      readonly altOne: string;
+      readonly altTwo: string;
+      readonly label: string;
+      readonly caption: string;
+    };
   };
   readonly experience: {
     readonly label: string;
@@ -620,11 +694,24 @@ export interface SiteCopy {
     readonly verifiedLabel: string;
     readonly unverifiedLabel: string;
     readonly thesisLabel: string;
+    readonly recordHeading: string;
+    readonly metaEntries: string;
+    readonly groupExperience: string;
+    readonly groupEducation: string;
+    readonly groupCredentials: string;
+    readonly groupCredentialsLong: string;
+    readonly groupNote: string;
+    readonly entriesLabel: string;
+    readonly entryLabel: string;
+    readonly credentialLink: string;
+    readonly gpaLabel: string;
   };
   readonly contact: ContactCopy;
   readonly footer: {
     readonly tagline: string;
     readonly signatureLabel: string;
+    readonly signatureSr: string;
+    readonly ariaLabel: string;
     readonly backToTop: string;
     readonly builtNote: string;
     readonly rights: string;
@@ -632,6 +719,8 @@ export interface SiteCopy {
   };
   readonly common: {
     readonly loading: string;
+    readonly loadingPortfolio: string;
+    readonly indexFallback: string;
     readonly error: string;
     readonly notFoundTitle: string;
     readonly notFoundLabel: string;

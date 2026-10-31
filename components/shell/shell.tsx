@@ -5,13 +5,15 @@ import { TopBar } from "./top-bar";
 import { MenuOverlay } from "./menu-overlay";
 import { ScrollMeter } from "./scroll-meter";
 import { RouteSweep } from "./route-sweep";
-import { copy } from "@/content/copy.en";
+import { useI18n } from "@/components/i18n/provider";
+import { localizedHash } from "@/lib/i18n";
 
 /**
  * Client shell: fixed top bar, INDEX overlay, scroll meter, skip link.
  * The page content itself stays a server component.
  */
 export function Shell({ children }: { children: React.ReactNode }) {
+  const { locale, copy } = useI18n();
   const [menuOpen, setMenuOpen] = React.useState(false);
   const openMenu = React.useCallback(() => setMenuOpen(true), []);
   const closeMenu = React.useCallback(() => setMenuOpen(false), []);
@@ -31,7 +33,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
             {copy.nav.items.map((item) => (
               <li key={item.id}>
                 <a
-                  href={`/${item.href}`}
+                  href={localizedHash(locale, item.href)}
                   className="link-wipe u-label text-ink"
                 >
                   <span className="text-accent">{item.index}</span>{" "}

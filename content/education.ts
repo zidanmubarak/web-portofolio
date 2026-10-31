@@ -10,14 +10,14 @@ export const education: readonly EducationEntry[] = [
     id: "uin-ar-raniry",
     institution: "Universitas Islam Negeri Ar-Raniry Banda Aceh",
     institutionShort: "UIN Ar-Raniry",
-    degree: "S1 — Bachelor's degree",
+    degree: "S1, Bachelor's degree",
     field: "Information Technology",
     location: "Banda Aceh, Indonesia",
     period: {
       start: "2022",
       end: "2026",
       current: false,
-      label: "2022 — 2026",
+      label: "2022 - 2026",
     },
     grade: { label: "GPA", value: "3.77 / 4.00" },
     thesis:

@@ -3,7 +3,7 @@
 import * as React from "react";
 
 /**
- * Loader readiness registry — the only contract other terminals need.
+ * Loader readiness registry - the only contract other terminals need.
  *
  * A terminal that loads something the first screen depends on (font file,
  * hero texture, compiled shader) registers a task and marks it ready:
@@ -21,7 +21,7 @@ import * as React from "react";
  * Rules
  * - `registerReadyTask` returns an unregister function. Unregistering a
  *   pending task removes its weight so an abandoned task cannot stall 100%.
- * - `markReady` also registers an unknown name (weight 1) — safe to call even
+ * - `markReady` also registers an unknown name (weight 1) - safe to call even
  *   if registration raced ahead.
  * - Progress is weighted: done weight / total weight, 0-100, rounded down and
  *   monotonic within a task set.

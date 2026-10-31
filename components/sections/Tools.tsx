@@ -1,23 +1,25 @@
 import { Section } from "@/components/ui/section";
-import { stack, stackCategories } from "@/content/stack";
+import { getSiteContent } from "@/content/server";
 import { iconPaths } from "./tools/icons";
 import { ToolCell } from "./tools/tool-cell";
 import { ToolsReveal } from "./tools/tools-reveal";
 
 /**
- * Tools — 05 (design-direction.md §4.7).
+ * Tools - 05 (design-direction.md §4.7).
  *
  * A hairline inventory, not a card grid: one row per category, icon cells with
  * a label underneath. Data and icon paths stay on the server; only the pointer
  * variable and the reveal live on the client.
  */
-export function Tools() {
+export async function Tools() {
+  const { copy, stack, stackCategories } = await getSiteContent();
+
   return (
     <Section
       id="tools"
       index="05"
-      label="Tools"
-      meta={`${stack.length} Items · ${stackCategories.length} Categories`}
+      label={copy.tools.label}
+      meta={`${stack.length} ${copy.tools.itemsLabel} · ${stackCategories.length} ${copy.tools.categoriesLabel}`}
       labelledBy="tools-heading"
     >
       <div className="u-grid items-end gap-y-6">
@@ -25,11 +27,10 @@ export function Tools() {
           id="tools-heading"
           className="u-display col-span-4 max-w-[14ch] text-title lg:col-span-7"
         >
-          What I work with.
+          {copy.tools.heading.join(" ")}.
         </h2>
         <p className="col-span-4 max-w-[42ch] text-small leading-relaxed text-ink-muted lg:col-span-4 lg:col-start-9">
-          Tools that show up across these projects and the work behind them.
-          Icons from simple-icons.
+          {copy.tools.intro} {copy.tools.footnote}
         </p>
       </div>
 

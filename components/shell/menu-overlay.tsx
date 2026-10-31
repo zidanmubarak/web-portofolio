@@ -6,15 +6,11 @@ import { usePathname } from "next/navigation";
 import { gsap } from "@/lib/motion/gsap";
 import { useSmoothScroll } from "@/lib/motion/smooth-scroll";
 import { DUR, EASE, STAGGER, prefersReducedMotion } from "@/lib/motion/tokens";
-import { profile } from "@/content/profile";
-import { links } from "@/content/links";
-import { copy } from "@/content/copy.en";
-import { cn } from "@/lib/utils";import { MENU_ITEMS } from "./navigation";
+import { useI18n } from "@/components/i18n/provider";
+import { cn } from "@/lib/utils";
+import { isHomePath, localizedHash } from "@/lib/i18n";
+import { LanguageSwitch } from "./language-switch";
 import { LocalClock } from "./local-clock";
-
-const MENU_LINKS = links.filter((link) =>
-  ["linkedin", "github", "huggingface"].includes(link.id)
-);
 
 function focusableElements(root: HTMLElement | null) {
   if (!root) return [];
@@ -26,7 +22,7 @@ function focusableElements(root: HTMLElement | null) {
 }
 
 /**
- * Full-screen INDEX overlay — design-direction.md §4.10 / motion-map #10.
+ * Full-screen INDEX overlay - design-direction.md §4.10 / motion-map #10.
  *
  * Clip-path wipe, item stagger, focus trap, Escape, backdrop click. Lenis is
  * stopped while open; the body overflow rule is a fallback for reduced motion
@@ -39,12 +35,16 @@ export function MenuOverlay({
   open: boolean;
   onClose: () => void;
 }) {
+  const { locale, copy, profile, links } = useI18n();
   const [mounted, setMounted] = React.useState(false);
   const panelRef = React.useRef<HTMLDivElement>(null);
   const closeRef = React.useRef<HTMLButtonElement>(null);
   const returnFocusRef = React.useRef<HTMLElement | null>(null);
   const pathname = usePathname();
-  const isHome = pathname === "/";
+  const isHome = isHomePath(pathname);
+  const menuLinks = links.filter((link) =>
+    ["linkedin", "github", "huggingface"].includes(link.id)
+  );
 
   const scroll = useSmoothScroll();
   const scrollRef = React.useRef(scroll);
@@ -233,16 +233,16 @@ export function MenuOverlay({
         </div>
 
         <nav
-          aria-label="Index"
+          aria-label={copy.nav.menuLabel}
           data-menu-interactive
           className="flex flex-1 flex-col justify-center py-6 md:py-8"
         >
           <ul>
-            {MENU_ITEMS.map((item) => (
+            {copy.nav.items.map((item) => (
               <li key={item.href} className="border-t border-line last:border-b">
                 <Link
                   data-menu-item
-                  href={isHome ? item.href : `/${item.href}`}
+                  href={isHome ? item.href : localizedHash(locale, item.href)}
                   onClick={(event) => {
                     // From another route the Link navigates home and the
                     // browser/Next resolves the hash; the overlay only closes.
@@ -309,20 +309,23 @@ export function MenuOverlay({
             </p>
           </div>
 
-          <div className="flex flex-wrap items-start gap-x-8 gap-y-2 md:col-span-6 md:justify-end">
-            {MENU_LINKS.map((link) => (
-              <a
-                key={link.id}
-                href={link.href}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="link-wipe u-label text-ink-muted hover:text-ink"
-              >
-                {link.label.toUpperCase()}
-                <span aria-hidden="true">↗</span>
-                <span className="sr-only"> (opens in a new tab)</span>
-              </a>
-            ))}
+          <div className="flex flex-col items-start gap-4 md:col-span-6 md:items-end">
+            <LanguageSwitch />
+            <div className="flex flex-wrap items-start gap-x-8 gap-y-2 md:justify-end">
+              {menuLinks.map((link) => (
+                <a
+                  key={link.id}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="link-wipe u-label text-ink-muted hover:text-ink"
+                >
+                  {link.label.toUpperCase()}
+                  <span aria-hidden="true">↗</span>
+                  <span className="sr-only"> ({copy.nav.externalLink})</span>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </div>

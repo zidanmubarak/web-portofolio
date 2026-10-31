@@ -3,16 +3,14 @@
 import * as React from "react";
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { TextLink } from "@/components/ui/text-link";
-import { certifications } from "@/content/certifications";
-import { education } from "@/content/education";
-import { experience } from "@/content/experience";
+import type {
+  Credential,
+  EducationEntry,
+  ExperienceEntry,
+  SiteCopy,
+} from "@/content/types";
 import { EASE, gsap, useGSAP } from "@/lib/motion";
 
-const educationIndex = (offset: number) =>
-  String(experience.length + offset + 1).padStart(2, "0");
-
-const certificationIndex = (offset: number) =>
-  String(experience.length + education.length + offset + 1).padStart(2, "0");
 
 function MetaList({ items }: { items: readonly string[] }) {
   return (
@@ -32,13 +30,32 @@ function MetaList({ items }: { items: readonly string[] }) {
 }
 
 /**
- * Record — the numbered accordion (design-direction.md §4.6, motion-map #5).
+ * Record - the numbered accordion (design-direction.md §4.6, motion-map #5).
  *
  * Group rules draw with scroll (transform scaleX only); the accordion itself
  * uses the shared FLIP disclosure helper so the list shifts instead of jumping.
  */
-export function RecordLists() {
+type RecordListsProps = {
+  experience: readonly ExperienceEntry[];
+  education: readonly EducationEntry[];
+  certifications: readonly Credential[];
+  copy: SiteCopy["experience"];
+  externalLink: string;
+};
+
+export function RecordLists({
+  experience,
+  education,
+  certifications,
+  copy,
+  externalLink,
+}: RecordListsProps) {
   const root = React.useRef<HTMLDivElement>(null);
+  const educationIndex = (offset: number) =>
+    String(experience.length + offset + 1).padStart(2, "0");
+  const certificationIndex = (offset: number) =>
+    String(experience.length + education.length + offset + 1).padStart(2, "0");
+
 
   useGSAP(
     () => {
@@ -78,9 +95,9 @@ export function RecordLists() {
     <div ref={root} className="flex flex-col gap-10 md:gap-12">
       <div data-record-group>
         <div className="flex items-baseline justify-between gap-4">
-          <h3 className="u-label text-accent">Experience</h3>
+          <h3 className="u-label text-accent">{copy.groupExperience}</h3>
           <span className="u-label text-ink-muted">
-            {String(experience.length).padStart(2, "0")} entries
+            {String(experience.length).padStart(2, "0")} {copy.entriesLabel}
           </span>
         </div>
         <div
@@ -90,7 +107,7 @@ export function RecordLists() {
         />
 
         <Accordion
-          label="Experience"
+          label={copy.groupExperience}
           defaultOpenId={`exp-${experience[0]?.id ?? ""}`}
           className="mt-1"
         >
@@ -107,7 +124,7 @@ export function RecordLists() {
                 {entry.highlights.map((highlight) => (
                   <li key={highlight} className="flex gap-3">
                     <span aria-hidden="true" className="text-line-strong">
-                      —
+                      ·
                     </span>
                     <span>{highlight}</span>
                   </li>
@@ -121,9 +138,9 @@ export function RecordLists() {
 
       <div data-record-group>
         <div className="flex items-baseline justify-between gap-4">
-          <h3 className="u-label text-accent">Education</h3>
+          <h3 className="u-label text-accent">{copy.groupEducation}</h3>
           <span className="u-label text-ink-muted">
-            {String(education.length).padStart(2, "0")} entry
+            {String(education.length).padStart(2, "0")} {copy.entryLabel}
           </span>
         </div>
         <div
@@ -132,19 +149,19 @@ export function RecordLists() {
           className="mt-3 h-px w-full origin-left bg-line"
         />
 
-        <Accordion label="Education" className="mt-1">
+        <Accordion label={copy.groupEducation} className="mt-1">
           {education.map((entry, index) => (
             <AccordionItem
               key={entry.id}
               id={`edu-${entry.id}`}
               index={educationIndex(index)}
-              title={`${entry.field} — ${entry.institutionShort}`}
-              meta={`${entry.period.label} · GPA ${entry.grade?.value ?? ""}`}
+              title={`${entry.field} · ${entry.institutionShort}`}
+              meta={`${entry.period.label} · ${copy.gpaLabel} ${entry.grade?.value ?? ""}`}
             >
               <p>{entry.degree}</p>
               {entry.thesis ? (
                 <p className="mt-3">
-                  <span className="u-label mr-2 text-ink">Thesis</span>
+                  <span className="u-label mr-2 text-ink">{copy.thesisLabel}</span>
                   {entry.thesis}
                 </p>
               ) : null}
@@ -152,7 +169,7 @@ export function RecordLists() {
                 {entry.notes.map((note) => (
                   <li key={note} className="flex gap-3">
                     <span aria-hidden="true" className="text-line-strong">
-                      —
+                      ·
                     </span>
                     <span>{note}</span>
                   </li>
@@ -166,10 +183,10 @@ export function RecordLists() {
       <div data-record-group>
         <div className="flex items-baseline justify-between gap-4">
           <h3 className="u-label text-accent">
-            Certifications, award, paper
+            {copy.groupCredentials}
           </h3>
           <span className="u-label text-ink-muted">
-            {String(certifications.length).padStart(2, "0")} entries
+            {String(certifications.length).padStart(2, "0")} {copy.entriesLabel}
           </span>
         </div>
         <div
@@ -178,7 +195,7 @@ export function RecordLists() {
           className="mt-3 h-px w-full origin-left bg-line"
         />
 
-        <Accordion label="Certifications, award and paper" className="mt-1">
+        <Accordion label={copy.groupCredentialsLong} className="mt-1">
           {certifications.map((entry, index) => (
             <AccordionItem
               key={entry.id}
@@ -197,8 +214,13 @@ export function RecordLists() {
               ) : null}
               {entry.url ? (
                 <p className="mt-4">
-                  <TextLink href={entry.url} external mark="↗">
-                    Credential
+                  <TextLink
+                    href={entry.url}
+                    external
+                    externalLabel={externalLink}
+                    mark="↗"
+                  >
+                    {copy.credentialLink}
                   </TextLink>
                 </p>
               ) : null}

@@ -67,7 +67,7 @@ function compile(gl: WebGL2RenderingContext, type: number, source: string) {
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
     const log = gl.getShaderInfoLog(shader) ?? "unknown";
     gl.deleteShader(shader);
-    throw new Error(`subpixel: shader compile failed — ${log}`);
+    throw new Error(`subpixel: shader compile failed - ${log}`);
   }
   return shader;
 }
@@ -85,7 +85,7 @@ function buildProgram(gl: WebGL2RenderingContext) {
   if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
     const log = gl.getProgramInfoLog(program) ?? "unknown";
     gl.deleteProgram(program);
-    throw new Error(`subpixel: program link failed — ${log}`);
+    throw new Error(`subpixel: program link failed - ${log}`);
   }
   return program;
 }

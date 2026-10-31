@@ -21,6 +21,7 @@ export const projects: readonly Project[] = [
     team: "Undergraduate thesis, UIN Ar-Raniry",
     summary:
       "A Qwen2.5-VL-3B adapter that reads printed Jawi and transliterates it to Rumi, cutting character error on unseen scans by 79%.",
+    resultLine: "CER 82.51% → 17.35% on 790 unseen images",
     description:
       "Jawi is written in Arabic script but carries Malay, and general-purpose OCR handles it badly. The thesis fine-tunes a 3B vision-language model with QLoRA, tests three data scenarios, and evaluates extraction and transliteration separately so the failure is visible instead of averaged away.",
     stack: [
@@ -72,6 +73,11 @@ export const projects: readonly Project[] = [
         note: "Owner confirmed the demo uses one- or two-line crops from the Gradio notebook. Capture both outputs on the same crop.",
       },
     ],
+    figure: {
+      caption:
+        "The results chart published with the model card: base model against the fine-tuned adapter on the held-out split.",
+      label: "Fig. 01 · Results",
+    },
     selected: true,
     featured: true,
     highlights: [
@@ -99,13 +105,14 @@ export const projects: readonly Project[] = [
     index: "02",
     title: "Pacu Pintar",
     year: "2026",
-    period: "Aug 2025 — Jan 2026",
+    period: "Aug 2025 - Jan 2026",
     category: "ai-ml",
     categoryLabel: "Machine learning",
     role: "ML engineer, two-person ML team",
     team: "Asah led by Dicoding capstone; ML team of 2 inside a full-stack team",
     summary:
       "An AI learning-analytics platform where a Random Forest labelled study pace and a FastAPI service turned it into study advice.",
+    resultLine: "Random Forest · ≈90% accuracy",
     description:
       "The ML half of a web platform for learning analytics. A classifier sorts students into three study-pace categories; a FastAPI service exposes the model and asks an LLM for a personal study plan. It won Best Capstone Project in the cohort.",
     stack: [
@@ -127,14 +134,19 @@ export const projects: readonly Project[] = [
         kind: "live-capture",
         value: "https://pacupintar.netlify.app/",
       },
-      alt: "Pacu Pintar dashboard showing a student's learning pace and AI study recommendation.",
+      alt: "The public Pacu Pintar landing page with the Indonesian headline for its structured coding learning paths.",
       aspect: "16/10",
-      note: "The live site is up; capture the student dashboard. The ML service lives in the team's ML repository.",
+      note: "The live site is up; the public landing page is what was captured. The signed-in student dashboard is not captured. The ML service lives in the team's ML repository.",
+    },
+    figure: {
+      caption:
+        "The public Pacu Pintar landing page. The signed-in student dashboard is not captured.",
+      label: "Fig. 01 · Live capture",
     },
     selected: true,
     featured: true,
     highlights: [
-      "Random Forest classifier for three study-pace categories — consistent, fast, reflective — at ≈90% accuracy.",
+      "Random Forest classifier for three study-pace categories (consistent, fast, reflective) at ≈90% accuracy.",
       "FastAPI service serving the classifier plus LLM-generated personal study suggestions.",
       "Integrated with the team's Next.js and Hapi.js web application.",
       "Best Capstone Project, Asah led by Dicoding.",
@@ -154,10 +166,11 @@ export const projects: readonly Project[] = [
     period: "Apr 2026",
     category: "ai-ml",
     categoryLabel: "Open source",
-    role: "Solo — library, API, CLI and docs",
+    role: "Solo, library, API, CLI and docs",
     team: "Solo project",
     summary:
       "A model-agnostic memory layer that gives any LLM persistent, user-scoped context, shipped as a Python package, REST API, CLI and MCP server.",
+    resultLine: "Four memory types · local-first · on PyPI",
     description:
       "Memory Vault sits between an application and any LLM: it classifies what is worth remembering, compresses what is stale, and injects only the relevant memories into the next prompt. It runs locally against ChromaDB, so the default deployment costs nothing and never sends memory to a vendor.",
     stack: ["Python", "FastAPI", "ChromaDB", "MCP", "Docker", "PyPI"],
@@ -200,10 +213,15 @@ export const projects: readonly Project[] = [
         aspect: "16/10",
       },
     ],
+    figure: {
+      caption:
+        "The Memory Vault AI documentation site, captured from GitHub Pages.",
+      label: "Fig. 01 · Live capture",
+    },
     selected: true,
     featured: true,
     highlights: [
-      "Four memory types — episodic, semantic, working, procedural — with vector retrieval.",
+      "Four memory types (episodic, semantic, working, procedural) with vector retrieval.",
       "Token-budget-aware recall; old memories are compressed instead of deleted.",
       "Local-first: ChromaDB and local embeddings, no vendor required.",
       "MCP-compatible with Claude Desktop and Cursor.",
@@ -217,13 +235,14 @@ export const projects: readonly Project[] = [
     index: "04",
     title: "NusantaraGo",
     year: "2025",
-    period: "May 2025 — Jun 2025",
+    period: "May 2025 - Jun 2025",
     category: "ai-ml",
     categoryLabel: "Recommendation",
-    role: "Top contributor — machine learning",
+    role: "Top contributor, machine learning",
     team: "Four-person capstone team; 107 commits by Zidan",
     summary:
-      "A tourism recommender for Indonesia — TF-IDF content similarity plus collaborative filtering, served through Flask.",
+      "A tourism recommender for Indonesia: TF-IDF content similarity plus collaborative filtering, served through Flask.",
+    resultLine: "TF-IDF + collaborative filtering · 107 commits",
     description:
       "Built during the Coding Camp powered by DBS Foundation cohort. The team scraped attraction data province by province, cleaned it, and combined content-based, popularity and location signals into a hybrid recommender behind a Flask front end.",
     stack: ["Python", "Flask", "scikit-learn", "TensorFlow", "NLTK", "Pandas"],
@@ -235,7 +254,12 @@ export const projects: readonly Project[] = [
       source: { kind: "none" },
       alt: "Abstract typographic composition representing the NusantaraGo recommendation model.",
       aspect: "16/10",
-      note: "No real screenshot exists and the owner declined to run the app. Owner authorised a generated visual; it must be abstract or typographic — never a fake app screen with invented UI copy.",
+      note: "No real screenshot exists and the owner declined to run the app. Owner authorised a generated visual; it must be abstract or typographic, never a fake app screen with invented UI copy.",
+    },
+    figure: {
+      caption:
+        "Owner-approved abstract typographic visual. It is not a screenshot of the application.",
+      label: "Fig. 01 · Generated visual",
     },
     selected: true,
     featured: false,
@@ -243,7 +267,7 @@ export const projects: readonly Project[] = [
       "Content-based filtering with TF-IDF and cosine similarity, plus collaborative filtering.",
       "Hybrid ranking that also weighs popularity and location.",
       "Attraction data scraped and cleaned province by province, stored as CSV and JSON.",
-      "107 commits — the largest contribution in the four-person team.",
+      "107 commits, the largest contribution in the four-person team.",
     ],
     sources: ["github-nusantara", "cv", "github-repos"],
     verification: { verified: true, sources: ["github-nusantara", "cv"] },
@@ -256,10 +280,11 @@ export const projects: readonly Project[] = [
     period: "Apr 2025",
     category: "web",
     categoryLabel: "Web application",
-    role: "Solo — full-stack",
+    role: "Solo, full-stack",
     team: "Solo project",
     summary:
       "A CodeIgniter 3 guest book for events: guest registration, QR check-in, generated ID cards and attendance exports.",
+    resultLine: "QR check-in · generated ID cards · Excel export",
     description:
       "An event operations tool rather than a landing page: guests register with a photo, receive a QR-coded ID card, and get checked in from a phone camera. Admins get per-event attendance reports and Excel exports, with separate roles for staff.",
     stack: ["CodeIgniter 3", "PHP", "MySQL", "Bootstrap", "jQuery", "AdminLTE"],
@@ -271,7 +296,12 @@ export const projects: readonly Project[] = [
       source: { kind: "none" },
       alt: "Abstract typographic composition representing a QR check-in and ID card system.",
       aspect: "16/10",
-      note: "No real screenshot exists and the owner declined to run the app. Owner authorised a generated visual; it must be abstract or typographic — never a fake admin panel.",
+      note: "No real screenshot exists and the owner declined to run the app. Owner authorised a generated visual; it must be abstract or typographic, never a fake admin panel.",
+    },
+    figure: {
+      caption:
+        "Owner-approved abstract typographic visual. It is not a screenshot of the application.",
+      label: "Fig. 01 · Generated visual",
     },
     selected: true,
     featured: false,
@@ -289,13 +319,14 @@ export const projects: readonly Project[] = [
     index: "06",
     title: "Climate × Agriculture",
     year: "2025",
-    period: "Mar 2025 — May 2025",
+    period: "Mar 2025 - May 2025",
     category: "data",
     categoryLabel: "Data science",
-    role: "Solo — analysis and visualisation",
+    role: "Solo, analysis and visualisation",
     team: "Solo project",
     summary:
       "A two-notebook study that clusters 10,002 climate-agriculture records, then predicts crop yield with Random Forest and Gradient Boosting.",
+    resultLine: "10,002 rows × 15 columns · four metrics",
     description:
       "An unsupervised pass first: scale the features, reduce dimensions, tune K-Means and read the clusters. Those clusters become the label for a supervised pass that compares Random Forest against a tuned Gradient Boosting model across accuracy, precision, recall and F1.",
     stack: ["Python", "Pandas", "scikit-learn", "Matplotlib", "Seaborn", "Jupyter"],
@@ -308,6 +339,11 @@ export const projects: readonly Project[] = [
       alt: "Abstract typographic composition built from a yield-versus-climate sequence.",
       aspect: "16/10",
       note: "Owner has no exported charts. Prefer a real export if a notebook can be run; otherwise a generated abstract visual, never a dashboard with invented figures.",
+    },
+    figure: {
+      caption:
+        "Owner-approved abstract typographic visual. It is not a screenshot of the application.",
+      label: "Fig. 01 · Generated visual",
     },
     selected: true,
     featured: false,

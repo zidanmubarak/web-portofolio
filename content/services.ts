@@ -48,7 +48,7 @@ export const services: readonly Service[] = [
     title: "Design",
     tagline: "Layout as a way of making the work legible.",
     description:
-      "Editorial layouts, dashboards and interface systems — including the ID-card and check-in flows in the guest book system and the charts that carry the argument in the climate analysis. Type, spacing and hierarchy treated as part of the engineering, not decoration on top.",
+      "Editorial layouts, dashboards and interface systems · including the ID-card and check-in flows in the guest book system and the charts that carry the argument in the climate analysis. Type, spacing and hierarchy treated as part of the engineering, not decoration on top.",
     capabilities: [
       "Interface and layout design",
       "Design systems and tokens",

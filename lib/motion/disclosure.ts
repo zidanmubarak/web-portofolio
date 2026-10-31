@@ -12,7 +12,7 @@ export function snapshotRows(rows: HTMLElement[]): RowSnapshot {
 }
 
 /**
- * FLIP for disclosure siblings — motion-map §3.5.
+ * FLIP for disclosure siblings - motion-map §3.5.
  *
  * Layout is allowed to snap once; only each row's `transform` is animated so
  * the list appears to slide up/down instead of jumping.

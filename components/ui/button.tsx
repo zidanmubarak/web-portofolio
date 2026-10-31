@@ -53,7 +53,7 @@ type ButtonAsLink = SharedProps &
 export type ButtonProps = ButtonAsButton | ButtonAsLink;
 
 /**
- * Button — square, mono, one accent.
+ * Button - square, mono, one accent.
  *
  * The magnetic pull is 4 px maximum on `(hover: hover) and (pointer: fine)`;
  * touch devices and reduced-motion users get a still button. No pills, no

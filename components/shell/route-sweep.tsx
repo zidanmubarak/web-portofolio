@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { EASE, ScrollTrigger, gsap, prefersReducedMotion } from "@/lib/motion";
 
 /**
- * Route transition — motion-map #11.
+ * Route transition - motion-map #11.
  *
  * A 2 px accent rule sweeps under the top bar once per client navigation, then
  * clears. It never covers the page and never delays the route: the new content

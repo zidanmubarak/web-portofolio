@@ -159,7 +159,7 @@ export async function POST(request: Request) {
       from: user,
       to: receiver,
       replyTo: email,
-      subject: `Portfolio contact — ${subject}`,
+      subject: `Portfolio contact - ${subject}`,
       text: [
         "New message from the portfolio contact form.",
         "",

@@ -28,7 +28,7 @@ export type AccordionProps = {
 };
 
 /**
- * Numbered accordion — motion-map pattern #5.
+ * Numbered accordion - motion-map pattern #5.
  *
  * Height snaps once per toggle; sibling rows and the panel are animated with
  * transform/clip-path only (no height tween, no layout thrash). One item open

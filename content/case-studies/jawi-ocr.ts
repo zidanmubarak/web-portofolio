@@ -33,18 +33,18 @@ export const jawiOcrCaseStudy: CaseStudy = {
     {
       kind: "prose",
       id: "context",
-      label: "01 — Context",
+      label: "01 · Context",
       heading: "A script with no good defaults",
       paragraphs: [
         "Jawi is Malay written in Arabic script. It is the script of a large body of Acehnese, Malay and Bruneian documents, and it is not what general-purpose OCR was built for: the letters join, dots carry meaning, and vowel marks are often left out entirely.",
         "The task has two stages. First extraction: read the Jawi characters off an image. Then transliteration: convert that Jawi into Latin Rumi following the Pedoman Ejaan Jawi Yang Disempurnakan (PEJYD). Translation is a third, separate problem and deliberately out of scope.",
-        "The thesis asked whether a small vision-language model could be adapted to both stages with parameter-efficient fine-tuning, and — more usefully — which training data actually made the difference.",
+        "The thesis asked whether a small vision-language model could be adapted to both stages with parameter-efficient fine-tuning, and, more usefully, which training data actually made the difference.",
       ],
     },
     {
       kind: "facts",
       id: "setup",
-      label: "02 — Setup",
+      label: "02 · Setup",
       items: [
         { term: "Thesis", value: "Implementasi Multimodal Large Language Model untuk Ekstraksi dan Transliterasi Printed Jawi Script" },
         { term: "Base model", value: "Qwen2.5-VL-3B-Instruct" },
@@ -58,7 +58,7 @@ export const jawiOcrCaseStudy: CaseStudy = {
     {
       kind: "datasets",
       id: "data",
-      label: "03 — Data",
+      label: "03 · Data",
       heading: "Two kinds of samples, three ways to mix them",
       intro:
         "Synthetic data gives clean letterforms; real documents give noise, skew and age. The ablation exists to find out which one the model actually needed.",
@@ -77,7 +77,7 @@ export const jawiOcrCaseStudy: CaseStudy = {
           count: 7902,
           countLabel: "samples",
           description:
-            "Scanned Jawi samples — printed documents and handwriting — split so that the evaluation set stays unseen.",
+            "Scanned Jawi samples, printed documents and handwriting, split so that the evaluation set stays unseen.",
         },
         {
           id: "test",
@@ -92,7 +92,7 @@ export const jawiOcrCaseStudy: CaseStudy = {
     {
       kind: "steps",
       id: "approach",
-      label: "04 — Approach",
+      label: "04 · Approach",
       heading: "Five moves, in order",
       steps: [
         {
@@ -125,7 +125,7 @@ export const jawiOcrCaseStudy: CaseStudy = {
     {
       kind: "metrics",
       id: "results",
-      label: "05 — Results",
+      label: "05 · Results",
       heading: "What changed on unseen data",
       intro:
         "Zero-shot Qwen2.5-VL against the final adapter, 790 authentic images that neither model saw in training. Lower is better on every row.",
@@ -155,7 +155,7 @@ export const jawiOcrCaseStudy: CaseStudy = {
         {
           id: "wer-rumi",
           label: "WER Rumi",
-          definition: "Word error rate — whole words read correctly.",
+          definition: "Word error rate: whole words read correctly.",
           before: 107.08,
           after: 39.36,
           unit: "%",
@@ -169,7 +169,7 @@ export const jawiOcrCaseStudy: CaseStudy = {
     {
       kind: "prose",
       id: "result-reading",
-      label: "06 — Reading the result",
+      label: "06 · Reading the result",
       heading: "Good, not finished",
       paragraphs: [
         "The headline is a 79% drop in extraction errors, and the transliteration moved by a similar margin. The ablation pointed at the combination: synthetic fonts alone taught the letterforms but not the mess, and authentic documents alone did not cover enough variation.",
@@ -180,7 +180,7 @@ export const jawiOcrCaseStudy: CaseStudy = {
 
   lessons: [
     "The combined scenario won: fonts alone did not cover real documents, and documents alone did not cover enough variation.",
-    "Score each stage separately — a decent Rumi score can hide a bad extraction underneath it.",
+    "Score each stage separately; a decent Rumi score can hide a bad extraction underneath it.",
     "Choose the checkpoint that generalises, not the one with the lowest training loss.",
     "Ship the demo next to the metric; the side-by-side comparison is what made the improvement legible.",
   ],
@@ -244,7 +244,7 @@ export const jawiOcrCaseStudy: CaseStudy = {
     "hf-model-card",
     "hf-model-files",
     "hf-space",
-    "owner-answers",
+    // "owner-answers",
   ],
 
   verification: {

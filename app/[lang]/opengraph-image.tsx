@@ -1,10 +1,12 @@
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { profile } from "@/content/profile";
+import { content as contentEn } from "@/content/locales/en";
+import { content as contentId } from "@/content/locales/id";
+import { isLocale } from "@/lib/i18n";
 
 export const runtime = "nodejs";
-export const alt = `${profile.name} — ${profile.role}`;
+export const alt = "Zidan Mubarak · AI/ML engineer";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -48,7 +50,13 @@ function loadFonts() {
  * plate, one accent rule, and the two-line name. It is rendered from the same
  * fonts the site uses, so a shared link never looks like a template.
  */
-export default async function OpengraphImage() {
+export default async function OpengraphImage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  const { profile } = isLocale(lang) && lang === "en" ? contentEn : contentId;
   const fonts = await loadFonts();
   const [first, second] = profile.headline;
   const coordinates = `${profile.location.coordinates.lat.toFixed(4)} N / ${profile.location.coordinates.lng.toFixed(4)} E`;

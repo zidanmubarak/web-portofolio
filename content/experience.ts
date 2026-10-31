@@ -8,7 +8,7 @@ export const experience: readonly ExperienceEntry[] = [
   {
     index: "01",
     id: "lab-big-data",
-    role: "Laboratory Assistant — Big Data Analytics",
+    role: "Laboratory Assistant, Big Data Analytics",
     organisation: "Information Technology Study Program, UIN Ar-Raniry",
     organisationNote: "Banda Aceh, Indonesia",
     type: "part-time",
@@ -19,13 +19,13 @@ export const experience: readonly ExperienceEntry[] = [
       start: "2026-05",
       end: "2026-07",
       current: false,
-      label: "May 2026 — Jul 2026",
+      label: "May 2026 - Jul 2026",
     },
     summary:
       "Practicum support for the computer-vision half of the Big Data Analytics lab.",
     highlights: [
       "Assisted practicum sessions on image processing with Python and OpenCV, image classification with CNNs, and transfer learning with fine-tuning.",
-      "Unblocked students on the material and on the technical failures that come with it — environment, tensors, training runs.",
+      "Unblocked students on the material and on the technical failures that come with it · environment, tensors, training runs.",
     ],
     tags: ["OpenCV", "CNN", "Transfer learning", "Python"],
     sources: ["cv"],
@@ -38,7 +38,7 @@ export const experience: readonly ExperienceEntry[] = [
   {
     index: "02",
     id: "lab-algorithms",
-    role: "Laboratory Assistant — Algorithms and Programming",
+    role: "Laboratory Assistant, Algorithms and Programming",
     organisation: "Information Technology Study Program, UIN Ar-Raniry",
     organisationNote: "Banda Aceh, Indonesia",
     type: "part-time",
@@ -49,7 +49,7 @@ export const experience: readonly ExperienceEntry[] = [
       start: "2026-05",
       end: "2026-07",
       current: false,
-      label: "May 2026 — Jul 2026",
+      label: "May 2026 - Jul 2026",
     },
     summary:
       "Java fundamentals practicum, plus the case studies and rubrics used to grade it.",
@@ -68,7 +68,7 @@ export const experience: readonly ExperienceEntry[] = [
   {
     index: "03",
     id: "asah",
-    role: "Machine Learning Cohort — Best Capstone Project",
+    role: "Machine Learning Engineer, Best Capstone Project",
     organisation: "Asah led by Dicoding",
     organisationNote: "Bandung, Indonesia · remote",
     type: "scholarship",
@@ -79,7 +79,7 @@ export const experience: readonly ExperienceEntry[] = [
       start: "2025-08",
       end: "2026-01",
       current: false,
-      label: "Aug 2025 — Jan 2026",
+      label: "Aug 2025 - Jan 2026",
     },
     summary:
       "Two-person ML team on Pacu Pintar, an AI learning-analytics platform. The capstone took Best Capstone Project.",
@@ -100,7 +100,7 @@ export const experience: readonly ExperienceEntry[] = [
   {
     index: "04",
     id: "coding-camp",
-    role: "Machine Learning Engineer Cohort",
+    role: "Machine Learning Engineer",
     organisation: "Coding Camp powered by DBS Foundation",
     organisationNote: "Bandung, Indonesia · remote",
     type: "scholarship",
@@ -111,7 +111,7 @@ export const experience: readonly ExperienceEntry[] = [
       start: "2025-02",
       end: "2025-07",
       current: false,
-      label: "Feb 2025 — Jul 2025",
+      label: "Feb 2025 - Jul 2025",
     },
     summary:
       "Six months of certification-based machine learning, ending in the NusantaraGo-ML capstone.",
@@ -138,7 +138,7 @@ export const experience: readonly ExperienceEntry[] = [
       start: "2025-02",
       end: "2025-03",
       current: false,
-      label: "Feb 2025 — Mar 2025",
+      label: "Feb 2025 - Mar 2025",
     },
     summary:
       "Two months digitising and reporting financial data for a provincial finance agency.",

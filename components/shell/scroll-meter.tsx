@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { usePathname } from "next/navigation";
+import { useI18n } from "@/components/i18n/provider";
 
 type ActiveSection = {
   index: string;
@@ -18,7 +19,7 @@ const INDEXED_SECTION = "[data-section][data-index]";
  *
  * A 1px accent rule under the top bar carries overall progress; on desktop a
  * fixed right rail names the numbered section currently being read. Both are
- * decorative (`aria-hidden`) — the content order is already in the DOM.
+ * decorative (`aria-hidden`) - the content order is already in the DOM.
  *
  * The active section is found with a one-pixel IntersectionObserver line, not
  * with `offsetTop`: once Selected Work is pinned its section becomes
@@ -26,6 +27,7 @@ const INDEXED_SECTION = "[data-section][data-index]";
  * resets on navigation, so `/work` never inherits "06 / Contact".
  */
 export function ScrollMeter() {
+  const { copy } = useI18n();
   const pathname = usePathname();
   const topRule = React.useRef<HTMLDivElement>(null);
   const railFill = React.useRef<HTMLDivElement>(null);
@@ -167,7 +169,7 @@ export function ScrollMeter() {
   const section = active && active.key === pathname ? active : null;
   const showRail = Boolean(section && !section.hidden && !inFooter);
   const index = section?.index ?? "00";
-  const label = section?.label ?? "Index";
+  const label = section?.label ?? copy.common.indexFallback;
 
   return (
     <>

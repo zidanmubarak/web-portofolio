@@ -1,16 +1,18 @@
 import Link from "next/link";
 import { LocalClock } from "@/components/shell/local-clock";
-import { copy } from "@/content/copy.en";
-import { profile } from "@/content/profile";
+import { getSiteContent } from "@/content/server";
+import { localizedHref } from "@/lib/i18n";
 
 /**
- * 404 — same paper/ink rubric as the rest of the site.
+ * 404 with the same paper/ink rubric as the rest of the site.
  *
  * Next's default white page reads as a different product; this keeps the
  * masthead, the mono rail and the coordinates so a mistyped URL still belongs
  * to RUBRIC. The large 404 is decorative; the h1 carries the message.
  */
-export default function NotFound() {
+export default async function NotFound() {
+  const { locale, copy, profile } = await getSiteContent();
+
   return (
     <section
       aria-labelledby="not-found-heading"
@@ -50,14 +52,14 @@ export default function NotFound() {
 
         <div className="flex flex-wrap items-baseline justify-between gap-4 border-t border-line pt-4">
           <Link
-            href="/work"
+            href={localizedHref(locale, "/work")}
             className="link-wipe u-label text-ink hover:text-accent"
           >
             {copy.common.notFoundCta}
             <span aria-hidden="true">↗</span>
           </Link>
           <Link
-            href="/"
+            href={localizedHref(locale, "/")}
             className="link-wipe u-label text-ink-muted hover:text-ink"
           >
             {copy.common.notFoundIndex}

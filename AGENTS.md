@@ -83,7 +83,7 @@ Rute `/dev/*` wajib memanggil `notFound()` bila `process.env.NODE_ENV === "produ
 
 ## Konten
 
-- Bahasa Inggris default; semua copy di `content/` (dibuat T5), supaya toggle ID mudah ditambahkan.
+- Bahasa Indonesia adalah bahasa utama di `/`; Inggris tersedia di `/en`. Semua copy berpasangan di `content/` (Inggris) dan `content/id/` (Indonesia), dengan tombol ganti bahasa di top bar dan overlay INDEX.
 - Jangan mengarang angka/jabatan/tanggal/proyek/sertifikasi. Tidak terverifikasi → `[[VERIFY: …]]` di `open-questions\T<n>.md`.
 - Foto & tanda tangan asli tidak boleh masuk `public/` atau build; hapus EXIF/GPS dari gambar publik.
 
