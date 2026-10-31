@@ -70,8 +70,8 @@ export async function generateMetadata({
     alternates: {
       canonical: home,
       languages: {
-        id: "/",
-        en: "/en",
+        en: "/",
+        id: "/id",
         "x-default": "/",
       },
     },

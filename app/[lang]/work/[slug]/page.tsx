@@ -51,8 +51,8 @@ export async function generateMetadata({
     alternates: {
       canonical,
       languages: {
-        id: `/work/${project.slug}`,
-        en: `/en/work/${project.slug}`,
+        en: `/work/${project.slug}`,
+        id: `/id/work/${project.slug}`,
         "x-default": `/work/${project.slug}`,
       },
     },

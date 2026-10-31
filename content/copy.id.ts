@@ -48,8 +48,8 @@ export const copy: SiteCopy = {
   language: {
     label: "Bahasa",
     options: [
-      { code: "id", label: "ID", ariaLabel: "Bahasa Indonesia" },
       { code: "en", label: "EN", ariaLabel: "English" },
+      { code: "id", label: "ID", ariaLabel: "Bahasa Indonesia" },
     ],
   },
 

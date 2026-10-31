@@ -5,22 +5,22 @@ export type { LocaleCode };
 /**
  * Routing contract for the two locales.
  *
- * Indonesian is the primary language and lives at the root (`/`, `/work`), so
- * the default URL never needs a prefix. English lives under `/en`. `proxy.ts`
- * rewrites unprefixed requests to the `[lang]` segment with `id`; the browser
+ * English is the primary language and lives at the root (`/`, `/work`), so the
+ * default URL never needs a prefix. Indonesian lives under `/id`. `proxy.ts`
+ * rewrites unprefixed requests to the `[lang]` segment with `en`; the browser
  * URL stays clean.
  */
-export const locales: readonly LocaleCode[] = ["id", "en"] as const;
+export const locales: readonly LocaleCode[] = ["en", "id"] as const;
 
-export const defaultLocale: LocaleCode = "id";
+export const defaultLocale: LocaleCode = "en";
 
 export function isLocale(value: string | undefined): value is LocaleCode {
-  return value === "id" || value === "en";
+  return value === "en" || value === "id";
 }
 
-/** Prefix used by visible URLs: empty for Indonesian, `/en` for English. */
-export function localePrefix(locale: LocaleCode): "" | "/en" {
-  return locale === "id" ? "" : "/en";
+/** Prefix used by visible URLs: empty for English, `/id` for Indonesian. */
+export function localePrefix(locale: LocaleCode): "" | "/id" {
+  return locale === "en" ? "" : "/id";
 }
 
 /** Turn an app-relative path (`/work`, `/#about`) into a locale-aware href. */
@@ -32,15 +32,15 @@ export function localizedHref(locale: LocaleCode, href: string): string {
   return `${prefix}${href}`;
 }
 
-/** Home path with a hash, e.g. `/#contact` or `/en#contact`. */
+/** Home path with a hash, e.g. `/#contact` or `/id#contact`. */
 export function localizedHash(locale: LocaleCode, hash: string): string {
   return `${localePrefix(locale) || "/"}${hash}`;
 }
 
-/** Normalize `/`, `/id`, `/id/...` and `/en/...` to the public pathname. */
+/** Normalize `/`, `/en`, `/en/...`, `/id` and `/id/...` to the public path. */
 export function stripLocale(pathname: string): string {
-  const withoutEn = pathname.replace(/^\/en(?=\/|$)/, "");
-  const withoutId = withoutEn.replace(/^\/id(?=\/|$)/, "");
+  const withoutDefault = pathname.replace(/^\/en(?=\/|$)/, "");
+  const withoutId = withoutDefault.replace(/^\/id(?=\/|$)/, "");
   return withoutId || "/";
 }
 
@@ -49,17 +49,14 @@ export function isHomePath(pathname: string): boolean {
 }
 
 /**
- * Href for the same page in the other language. Works with the public `/en`
- * prefix and with the internal `/id` path that a rewrite may expose.
+ * Href for the same page in the other language. Works with the public `/id`
+ * prefix and with the internal `/en` path that a rewrite may expose.
  */
 export function switchLocaleHref(
   pathname: string,
   target: LocaleCode
 ): string {
   const path = stripLocale(pathname);
-  return target === "id"
-    ? path
-    : path === "/"
-      ? "/en"
-      : `/en${path}`;
+  if (target === "en") return path;
+  return path === "/" ? "/id" : `/id${path}`;
 }

@@ -25,7 +25,7 @@ export async function generateMetadata({
     description: copy.work.indexIntro,
     alternates: {
       canonical: localizedHref(lang, "/work"),
-      languages: { id: "/work", en: "/en/work", "x-default": "/work" },
+      languages: { en: "/work", id: "/id/work", "x-default": "/work" },
     },
     openGraph: {
       title: fullTitle,

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
-import { content as contentId } from "@/content/locales/id";
 import { content as contentEn } from "@/content/locales/en";
+import { content as contentId } from "@/content/locales/id";
 
 /** Canonical origin; env wins for previews. */
 const siteUrl = (
@@ -11,7 +11,7 @@ const siteUrl = (
 const updated = new Date("2026-10-30");
 
 function projectEntries(
-  projects: typeof contentId.projects,
+  projects: typeof contentEn.projects,
   prefix: string
 ) {
   return projects.map((project) => ({
@@ -21,32 +21,33 @@ function projectEntries(
     priority: project.featured ? 0.8 : 0.6,
     alternates: {
       languages: {
-        id: `${siteUrl}/work/${project.slug}`,
-        en: `${siteUrl}/en/work/${project.slug}`,
+        en: `${siteUrl}/work/${project.slug}`,
+        id: `${siteUrl}/id/work/${project.slug}`,
       },
     },
   }));
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const languages = {
+    en: `${siteUrl}/`,
+    id: `${siteUrl}/id`,
+  };
+
   return [
     {
       url: `${siteUrl}/`,
       lastModified: updated,
       changeFrequency: "monthly",
       priority: 1,
-      alternates: {
-        languages: { id: `${siteUrl}/`, en: `${siteUrl}/en` },
-      },
+      alternates: { languages },
     },
     {
-      url: `${siteUrl}/en`,
+      url: `${siteUrl}/id`,
       lastModified: updated,
       changeFrequency: "monthly",
       priority: 1,
-      alternates: {
-        languages: { id: `${siteUrl}/`, en: `${siteUrl}/en` },
-      },
+      alternates: { languages },
     },
     {
       url: `${siteUrl}/work`,
@@ -55,24 +56,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
       alternates: {
         languages: {
-          id: `${siteUrl}/work`,
-          en: `${siteUrl}/en/work`,
+          en: `${siteUrl}/work`,
+          id: `${siteUrl}/id/work`,
         },
       },
     },
     {
-      url: `${siteUrl}/en/work`,
+      url: `${siteUrl}/id/work`,
       lastModified: updated,
       changeFrequency: "monthly",
       priority: 0.9,
       alternates: {
         languages: {
-          id: `${siteUrl}/work`,
-          en: `${siteUrl}/en/work`,
+          en: `${siteUrl}/work`,
+          id: `${siteUrl}/id/work`,
         },
       },
     },
-    ...projectEntries(contentId.projects, ""),
-    ...projectEntries(contentEn.projects, "/en"),
+    ...projectEntries(contentEn.projects, ""),
+    ...projectEntries(contentId.projects, "/id"),
   ];
 }

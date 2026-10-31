@@ -8,7 +8,7 @@ pages. Next.js App Router, TypeScript, Tailwind 3, GSAP + Lenis.
 - **Live:** https://zidanmubarak.vercel.app
 - **Design language:** “RUBRIC” - `#0B0B0A` ground, `#E7E1D5` paper plate, one
   rubric-red accent (`#FF4A2E`), Archivo + Martian Mono.
-- **Content languages:** Indonesian (primary, `/`) and English (`/en`). All editorial copy lives in `content/`, with the Indonesian mirror in `content/id/` and the language switch in the top bar and INDEX overlay.
+- **Content languages:** English (primary, `/`) and Indonesian (`/id`). All editorial copy lives in `content/`, with the Indonesian mirror in `content/id/` and the language switch in the top bar and INDEX overlay.
 
 ## Quick start
 
@@ -50,7 +50,7 @@ app/
   [lang]/work/          /work index and /work/[slug] case study (6 static slugs)
   api/contact/route.ts  contact form endpoint (validation, rate limit, honeypot)
   [lang]/dev/           component benches; every route calls notFound() in production
-proxy.ts                `/` → `/id` rewrite, `/id` → clean redirect, `/en` passthrough
+proxy.ts                `/` → `/en` rewrite, `/en` → clean redirect, `/id` passthrough
 components/
   loader/               signature loader + pre-paint gate
   signature/            vector signature and draw timeline

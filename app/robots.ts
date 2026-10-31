@@ -12,7 +12,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         // Component benches are dev-only and already return 404 in production;
         // this keeps crawlers from asking for them at all.
-        disallow: ["/dev/", "/api/"],
+        disallow: ["/dev/", "/id/dev/", "/api/"],
       },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,
