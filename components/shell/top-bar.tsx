@@ -80,10 +80,15 @@ export function TopBar({ menuOpen, onOpenMenu }: TopBarProps) {
             aria-expanded={menuOpen}
             aria-controls={menuOpen ? "site-menu" : undefined}
             aria-haspopup="dialog"
-            className="link-wipe u-label inline-flex min-h-[44px] items-center text-ink"
+            className="inline-flex min-h-[44px] items-center text-ink"
           >
-            <span>{copy.nav.indexLabel}</span>
-            <span aria-hidden="true">/</span>
+            {/* `link-wipe` sets align-items: baseline (unlayered CSS), so the
+                underline lives on the inner span and the button itself keeps
+                the text on the same optical line as the switch and clock. */}
+            <span className="link-wipe u-label">
+              <span>{copy.nav.indexLabel}</span>
+              <span aria-hidden="true">/</span>
+            </span>
           </button>
         </div>
       </div>

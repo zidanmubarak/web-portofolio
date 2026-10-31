@@ -213,10 +213,10 @@ export function MenuOverlay({
         if (!target.closest("[data-menu-interactive]")) onClose();
       }}
     >
-      <div className="u-container flex min-h-svh flex-col pb-8 pt-[calc(var(--topbar-h)+1rem)]">
+      <div className="u-container flex min-h-svh flex-col pb-6 pt-[calc(var(--topbar-h)+1rem)]">
         <div
           data-menu-interactive
-          className="flex items-center justify-between border-b border-line pb-4"
+          className="flex items-center justify-between border-b border-line pb-3"
         >
           <p id="site-menu-title" className="u-label text-ink-muted">
             {copy.nav.indexLabel}
@@ -235,7 +235,7 @@ export function MenuOverlay({
         <nav
           aria-label={copy.nav.menuLabel}
           data-menu-interactive
-          className="flex flex-1 flex-col justify-center py-6 md:py-8"
+          className="flex flex-1 flex-col justify-center py-4 md:py-5"
         >
           <ul>
             {copy.nav.items.map((item) => (
@@ -274,7 +274,7 @@ export function MenuOverlay({
                     });
                   }}
                   className={cn(
-                    "group flex items-baseline gap-4 py-2 md:gap-8 md:py-3",
+                    "group flex items-baseline gap-4 py-1.5 md:gap-8 md:py-2",
                     "transition-transform duration-ui ease-expo hover:translate-x-3 focus-visible:translate-x-3"
                   )}
                 >
@@ -293,7 +293,7 @@ export function MenuOverlay({
         <div
           data-menu-interactive
           data-menu-meta
-          className="grid gap-6 border-t border-line pt-6 md:grid-cols-12"
+          className="grid gap-4 border-t border-line pt-4 md:grid-cols-12"
         >
           <div className="md:col-span-6">
             <a

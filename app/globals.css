@@ -347,8 +347,10 @@
     text-transform: uppercase;
   }
 
+  /* Height-aware: seven rows plus the meta block must fit one screen on a
+     1366x768 laptop without scrolling the overlay. */
   .menu-title {
-    font-size: clamp(2.5rem, 4.2vw, 4.5rem);
+    font-size: clamp(2rem, min(3.6vw, 5vh), 3.5rem);
     line-height: 1;
   }
 

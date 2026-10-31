@@ -5,6 +5,7 @@ import { TopBar } from "./top-bar";
 import { MenuOverlay } from "./menu-overlay";
 import { ScrollMeter } from "./scroll-meter";
 import { RouteSweep } from "./route-sweep";
+import { AnchorScroll } from "./anchor-scroll";
 import { useI18n } from "@/components/i18n/provider";
 import { localizedHash } from "@/lib/i18n";
 
@@ -49,6 +50,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       <MenuOverlay open={menuOpen} onClose={closeMenu} />
       <ScrollMeter />
       <RouteSweep />
+      <AnchorScroll />
 
       <main id="main" tabIndex={-1} className="relative focus:outline-none">
         {children}
