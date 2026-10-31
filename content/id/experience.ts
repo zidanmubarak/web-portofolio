@@ -135,13 +135,13 @@ export const experience: readonly ExperienceEntry[] = [
     location: "Banda Aceh, Indonesia",
     arrangement: "on-site",
     period: {
-      start: "2025-02",
+      start: "2025-01",
       end: "2025-03",
       current: false,
-      label: "Feb 2025 - Mar 2025",
+      label: "Jan 2025 - Mar 2025",
     },
     summary:
-      "Dua bulan mendigitalkan dan melaporkan data keuangan untuk badan keuangan provinsi.",
+      "Tiga bulan mendigitalkan dan melaporkan data keuangan untuk badan keuangan provinsi.",
     highlights: [
       "Mendigitalkan dan mengolah data keuangan dengan spreadsheet dan alat analisis.",
       "Menulis dokumentasi internal dan laporan operasional harian, serta mendukung alur pelaporan keuangan.",
@@ -151,7 +151,7 @@ export const experience: readonly ExperienceEntry[] = [
     verification: {
       verified: true,
       sources: ["cv"],
-      note: "Situs sebelumnya menyebut Januari 2025; CV menyebut Februari 2025 dan itu yang dipakai.",
+      note: "Koreksi pemilik (Okt 2026): tiga bulan, Januari sampai Maret 2025. CV menyebut Februari; catatan pemilik yang dipakai.",
     },
   },
 ];

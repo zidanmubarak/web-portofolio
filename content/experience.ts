@@ -135,13 +135,13 @@ export const experience: readonly ExperienceEntry[] = [
     location: "Banda Aceh, Indonesia",
     arrangement: "on-site",
     period: {
-      start: "2025-02",
+      start: "2025-01",
       end: "2025-03",
       current: false,
-      label: "Feb 2025 - Mar 2025",
+      label: "Jan 2025 - Mar 2025",
     },
     summary:
-      "Two months digitising and reporting financial data for a provincial finance agency.",
+      "Three months digitising and reporting financial data for a provincial finance agency.",
     highlights: [
       "Digitised and processed financial data with spreadsheets and analysis tools.",
       "Wrote internal documentation and daily operational reports, and supported the financial reporting workflow.",
@@ -151,7 +151,7 @@ export const experience: readonly ExperienceEntry[] = [
     verification: {
       verified: true,
       sources: ["cv"],
-      note: "The previous site said January 2025; the CV says February 2025 and wins.",
+      note: "Owner correction (Oct 2026): three months, January to March 2025. The CV listed February; the owner record supersedes it.",
     },
   },
 ];
